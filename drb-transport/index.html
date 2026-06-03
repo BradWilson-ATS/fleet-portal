@@ -373,12 +373,12 @@ tr:hover td { background: rgba(255,255,255,0.04); }
       <div class="acct-title">Fleet Portal &mdash; Select Account</div>
     </div>
     <div class="acct-sub">Alma Tire Companies</div>
-    <div class="acct-welcome">Welcome back, <strong>DRB Transport</strong>. You have access to <strong>4 accounts</strong>. Select one to continue.</div>
+    <div class="acct-welcome">Welcome back, <strong>DRB Transport</strong>. You have access to <strong>5 accounts</strong>. Select one to continue.</div>
     <!-- All Accounts -->
     <div class="acct-btn selected" id="acct-all-btn" onclick="selectAcct(0,this)" style="grid-column:1/-1; border-color:var(--red); background:rgba(200,16,46,0.12); display:flex; align-items:center; justify-content:space-between;">
       <div>
         <div class="acct-num" style="color:var(--red);">All Accounts &mdash; Combined View</div>
-        <div class="acct-name">DRB Transport &mdash; All 4 Accounts</div>
+        <div class="acct-name">DRB Transport &mdash; All 5 Accounts</div>
         <div class="acct-detail">218 total active units &middot; $183,714 YTD spend</div>
       </div>
       <div style="font-size:11px;font-weight:700;background:var(--red);color:white;padding:4px 12px;border-radius:20px;">DEFAULT</div>
@@ -403,6 +403,11 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         <div class="acct-num">Account #1239</div>
         <div class="acct-name">DRB Transport &mdash; Account 1239</div>
         <div class="acct-detail">146 active units</div>
+      </div>
+      <div class="acct-btn" onclick="selectAcct(5,this)">
+        <div class="acct-num">Account #1240</div>
+        <div class="acct-name">DRB Transport &mdash; Account 1240</div>
+        <div class="acct-detail">21 active units &middot; $33,030 spend</div>
       </div>
     </div>
     <div class="acct-footer">
@@ -478,6 +483,11 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             <div class="dd-acct-num">Account #1239</div>
             <div class="dd-acct-name">DRB Transport &mdash; Account 1239</div>
             <div class="dd-acct-detail">146 active units</div>
+          </div>
+          <div class="dd-item" id="dd-5" onclick="switchAcct(5)">
+            <div class="dd-acct-num">Account #1240</div>
+            <div class="dd-acct-name">DRB Transport &mdash; Account 1240</div>
+            <div class="dd-acct-detail">21 active units &middot; $33,030 spend</div>
           </div>
         </div>
       </div>
