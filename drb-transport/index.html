@@ -3548,14 +3548,20 @@ function updateSliderVisuals(lo, hi) {
   var msTrend = document.getElementById('kpi-month-spend-t');
   if (msTrend) msTrend.textContent = cmLabel;
 
-  // Closed Invoices KPI — scale rgInv proportionally to slider spend vs. full period spend
-  var M = getMonths();
-  var fullSpend = M.reduce(function(s,m){ return s + m.spend; }, 0);
-  var invEst = fullSpend > 0 ? Math.round(a.rgInv * period.totalSpend / fullSpend) : 0;
-  if (invEst === 0 && period.totalSpend > 0) invEst = 1; // floor at 1 — if spend exists, an invoice exists
-  document.getElementById('kpi-inv').textContent = invEst.toLocaleString();
-  var kpiInvT = document.getElementById('kpi-inv-t');
-  if (kpiInvT) { kpiInvT.style.cssText = 'font-size:10px;color:var(--g400);margin-top:4px;'; kpiInvT.textContent = loLabel + ' – ' + hiLabel; }
+  // Closed Invoices KPI — exact count from INVOICE_DATA filtered to slider range
+  (function() {
+    function _d(dt) {
+      return dt.getFullYear() + '-' + ('0'+(dt.getMonth()+1)).slice(-2) + '-' + ('0'+dt.getDate()).slice(-2);
+    }
+    var loISO = _d(new Date(PORTAL_START_YEAR, PORTAL_START_MONTH_JS, 1 + lo));
+    var hiISO = _d(new Date(PORTAL_START_YEAR, PORTAL_START_MONTH_JS, 1 + hi));
+    var invCount = INVOICE_DATA.filter(function(r) {
+      return (a.num === 'ALL' || r.acct === a.num) && r.dt >= loISO && r.dt <= hiISO;
+    }).length;
+    document.getElementById('kpi-inv').textContent = invCount.toLocaleString();
+    var kpiInvT = document.getElementById('kpi-inv-t');
+    if (kpiInvT) { kpiInvT.style.cssText = 'font-size:10px;color:var(--g400);margin-top:4px;'; kpiInvT.textContent = loLabel + ' – ' + hiLabel; }
+  })();
 
   // Unit Spend page — re-render when slider changes
   var usPage = document.getElementById('page-unit-spend');
