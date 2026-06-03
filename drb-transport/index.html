@@ -978,6 +978,7 @@ function showPage(pageId, el) {
   el.classList.add('active');
   document.getElementById('acct-dropdown').classList.remove('open');
   if (pageId === 'unit-spend')    renderUnitSpend(currentAcct);
+  if (pageId === 'fleet-list')   renderFleetList(currentAcct);
   if (pageId === 'repair-groups') { renderRepairGroups(currentAcct); renderRepairGroupsChart(); }
   if (pageId === 'model-year') renderModelYearChart();
 }
@@ -2126,12 +2127,21 @@ function renderCurrentMonth(idx) {
 // ── Fleet List ──
 function renderFleetList(idx) {
   var a = ACCOUNTS[idx];
-  var units = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
-  var totalUnits = a.units;
-  document.getElementById('fl-sub').textContent = totalUnits + ' registered fleet vehicles';
-  document.getElementById('fl-count').textContent = units.length + ' with full records';
-  document.getElementById('fl-last-page').textContent = Math.ceil(totalUnits / 15);
-  document.getElementById('fl-footer-info').textContent = 'Showing ' + units.length + ' of ' + totalUnits + ' vehicles';
+  var lo = parseInt(sliderMin.value);
+  var hi = parseInt(sliderMax.value);
+  var loLabel = formatDayLabel(lo);
+  var hiLabel = formatDayLabel(hi);
+
+  var scaled = getScaledUnitSpend(lo, hi, a.num);
+  var activeKeys = {};
+  scaled.forEach(function(u) { activeKeys[u.acct + '|' + u.unit] = true; });
+
+  var allUnits = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
+  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit]; });
+
+  document.getElementById('fl-sub').textContent = loLabel + ' – ' + hiLabel + ' · ' + units.length + ' vehicles with service activity';
+  document.getElementById('fl-count').textContent = units.length + ' vehicles shown';
+  document.getElementById('fl-footer-info').textContent = 'Showing ' + units.length + ' of ' + a.units + ' registered fleet vehicles';
   renderFleetTable(units);
 }
 
@@ -2150,7 +2160,13 @@ function renderFleetTable(units) {
 
 function filterFleet() {
   var a = ACCOUNTS[currentAcct];
-  var units = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
+  var lo = parseInt(sliderMin.value);
+  var hi = parseInt(sliderMax.value);
+  var scaled = getScaledUnitSpend(lo, hi, a.num);
+  var activeKeys = {};
+  scaled.forEach(function(u) { activeKeys[u.acct + '|' + u.unit] = true; });
+  var allUnits = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
+  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit]; });
   renderFleetTable(units);
 }
 
@@ -2758,6 +2774,10 @@ function updateSliderVisuals(lo, hi) {
   // Unit Spend page — re-render when slider changes
   var usPage = document.getElementById('page-unit-spend');
   if (usPage && usPage.classList.contains('active')) renderUnitSpend(currentAcct);
+
+  // Fleet List page — re-render when slider changes
+  var flPage = document.getElementById('page-fleet-list');
+  if (flPage && flPage.classList.contains('active')) renderFleetList(currentAcct);
 
   // Repair Groups page — re-render table and chart if currently visible
   var rgPage = document.getElementById('page-repair-groups');
