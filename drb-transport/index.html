@@ -487,8 +487,8 @@ tr:hover td { background: rgba(255,255,255,0.04); }
       <div class="range-wrap" id="range-wrap">
         <div class="range-track"></div>
         <div class="range-fill" id="range-fill"></div>
-        <input type="range" id="slider-min" min="0" max="272" value="0" step="1">
-        <input type="range" id="slider-max" min="0" max="272" value="272" step="1">
+        <input type="range" id="slider-min" min="0" max="394" value="0" step="1">
+        <input type="range" id="slider-max" min="0" max="394" value="394" step="1">
       </div>
       <div class="range-ticks" id="dash-ticks"></div>
       <div class="dash-chart-lbl">Total Spend</div>
@@ -1146,7 +1146,7 @@ var UNIT_SPEND_DATA = [
   { unit:'367', make:'INTERNATIONAL', model:'', acct:'1238', spend:22.50, inv:1, last:'Feb 5, 2026' },
 ];
 
-// ── Unit Spend Monthly — per-unit spend by month Oct 2025–Jun 2026 from MaddenCo ODBC ──
+// ── Unit Spend Monthly — per-unit spend by month Jun 2025 – Jun 2026 from MaddenCo ODBC ──
 // Populated by query-drb-unitspend-monthly-odbc.py + apply-portal-update.py
 // Structure: { acct: { ym: [{unit, acct, spend, inv}] } }
 var UNIT_SPEND_MONTHLY = {
@@ -1429,7 +1429,7 @@ var FLEET_DATA = [
 // Repair group data — direct from MaddenCo ODBC (TMIHSH + TMIHSL + TMPCLS)
 // Oct 2025 – Apr 2026 · TIHHVOIDYN='N' · Spend = (TIHLPRC*TIHLQTY)+(TIHLFET*TIHLQTY) [FET-inclusive]
 // Grouped by product class (TIHLCLSPRD → TMPCLS.PCLSDESC) — matches Phocas logic
-// ── Repair Groups — product category spend Oct 2025–Jun 2026 from MaddenCo ODBC ──
+// ── Repair Groups — product category spend Jun 2025 – Jun 2026 from MaddenCo ODBC ──
 var REPAIR_GROUPS = {
   'ALL': [
     { name:'Med Truck All Position',                        color:'#1A1A1A', spend:89699.15,  inv:96,   pct:22.13  },
@@ -1708,7 +1708,7 @@ function fmtDateShort(s) {
   return mo[parseInt(p[1])-1] + ' ' + parseInt(p[2]) + ', ' + p[0];
 }
 
-// ── Invoice Data — from MaddenCo TMIHSH/TMIHSL via ODBC (Oct 2025–Jun 2026) ──
+// ── Invoice Data — from MaddenCo TMIHSH/TMIHSL via ODBC (Jun 2025 – Jun 2026) ──
 // Populated by query-drb-invoices-odbc.py + apply-portal-update.py
 var INVOICE_DATA = [
   {inv:'200015801',date:'Jun 1, 2026',dt:'2026-06-01',acct:'1237',po:'0067',total:459.74,lines:[{c:'C105',d:'REGULAR AFTER HOURS SERVICE CALL',q:2.00,p:95.00,f:0.00,t:190.00},{c:'C103S',d:'FUEL SURCHARGE (20 MILES PORT TO PORT)',q:1.00,p:0.00,f:0.00,t:0.00},{c:'388ETS',d:'11R22.5 BTL-SA (ECL) (ETS)',q:1.00,p:202.24,f:0.00,t:202.24},{c:'1R000BEAD',d:'BEAD REPAIR',q:1.00,p:10.00,f:0.00,t:10.00},{c:'TL113',d:'MOUNT/DISMOUNT TIRE MED TRK',q:1.00,p:15.00,f:0.00,t:15.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:2.50,f:0.00,t:2.50},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:0.00,f:0.00,t:0.00}]},
@@ -2122,13 +2122,22 @@ function openKpiDetail(type) {
 
   // ── Invoice drill-down ──────────────────────────────────────────────────────
   if (type === 'inv') {
+    var lo = parseInt(sliderMin.value);
+    var hi = parseInt(sliderMax.value);
+    var loLabel = formatDayLabel(lo);
+    var hiLabel = formatDayLabel(hi);
+    function _dtISO(d) {
+      return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
+    }
+    var loISO = _dtISO(new Date(PORTAL_START_YEAR, PORTAL_START_MONTH_JS, 1 + lo));
+    var hiISO = _dtISO(new Date(PORTAL_START_YEAR, PORTAL_START_MONTH_JS, 1 + hi));
     var invRows = INVOICE_DATA.filter(function(r) {
-      return a.num === 'ALL' || r.acct === a.num;
+      return (a.num === 'ALL' || r.acct === a.num) && r.dt >= loISO && r.dt <= hiISO;
     });
     var invTotal = invRows.reduce(function(s,r){ return s + r.total; }, 0);
     document.getElementById('kpi-detail-title').textContent = 'Closed Invoices';
     document.getElementById('kpi-detail-meta').textContent =
-      invRows.length > 0 ? '(' + invRows.length + ' invoices · $' + fmtCurrency(invTotal) + ' total)' : '';
+      invRows.length > 0 ? '(' + loLabel + ' – ' + hiLabel + ' · ' + invRows.length + ' invoices · $' + fmtCurrency(invTotal) + ' total)' : '';
     thead.innerHTML = '<tr><th>Invoice #</th><th>Date</th><th>Unit / PO #</th><th style="text-align:right;">Total</th><th style="text-align:center;">PDF</th></tr>';
     if (invRows.length === 0) {
       tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text2);padding:32px 0;font-size:13px;">No invoices found for this account in the selected period.</td></tr>';
@@ -2379,7 +2388,7 @@ function filterFleet() {
 }
 
 // ── Repair Groups ──
-var RGM_KEYS = ['202510','202511','202512','202601','202602','202603','202604','202605','202606'];
+var RGM_KEYS = ['202506', '202507', '202508', '202509', '202510', '202511', '202512', '202601', '202602', '202603', '202604', '202605', '202606'];
 
 // Build scaled spend per category for the slider range [lo, hi].
 // Uses REPAIR_GROUPS_MONTHLY (per-category monthly data) when available,
@@ -2415,7 +2424,7 @@ function getScaledRepairGroups(lo, hi, acctNum) {
   // Fallback: proportional scaling via monthly totals (covers full Oct–Jun range)
   var M = getMonths();
   var moTotal = 0, moInRange = 0;
-  for (var mi = 0; mi <= 8; mi++) {
+  for (var mi = 0; mi < RGM_KEYS.length; mi++) {
     moTotal += M[mi].spend;
     var ms = MONTH_DAY_STARTS[mi], me = MONTH_DAY_ENDS[mi];
     if (ms > hi || me < lo) continue;
@@ -2659,7 +2668,7 @@ function renderModelYearChart() {
   drawBarChart('my-chart-spend', MODEL_YEAR_DATA, function(d){ return d.spend; }, 180, fmtK, lblYear);
 }
 
-// ── Overview slider — real monthly spend Oct 2025–Jun 2026 from MaddenCo ODBC ──
+// ── Overview slider — real monthly spend Jun 2025 – Jun 2026 from MaddenCo ODBC ──
 var MONTHS_BY_ACCT = {
   'ALL': [
     { label:'Jun 2025', short:'Jun 25', spend:30970.45 },
@@ -2922,15 +2931,17 @@ function drawChart(lo, hi) {
   });
 }
 
-// ── Day-level slider constants (Oct 1, 2025 – Jun 30, 2026 = 273 days) ──
-var MONTH_DAY_STARTS = [0, 31, 61, 92, 123, 151, 182, 212, 243];
-var MONTH_DAY_ENDS   = [30, 60, 91, 122, 150, 181, 211, 242, 272];
-var TOTAL_DAYS = 273;
+// ── Day-level slider constants (Jun 2025 – Jun 2026 = 395 days) ──
+var MONTH_DAY_STARTS = [0, 30, 61, 92, 122, 153, 183, 214, 245, 273, 304, 334, 365];
+var MONTH_DAY_ENDS   = [29, 60, 91, 121, 152, 182, 213, 244, 272, 303, 333, 364, 394];
+var TOTAL_DAYS = 395;
+var PORTAL_START_YEAR = 2025;
+var PORTAL_START_MONTH_JS = 5;
 var MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // Index of the current calendar month within MONTH_DAY_STARTS (Oct 2025 = 0, Jun 2026 = 8)
 var CURRENT_MONTH_IDX = (function() {
-  var ref = new Date(2025, 9, 1); // Oct 1, 2025 = index 0
+  var ref = new Date(2025, 5, 1); // Jun 2025 = index 0
   var now = new Date();
   var idx = (now.getFullYear() - ref.getFullYear()) * 12 + (now.getMonth() - ref.getMonth());
   return Math.max(0, Math.min(MONTH_DAY_STARTS.length - 1, idx));
@@ -2938,7 +2949,7 @@ var CURRENT_MONTH_IDX = (function() {
 
 function formatDayLabel(idx) {
   // new Date handles month overflow correctly
-  var d = new Date(2025, 9, 1 + idx);
+  var d = new Date(2025, 5, 1 + idx);
   return MONTH_SHORT[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 }
 
