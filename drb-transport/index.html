@@ -422,7 +422,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
     <div style="padding: 8px 0; flex: 1;">
       <div class="nav-item active" onclick="showPage('overview',this)">Fleet Overview</div>
       <div class="nav-item" onclick="showPage('fleet-list',this)">Fleet List</div>
-      <div class="nav-item" onclick="showPage('pm',this)">PM <span class="nav-badge" id="badge-pm">1</span></div>
+      <div class="nav-item" onclick="showPage('pm',this)">PM <span class="nav-badge" id="badge-pm" style="display:none">0</span></div>
       <div class="nav-item" onclick="showPage('dot',this)">DOT <span class="nav-badge" id="badge-dot" style="display:none">0</span></div>
       <div class="nav-item" onclick="showPage('unit-spend',this)">Unit Spend</div>
       <div class="nav-item" onclick="showPage('repair-groups',this)">Repair Groups</div>
@@ -442,7 +442,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
       <!-- Account switcher dropdown -->
       <div class="tb-acct-wrap">
         <div class="tb-acct" onclick="toggleDropdown()">
-          DRB Transport &nbsp;&mdash;&nbsp; <strong id="tb-acct-label">Account #7083643</strong>
+          DRB Transport &nbsp;&mdash;&nbsp; <strong id="tb-acct-label">All Accounts</strong>
           <span class="tb-acct-caret">&#9660;</span>
         </div>
         <div class="acct-dropdown" id="acct-dropdown">
@@ -2786,6 +2786,7 @@ function updateSliderVisuals(lo, hi) {
       document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
       var appScreen = document.getElementById('s-app');
       if (appScreen) appScreen.classList.add('active');
+      applyAcct(0); // initialize to All Accounts — Combined View
       // Show customer name in topbar if available
       var custName = sessionStorage.getItem('alma_portal_customer');
       if (custName) {
