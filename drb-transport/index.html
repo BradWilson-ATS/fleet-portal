@@ -1946,12 +1946,15 @@ function renderUnitSpend(idx) {
   document.getElementById('us-tbody').innerHTML = tbodyHtml;
 }
 
-// ── PM / DOT Data — from MaddenCo TMIHSH/TMIHSL via ODBC ──
+// ── PM / DOT Data – from MaddenCo TMIHSH/TMIHSL via ODBC ──
 // PM codes: ML117, LOFS, LOFD, LOFB  |  next due = last + 3 months
 // DOT code: MLDOT                     |  next due = last + 12 months
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
-  'ALL': { overdue:0, due_soon:0, current:0, records:[
+  'ALL': { overdue:1, due_soon:0, current:2, records:[
+    {unit:'ISSABELLA\'S JEEP', acct:'1240', last_pm:'2026-02-20', next_pm:'2026-05-20', days:-14, status:'overdue'},
+    {unit:'2015 JEEP GRAND CHER', acct:'1240', last_pm:'2026-04-17', next_pm:'2026-07-17', days:44, status:'current'},
+    {unit:'5602', acct:'1240', last_pm:'2026-04-07', next_pm:'2026-07-07', days:34, status:'current'},
   ] },
   '7083643': { overdue:0, due_soon:0, current:0, records:[
   ] },
@@ -1960,10 +1963,16 @@ var PM_DATA = {
   '1238': { overdue:0, due_soon:0, current:0, records:[
   ] },
   '1239': { overdue:0, due_soon:0, current:0, records:[
+  ] },
+  '1240': { overdue:1, due_soon:0, current:2, records:[
+    {unit:'ISSABELLA\'S JEEP', acct:'1240', last_pm:'2026-02-20', next_pm:'2026-05-20', days:-14, status:'overdue'},
+    {unit:'2015 JEEP GRAND CHER', acct:'1240', last_pm:'2026-04-17', next_pm:'2026-07-17', days:44, status:'current'},
+    {unit:'5602', acct:'1240', last_pm:'2026-04-07', next_pm:'2026-07-07', days:34, status:'current'},
   ] },
 };
 var DOT_DATA = {
-  'ALL': { overdue:0, due_soon:0, current:0, records:[
+  'ALL': { overdue:0, due_soon:1, current:0, records:[
+    {unit:'DUANE', acct:'1240', last_dot:'2025-07-23', next_dot:'2026-07-23', days:50, status:'due_soon'},
   ] },
   '7083643': { overdue:0, due_soon:0, current:0, records:[
   ] },
@@ -1972,6 +1981,9 @@ var DOT_DATA = {
   '1238': { overdue:0, due_soon:0, current:0, records:[
   ] },
   '1239': { overdue:0, due_soon:0, current:0, records:[
+  ] },
+  '1240': { overdue:0, due_soon:1, current:0, records:[
+    {unit:'DUANE', acct:'1240', last_dot:'2025-07-23', next_dot:'2026-07-23', days:50, status:'due_soon'},
   ] },
 };
 
