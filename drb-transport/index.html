@@ -290,6 +290,13 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 .search-ico { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); pointer-events: none; }
 .search-input { padding: 7px 12px 7px 32px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; outline: none; width: 240px; color: var(--text); background: var(--surface2); }
 .search-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.12); }
+/* Sortable table headers */
+.sort-th { cursor: pointer; user-select: none; white-space: nowrap; }
+.sort-th:hover { color: var(--text); }
+.sort-th .sa { margin-left: 5px; opacity: 0.35; font-size: 10px; }
+.sort-th.sort-asc .sa::after { content: '▲'; opacity: 1; color: var(--red); }
+.sort-th.sort-desc .sa::after { content: '▼'; opacity: 1; color: var(--red); }
+.sort-th:not(.sort-asc):not(.sort-desc) .sa::after { content: '⇅'; }
 
 /* Pagination */
 .tbl-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; border-top: 1px solid var(--border); }
@@ -583,7 +590,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
           </div>
           <table>
-            <thead><tr><th>Unit #</th><th>VIN</th><th>Make / Model</th><th>Last PM</th><th>Next Due</th><th>Mileage</th><th>Status</th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="pm" data-col="unit" onclick="tblSort('pm','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="pm" data-col="make" onclick="tblSort('pm','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="last_pm" onclick="tblSort('pm','last_pm');renderPMTable(currentAcct);">Last PM<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="next_pm" onclick="tblSort('pm','next_pm');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th>Mileage</th><th class="sort-th" data-tbl="pm" data-col="status" onclick="tblSort('pm','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th></tr></thead>
             <tbody>
               <tr><td>576</td><td>1GBHG31C291178576</td><td>2009 Chevrolet Express G3500</td><td>Mar 17, 2025</td><td>Jun 17, 2025</td><td>&mdash;</td><td><span class="badge b-red">Overdue 349 days</span></td></tr>
             </tbody>
@@ -608,7 +615,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
           </div>
           <table>
-            <thead><tr><th>Unit #</th><th>VIN</th><th>Make / Model</th><th>Last Inspection</th><th>Next Due</th><th>Days</th><th>Status</th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="dot" data-col="unit" onclick="tblSort('dot','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="dot" data-col="make" onclick="tblSort('dot','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="last_insp" onclick="tblSort('dot','last_insp');renderPMTable(currentAcct);">Last Inspection<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="next_due" onclick="tblSort('dot','next_due');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="days" onclick="tblSort('dot','days');renderPMTable(currentAcct);">Days<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="status" onclick="tblSort('dot','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th></tr></thead>
             <tbody>
               <tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles serviced through Alma Tire.</td></tr>
             </tbody>
@@ -679,7 +686,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
           </div>
           <table>
-            <thead><tr><th>Unit Number</th><th>Make</th><th>Model</th><th>Year</th><th>Unit Invoice Count</th><th>Unit Total Spend</th><th>Unit % of Total</th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="us" data-col="unit" onclick="tblSort('us','unit');renderUnitSpend(currentAcct);">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="make" onclick="tblSort('us','make');renderUnitSpend(currentAcct);">Make<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="model" onclick="tblSort('us','model');renderUnitSpend(currentAcct);">Model<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="year" onclick="tblSort('us','year');renderUnitSpend(currentAcct);">Year<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="inv" onclick="tblSort('us','inv');renderUnitSpend(currentAcct);">Unit Invoice Count<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="spend" onclick="tblSort('us','spend');renderUnitSpend(currentAcct);">Unit Total Spend<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="pct" onclick="tblSort('us','pct');renderUnitSpend(currentAcct);">Unit % of Total<span class="sa"></span></th></tr></thead>
             <tbody id="us-tbody"></tbody>
           </table>
         </div>
@@ -697,7 +704,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
           </div>
           <table>
-            <thead><tr><th>Unit Number</th><th>Make</th><th>Model</th><th>Year</th><th>VIN</th><th>Current Month Spend</th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="cm" data-col="unit" onclick="tblSort('cm','unit');renderCurrentMonth(currentAcct);">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="make" onclick="tblSort('cm','make');renderCurrentMonth(currentAcct);">Make<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="model" onclick="tblSort('cm','model');renderCurrentMonth(currentAcct);">Model<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="year" onclick="tblSort('cm','year');renderCurrentMonth(currentAcct);">Year<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="vin" onclick="tblSort('cm','vin');renderCurrentMonth(currentAcct);">VIN<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="spend" onclick="tblSort('cm','spend');renderCurrentMonth(currentAcct);">Current Month Spend<span class="sa"></span></th></tr></thead>
             <tbody id="cm-tbody"></tbody>
           </table>
         </div>
@@ -724,7 +731,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             </div>
           </div>
           <table>
-            <thead><tr><th>Unit Number</th><th>VIN</th><th>Make</th><th>Model</th><th>Year</th><th>Account</th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="fl" data-col="unit" onclick="tblSort('fl','unit');filterFleet();">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="vin" onclick="tblSort('fl','vin');filterFleet();">VIN<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="make" onclick="tblSort('fl','make');filterFleet();">Make<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="model" onclick="tblSort('fl','model');filterFleet();">Model<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="year" onclick="tblSort('fl','year');filterFleet();">Year<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="acct" onclick="tblSort('fl','acct');filterFleet();">Account<span class="sa"></span></th></tr></thead>
             <tbody id="fl-tbody"></tbody>
           </table>
           <div class="tbl-footer">
@@ -750,7 +757,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
           <div class="table-card">
             <div class="table-hdr"><div class="table-ttl">Product Categories</div></div>
             <table>
-              <thead><tr><th>Category</th><th>Spend</th><th>Avg / Invoice</th><th>% of Total</th></tr></thead>
+              <thead><tr><th class="sort-th" data-tbl="rg" data-col="name" onclick="tblSort('rg','name');renderRepairGroups(currentAcct);">Category<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="spend" onclick="tblSort('rg','spend');renderRepairGroups(currentAcct);">Spend<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="avg" onclick="tblSort('rg','avg');renderRepairGroups(currentAcct);">Avg / Invoice<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="pct" onclick="tblSort('rg','pct');renderRepairGroups(currentAcct);">% of Total<span class="sa"></span></th></tr></thead>
               <tbody id="rg-tbody"></tbody>
             </table>
           </div>
@@ -769,9 +776,9 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
           <div class="table-card">
-            <div class="table-hdr"><div class="table-ttl">Model Year Breakdown</div></div>
+            <div class="table-hdr"><div class="table-ttl">Model Year Breakdown</div><div class="search-wrap"><svg class="search-ico" width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#9ca3af" stroke-width="1.8"/><path d="M12.5 12.5L16.5 16.5" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/></svg><input type="text" class="search-input" id="my-search" placeholder="Search year…" oninput="renderModelYear(currentAcct)"></div></div>
             <table>
-              <thead><tr><th>Model Year</th><th>Units</th><th>Invoices</th><th>Total Spend</th></tr></thead>
+              <thead><tr><th class="sort-th" data-tbl="my" data-col="year" onclick="tblSort('my','year');renderModelYear(currentAcct);">Model Year<span class="sa"></span></th><th class="sort-th" data-tbl="my" data-col="count" onclick="tblSort('my','count');renderModelYear(currentAcct);">Units<span class="sa"></span></th><th class="sort-th" data-tbl="my" data-col="inv" onclick="tblSort('my','inv');renderModelYear(currentAcct);">Invoices<span class="sa"></span></th><th class="sort-th" data-tbl="my" data-col="spend" onclick="tblSort('my','spend');renderModelYear(currentAcct);">Total Spend<span class="sa"></span></th></tr></thead>
               <tbody id="my-tbody"></tbody>
             </table>
           </div>
@@ -929,7 +936,16 @@ function renderPMTable(idx) {
       var k = f.acct + '|' + f.unit;
       if (!fleetLookup[k] || (f.vin && !fleetLookup[k].vin)) fleetLookup[k] = f;
     });
-    pmTbody.innerHTML = pmAcct.records.map(function(r) {
+    syncSortThs('pm');
+    var pmRecs = doSort(pmAcct.records.slice(), 'pm', function(r, c) {
+      if (c === 'unit') return r.unit;
+      if (c === 'make') { var _fd = fleetLookup[r.acct + '|' + r.unit]; return _fd ? ((_fd.make || '') + (_fd.model ? ' ' + _fd.model : '')).trim() : ''; }
+      if (c === 'last_pm') return r.last_pm || 0;
+      if (c === 'next_pm') return r.next_pm || 0;
+      if (c === 'days') return r.days !== null ? r.days : 9999;
+      return r.status === 'overdue' ? 3 : r.status === 'due_soon' ? 2 : 1;
+    });
+    pmTbody.innerHTML = pmRecs.map(function(r) {
       var fd    = fleetLookup[r.acct + '|' + r.unit];
       var vin   = fd && fd.vin  ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + fd.vin + '</span>' : '<span class="na">&mdash;</span>';
       var mkmdl = fd ? ((fd.make || '') + (fd.model ? ' ' + fd.model : '')).trim() : '';
@@ -950,7 +966,16 @@ function renderPMTable(idx) {
   if (!dotAcct.records || dotAcct.records.length === 0) {
     dotTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles inspected through Alma Tire.</td></tr>';
   } else {
-    dotTbody.innerHTML = dotAcct.records.map(function(r) {
+    syncSortThs('dot');
+    var dotRecs = doSort(dotAcct.records.slice(), 'dot', function(r, c) {
+      if (c === 'unit') return r.unit;
+      if (c === 'make') { var _fdd = (FLEET_DATA || []).find(function(f){ return f.acct === r.acct && f.unit === r.unit; }); return _fdd ? ((_fdd.make || '') + (_fdd.model ? ' ' + _fdd.model : '')).trim() : ''; }
+      if (c === 'last_insp') return r.last_dot || 0;
+      if (c === 'next_due') return r.next_dot || 0;
+      if (c === 'days') return r.days !== null ? r.days : 9999;
+      return r.status === 'overdue' ? 3 : r.status === 'due_soon' ? 2 : 1;
+    });
+    dotTbody.innerHTML = dotRecs.map(function(r) {
       var fd    = (FLEET_DATA || []).find(function(f){ return f.acct === r.acct && f.unit === r.unit; });
       var vin   = fd && fd.vin  ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + fd.vin + '</span>' : '<span class="na">&mdash;</span>';
       var mkmdl = fd ? ((fd.make || '') + (fd.model ? ' ' + fd.model : '')).trim() : '';
@@ -1806,6 +1831,11 @@ function renderUnitSpend(idx) {
     if (!fleetLookup[k] || (f.vin && !fleetLookup[k].vin)) fleetLookup[k] = f;
   });
 
+  syncSortThs('us');
+  scaled = doSort(scaled, 'us', function(u, c) {
+    var _fd = fleetLookup[(u.acct || '') + '|' + u.unit];
+    return c==='unit'?u.unit : c==='make'?(_fd&&_fd.make?_fd.make:'') : c==='model'?(_fd&&_fd.model?_fd.model:'') : c==='year'?(_fd&&_fd.year>0?_fd.year:0) : c==='inv'?u.inv : u.spend;
+  });
   var tbodyHtml = scaled.map(function(u) {
     var fd  = fleetLookup[(u.acct || '') + '|' + u.unit];
     var make  = fd && fd.make  ? fd.make  : '<span class="na">&mdash;</span>';
@@ -2856,14 +2886,21 @@ function renderCurrentMonth(idx) {
 
   var monthUnits = CURRENT_MONTH_SPEND.filter(function(u) {
     return (a.num === 'ALL' || u.acct === a.num);
-  }).sort(function(x, y) { return y.spend - x.spend; });
-
-  // Build fleet lookup for vehicle metadata
+  });
+  syncSortThs('cm');
   var fleetLookup = {};
   FLEET_DATA.forEach(function(f) {
     var k = f.acct + '|' + f.unit;
     if (!fleetLookup[k] || (f.vin && !fleetLookup[k].vin)) fleetLookup[k] = f;
   });
+  if (_tblSort['cm'] && _tblSort['cm'].col) {
+    monthUnits = doSort(monthUnits, 'cm', function(u, c) {
+      var _fd = fleetLookup[u.acct + '|' + u.unit];
+      return c==='unit'?u.unit : c==='make'?(_fd&&_fd.make?_fd.make:'') : c==='model'?(_fd&&_fd.model?_fd.model:'') : c==='year'?(_fd&&_fd.year>0?_fd.year:0) : c==='vin'?(_fd&&_fd.vin?_fd.vin:'') : u.spend;
+    });
+  } else {
+    monthUnits.sort(function(x, y) { return y.spend - x.spend; });
+  }
 
   var html = monthUnits.map(function(u) {
     var fd  = fleetLookup[u.acct + '|' + u.unit];
@@ -2902,7 +2939,14 @@ function renderFleetTable(units) {
   var filtered = units.filter(function(u) {
     return !term || u.unit.toLowerCase().includes(term) || u.make.toLowerCase().includes(term) || u.model.toLowerCase().includes(term) || u.vin.toLowerCase().includes(term);
   });
-  filtered.sort(function(a, b) { return a.unit.localeCompare(b.unit, undefined, {numeric:true}); });
+  syncSortThs('fl');
+  if (_tblSort['fl'] && _tblSort['fl'].col) {
+    filtered = doSort(filtered, 'fl', function(u, c) {
+      return c==='vin'?u.vin : c==='make'?u.make : c==='model'?u.model : c==='year'?u.year : c==='acct'?u.acct : u.unit;
+    });
+  } else {
+    filtered.sort(function(a, b) { return a.unit.localeCompare(b.unit, undefined, {numeric:true}); });
+  }
   var html = filtered.map(function(u) {
     var vin = u.vin ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + u.vin + '</span>' : '<span class="na">&mdash;</span>';
     return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + vin + '</td><td>' + (u.make || '<span class="na">&mdash;</span>') + '</td><td>' + (u.model || '<span class="na">&mdash;</span>') + '</td><td>' + (u.year > 0 ? u.year : '<span class="na">&mdash;</span>') + '</td><td>#' + u.acct + '</td></tr>';
@@ -3039,6 +3083,13 @@ function renderRepairGroups(idx) {
 
   // Table rows: merge misc categories, percentages are still of the full total
   var visibleGroups = applyRgMisc(result.groups);
+  syncSortThs('rg');
+  visibleGroups = doSort(visibleGroups, 'rg', function(g, c) {
+    if (c === 'name') return g.name;
+    if (c === 'avg') return g.inv > 0 ? g.spend / g.inv : 0;
+    if (c === 'pct') return result.total > 0 ? g.spend / result.total : 0;
+    return g.spend;
+  });
   var html = visibleGroups.map(function(g) {
     var pct = result.total > 0 ? (g.spend / result.total * 100).toFixed(1) : '0.0';
     var avg = g.inv > 0 ? '$' + (g.spend / g.inv).toFixed(2) : '—';
@@ -3116,11 +3167,44 @@ function renderRepairGroupsChart() {
 }
 
 // ── Model Year ──
+// ── Table sort helpers ───────────────────────────────────────────────────────────────
+var _tblSort = {};
+function tblSort(tblId, col) {
+  var s = _tblSort[tblId] || {col:null,dir:'asc'};
+  s.dir = (s.col === col) ? (s.dir === 'asc' ? 'desc' : 'asc') : 'asc';
+  s.col = col;
+  _tblSort[tblId] = s;
+}
+function syncSortThs(tblId) {
+  var s = _tblSort[tblId] || {};
+  document.querySelectorAll('th[data-tbl="' + tblId + '"]').forEach(function(th) {
+    th.classList.remove('sort-asc','sort-desc');
+    if (th.getAttribute('data-col') === s.col) th.classList.add('sort-' + s.dir);
+  });
+}
+function doSort(arr, tblId, fn) {
+  var s = _tblSort[tblId] || {};
+  if (!s.col) return arr;
+  var col = s.col, dir = s.dir;
+  return arr.slice().sort(function(a, b) {
+    var av = fn(a, col), bv = fn(b, col);
+    if (typeof av === 'string' && typeof bv === 'string')
+      return dir === 'asc' ? av.localeCompare(bv,undefined,{numeric:true}) : bv.localeCompare(av,undefined,{numeric:true});
+    return dir === 'asc' ? (av || 0) - (bv || 0) : (bv || 0) - (av || 0);
+  });
+}
+
 function renderModelYear(idx) {
-  var total = MODEL_YEAR_DATA.reduce(function(s,d){ return s+d.count; }, 0);
-  var html = MODEL_YEAR_DATA.slice().reverse().map(function(d) {
+  syncSortThs('my');
+  var q = ((document.getElementById('my-search') || {}).value || '').toLowerCase().trim();
+  var data = MODEL_YEAR_DATA.slice().reverse();
+  if (q) data = data.filter(function(d) { return String(d.year).indexOf(q) >= 0; });
+  data = doSort(data, 'my', function(d, c) {
+    return c === 'year' ? d.year : c === 'count' ? d.count : c === 'inv' ? d.inv : d.spend;
+  });
+  var html = data.map(function(d) {
     return '<tr><td>' + d.year + '</td><td>' + d.count + '</td><td>' + d.inv.toLocaleString() + '</td><td class="amt">$' + fmtCurrency(d.spend) + '</td></tr>';
-  }).join('');
+  }).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text2);padding:20px 0;">No results</td></tr>';
   document.getElementById('my-tbody').innerHTML = html;
 }
 
