@@ -2803,7 +2803,10 @@ var WO_DATA = { open_wo: [
 
 ] };
 
+var _openKpiType = null;
+
 function openKpiDetail(type) {
+  _openKpiType = type;
   var a = ACCOUNTS[currentAcct];
   var grid  = document.getElementById('ov-kpi-grid');
   var panel = document.getElementById('kpi-detail-panel');
@@ -3009,6 +3012,7 @@ function openInvoicePDF(invNum) {
 }
 
 function closeKpiDetail() {
+  _openKpiType = null;
   var grid  = document.getElementById('ov-kpi-grid');
   var panel = document.getElementById('kpi-detail-panel');
   if (grid)  grid.style.display = '';
@@ -3905,6 +3909,12 @@ function updateSliderVisuals(lo, hi) {
   if (rgPage && rgPage.classList.contains('active')) {
     renderRepairGroups(currentAcct);
     renderRepairGroupsChart();
+  }
+
+  // Invoice detail panel — re-render if open so table respects new date range
+  if (_openKpiType === 'inv') {
+    var invPanel = document.getElementById('kpi-detail-panel');
+    if (invPanel && invPanel.style.display !== 'none') openKpiDetail('inv');
   }
 }
 
