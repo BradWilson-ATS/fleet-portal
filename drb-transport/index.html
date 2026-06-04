@@ -1017,7 +1017,7 @@ function showPage(pageId, el) {
   if (pageId === 'unit-spend')    renderUnitSpend(currentAcct);
   if (pageId === 'fleet-list')   renderFleetList(currentAcct);
   if (pageId === 'repair-groups') { renderRepairGroups(currentAcct); renderRepairGroupsChart(); }
-  if (pageId === 'model-year') renderModelYearChart();
+  if (pageId === 'model-year') { renderModelYear(currentAcct); renderModelYearChart(); }
 }
 
 function show(screenId) {
@@ -3393,10 +3393,36 @@ function exportKpiCSV() {
   exportTableCSV('#kpi-detail-panel table', t.toLowerCase().replace(/\s+/g, '-') + '.csv', skip);
 }
 
+function getModelYearData(lo, hi, acctNum) {
+  var units = getScaledUnitSpend(lo, hi, acctNum);
+  var yearLookup = {};
+  FLEET_DATA.forEach(function(f) {
+    var k = f.acct + '|' + f.unit;
+    if (f.year > 0) yearLookup[k] = f.year;
+  });
+  var byYear = {};
+  units.forEach(function(u) {
+    var yr = yearLookup[(u.acct || '') + '|' + u.unit];
+    if (!yr) return;
+    if (!byYear[yr]) byYear[yr] = { year: yr, count: 0, inv: 0, spend: 0 };
+    byYear[yr].inv   += u.inv;
+    byYear[yr].spend += u.spend;
+  });
+  MODEL_YEAR_DATA.forEach(function(d) {
+    if (!byYear[d.year]) byYear[d.year] = { year: d.year, count: d.count, inv: 0, spend: 0 };
+    else byYear[d.year].count = d.count;
+  });
+  return Object.keys(byYear).map(function(k) { return byYear[k]; })
+    .sort(function(a, b) { return a.year - b.year; });
+}
+
 function renderModelYear(idx) {
   syncSortThs('my');
   var q = ((document.getElementById('my-search') || {}).value || '').toLowerCase().trim();
-  var data = MODEL_YEAR_DATA.slice().reverse();
+  var lo = parseInt(sliderMin.value);
+  var hi = parseInt(sliderMax.value);
+  var a = ACCOUNTS[idx];
+  var data = getModelYearData(lo, hi, a.num).slice().reverse();
   if (q) data = data.filter(function(d) { return String(d.year).indexOf(q) >= 0; });
   data = doSort(data, 'my', function(d, c) {
     return c === 'year' ? d.year : c === 'count' ? d.count : c === 'inv' ? d.inv : d.spend;
@@ -3478,12 +3504,16 @@ function drawBarChart(canvasId, data, keyFn, height, fmtFn, labelFn) {
 }
 
 function renderModelYearChart() {
+  var lo = parseInt(sliderMin.value);
+  var hi = parseInt(sliderMax.value);
+  var a = ACCOUNTS[currentAcct];
+  var data = getModelYearData(lo, hi, a.num);
   var fmt0 = function(v){ return v >= 1000 ? Math.round(v/1000)+'k' : Math.round(v)||''; };
   var fmtK = function(v){ return v >= 1000 ? '$'+Math.round(v/1000)+'k' : '$'+Math.round(v); };
   var lblYear = function(d){ return String(d.year); };
-  drawBarChart('my-chart-units', MODEL_YEAR_DATA, function(d){ return d.count; }, 220, fmt0, lblYear);
-  drawBarChart('my-chart-inv',   MODEL_YEAR_DATA, function(d){ return d.inv; },   180, fmt0, lblYear);
-  drawBarChart('my-chart-spend', MODEL_YEAR_DATA, function(d){ return d.spend; }, 180, fmtK, lblYear);
+  drawBarChart('my-chart-units', data, function(d){ return d.count; }, 220, fmt0, lblYear);
+  drawBarChart('my-chart-inv',   data, function(d){ return d.inv; },   180, fmt0, lblYear);
+  drawBarChart('my-chart-spend', data, function(d){ return d.spend; }, 180, fmtK, lblYear);
 }
 
 // ── Overview slider – real monthly spend Jun 2024 – Jun 2026 from MaddenCo ODBC ──
@@ -3963,6 +3993,13 @@ function updateSliderVisuals(lo, hi) {
   if (_openKpiType === 'inv') {
     var invPanel = document.getElementById('kpi-detail-panel');
     if (invPanel && invPanel.style.display !== 'none') openKpiDetail('inv');
+  }
+
+  // Model Year page — re-render table and charts if currently visible
+  var myPage = document.getElementById('page-model-year');
+  if (myPage && myPage.classList.contains('active')) {
+    renderModelYear(currentAcct);
+    renderModelYearChart();
   }
 }
 
