@@ -3632,14 +3632,14 @@ function nearestMonthEndIdx(v) {
 sliderMin.addEventListener('input', function() {
   var mi = nearestMonthStartIdx(parseInt(sliderMin.value));
   var maxEi = nearestMonthEndIdx(parseInt(sliderMax.value));
-  if (mi >= maxEi) mi = Math.max(0, maxEi - 1);
+  if (mi > maxEi) mi = maxEi;
   sliderMin.value = MONTH_DAY_STARTS[mi];
   updateSliderUI();
 });
 sliderMax.addEventListener('input', function() {
   var ei = nearestMonthEndIdx(parseInt(sliderMax.value));
   var minSi = nearestMonthStartIdx(parseInt(sliderMin.value));
-  if (ei <= minSi) ei = Math.min(MONTH_DAY_ENDS.length - 1, minSi + 1);
+  if (ei < minSi) ei = minSi;
   sliderMax.value = MONTH_DAY_ENDS[ei];
   updateSliderUI();
 });
