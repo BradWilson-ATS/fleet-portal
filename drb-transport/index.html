@@ -3833,7 +3833,7 @@ function buildDashTicks() {
     var lbl = M[i] ? M[i].short : '';
     var isJan = lbl.indexOf('Jan') === 0;
     var col = isJan ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.38)';
-    var pos = i === 0 ? 'left:0;' : i === n - 1 ? 'left:100%;transform:translateX(-100%);' : 'left:' + pct + '%;transform:translateX(-50%);';
+    var pos = i === 0 ? 'left:0;' : 'left:' + pct + '%;transform:translateX(-50%);';
     return '<span style="position:absolute;font-size:10px;color:' + col + ';' + pos + '">' + lbl + '</span>';
   }).join('');
 }
