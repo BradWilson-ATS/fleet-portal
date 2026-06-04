@@ -573,6 +573,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             </button>
             <span class="kpi-detail-title" id="kpi-detail-title">Open Work Orders</span>
             <span class="kpi-detail-meta" id="kpi-detail-meta"></span>
+            <button class="btn-sm" onclick="exportKpiCSV()" style="margin-left:auto;">Export CSV</button>
           </div>
           <div class="table-card">
             <table>
@@ -597,7 +598,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         <div class="table-card">
           <div class="table-hdr">
             <div class="table-ttl">PM Status by Unit</div>
-            <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
+            <div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-pm table','pm-status.csv')">Export CSV</button></div>
           </div>
           <table>
             <thead><tr><th class="sort-th" data-tbl="pm" data-col="unit" onclick="tblSort('pm','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="pm" data-col="make" onclick="tblSort('pm','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="last_pm" onclick="tblSort('pm','last_pm');renderPMTable(currentAcct);">Last PM<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="next_pm" onclick="tblSort('pm','next_pm');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th>Mileage</th><th class="sort-th" data-tbl="pm" data-col="status" onclick="tblSort('pm','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th></tr></thead>
@@ -622,7 +623,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         <div class="table-card">
           <div class="table-hdr">
             <div class="table-ttl">DOT Inspection Forecast</div>
-            <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
+            <div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-dot table','dot-inspection.csv')">Export CSV</button></div>
           </div>
           <table>
             <thead><tr><th class="sort-th" data-tbl="dot" data-col="unit" onclick="tblSort('dot','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="dot" data-col="make" onclick="tblSort('dot','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="last_insp" onclick="tblSort('dot','last_insp');renderPMTable(currentAcct);">Last Inspection<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="next_due" onclick="tblSort('dot','next_due');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="days" onclick="tblSort('dot','days');renderPMTable(currentAcct);">Days<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="status" onclick="tblSort('dot','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th></tr></thead>
@@ -665,7 +666,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         <div class="table-card">
           <div class="table-hdr">
             <div class="table-ttl">Invoice History &nbsp;<span style="font-size:12px;color:var(--g400);font-weight:400;" id="inv-count">18,432 invoices in range</span></div>
-            <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
+            <div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-invoices table','invoice-history.csv',[6])">Export CSV</button></div>
           </div>
           <table>
             <thead><tr><th>Invoice #</th><th>Date</th><th>Unit #</th><th>Service Description</th><th>PO #</th><th>Amount</th><th>PDF</th></tr></thead>
@@ -693,7 +694,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         <div class="table-card">
           <div class="table-hdr">
             <div class="table-ttl">Unit Spend &nbsp;<span style="font-size:12px;color:var(--g400);font-weight:400;" id="us-count"></span></div>
-            <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
+            <div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-unit-spend table','unit-spend.csv')">Export CSV</button></div>
           </div>
           <table>
             <thead><tr><th class="sort-th" data-tbl="us" data-col="unit" onclick="tblSort('us','unit');renderUnitSpend(currentAcct);">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="make" onclick="tblSort('us','make');renderUnitSpend(currentAcct);">Make<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="model" onclick="tblSort('us','model');renderUnitSpend(currentAcct);">Model<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="year" onclick="tblSort('us','year');renderUnitSpend(currentAcct);">Year<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="inv" onclick="tblSort('us','inv');renderUnitSpend(currentAcct);">Unit Invoice Count<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="spend" onclick="tblSort('us','spend');renderUnitSpend(currentAcct);">Unit Total Spend<span class="sa"></span></th><th class="sort-th" data-tbl="us" data-col="pct" onclick="tblSort('us','pct');renderUnitSpend(currentAcct);">Unit % of Total<span class="sa"></span></th></tr></thead>
@@ -711,7 +712,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         <div class="table-card">
           <div class="table-hdr">
             <div class="table-ttl">Current Month Spend by Unit</div>
-            <div class="table-acts"><button class="btn-sm">Export CSV</button></div>
+            <div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-current-month table','current-month-spend.csv')">Export CSV</button></div>
           </div>
           <table>
             <thead><tr><th class="sort-th" data-tbl="cm" data-col="unit" onclick="tblSort('cm','unit');renderCurrentMonth(currentAcct);">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="make" onclick="tblSort('cm','make');renderCurrentMonth(currentAcct);">Make<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="model" onclick="tblSort('cm','model');renderCurrentMonth(currentAcct);">Model<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="year" onclick="tblSort('cm','year');renderCurrentMonth(currentAcct);">Year<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="vin" onclick="tblSort('cm','vin');renderCurrentMonth(currentAcct);">VIN<span class="sa"></span></th><th class="sort-th" data-tbl="cm" data-col="spend" onclick="tblSort('cm','spend');renderCurrentMonth(currentAcct);">Current Month Spend<span class="sa"></span></th></tr></thead>
@@ -737,7 +738,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
                 </svg>
                 <input type="text" class="search-input" id="fl-search" placeholder="Search unit, make, or model…" oninput="filterFleet()">
               </div>
-              <button class="btn-sm">Export CSV</button>
+              <button class="btn-sm" onclick="exportTableCSV('#page-fleet-list table','fleet-list.csv')">Export CSV</button>
             </div>
           </div>
           <table>
@@ -765,7 +766,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         </div>
         <div class="two-col">
           <div class="table-card">
-            <div class="table-hdr"><div class="table-ttl">Product Categories</div></div>
+            <div class="table-hdr"><div class="table-ttl">Product Categories</div><div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-repair-groups .table-card table','repair-groups.csv')">Export CSV</button></div></div>
             <table>
               <thead><tr><th class="sort-th" data-tbl="rg" data-col="name" onclick="tblSort('rg','name');renderRepairGroups(currentAcct);">Category<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="spend" onclick="tblSort('rg','spend');renderRepairGroups(currentAcct);">Spend<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="avg" onclick="tblSort('rg','avg');renderRepairGroups(currentAcct);">Avg / Invoice<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="pct" onclick="tblSort('rg','pct');renderRepairGroups(currentAcct);">% of Total<span class="sa"></span></th></tr></thead>
               <tbody id="rg-tbody"></tbody>
@@ -786,7 +787,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
           <div class="table-card">
-            <div class="table-hdr"><div class="table-ttl">Model Year Breakdown</div><div class="search-wrap"><svg class="search-ico" width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#9ca3af" stroke-width="1.8"/><path d="M12.5 12.5L16.5 16.5" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/></svg><input type="text" class="search-input" id="my-search" placeholder="Search year…" oninput="renderModelYear(currentAcct)"></div></div>
+            <div class="table-hdr"><div class="table-ttl">Model Year Breakdown</div><div class="table-acts"><div class="search-wrap"><svg class="search-ico" width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#9ca3af" stroke-width="1.8"/><path d="M12.5 12.5L16.5 16.5" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/></svg><input type="text" class="search-input" id="my-search" placeholder="Search year…" oninput="renderModelYear(currentAcct)"></div><button class="btn-sm" onclick="exportTableCSV('#page-model-year table','model-year.csv')">Export CSV</button></div></div>
             <table>
               <thead><tr><th class="sort-th" data-tbl="my" data-col="year" onclick="tblSort('my','year');renderModelYear(currentAcct);">Model Year<span class="sa"></span></th><th class="sort-th" data-tbl="my" data-col="count" onclick="tblSort('my','count');renderModelYear(currentAcct);">Units<span class="sa"></span></th><th class="sort-th" data-tbl="my" data-col="inv" onclick="tblSort('my','inv');renderModelYear(currentAcct);">Invoices<span class="sa"></span></th><th class="sort-th" data-tbl="my" data-col="spend" onclick="tblSort('my','spend');renderModelYear(currentAcct);">Total Spend<span class="sa"></span></th></tr></thead>
               <tbody id="my-tbody"></tbody>
@@ -2801,7 +2802,7 @@ var INVOICE_DATA = [
 // Populated by query-drb-workorders-odbc.py + apply-portal-update.py
 // Each entry: { order, date, acct, store, po, total }
 var WO_DATA = { open_wo: [
-
+  {order:'989072984',date:'6/4/2026',acct:'1240',store:'989',po:'DUANE',total:40.05}
 ], wo_no_po: [
 
 ] };
@@ -3346,6 +3347,50 @@ function doSort(arr, tblId, fn) {
       return dir === 'asc' ? av.localeCompare(bv,undefined,{numeric:true}) : bv.localeCompare(av,undefined,{numeric:true});
     return dir === 'asc' ? (av || 0) - (bv || 0) : (bv || 0) - (av || 0);
   });
+}
+
+// ── CSV Export ─────────────────────────────────────────────────────────────
+function csvCell(v) {
+  v = String(v == null ? '' : v).replace(/[\r\n]+/g, ' ').trim();
+  return (v.indexOf(',') >= 0 || v.indexOf('"') >= 0) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+function exportTableCSV(tableSel, filename, skipCols) {
+  skipCols = skipCols || [];
+  var table = typeof tableSel === 'string' ? document.querySelector(tableSel) : tableSel;
+  if (!table) return;
+  var rows = [];
+  var ths = table.querySelectorAll('thead th');
+  if (ths.length) {
+    var hdrs = [];
+    ths.forEach(function(th, i) {
+      if (skipCols.indexOf(i) < 0) {
+        var clone = th.cloneNode(true);
+        clone.querySelectorAll('.sa').forEach(function(s) { s.remove(); });
+        hdrs.push(csvCell(clone.textContent));
+      }
+    });
+    rows.push(hdrs.join(','));
+  }
+  table.querySelectorAll('tbody tr').forEach(function(tr) {
+    var tds = tr.querySelectorAll('td');
+    if (tds.length === 1 && tds[0].colSpan > 1) return;
+    var cells = [];
+    tds.forEach(function(td, i) {
+      if (skipCols.indexOf(i) < 0) cells.push(csvCell(td.textContent));
+    });
+    if (cells.length) rows.push(cells.join(','));
+  });
+  var blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+function exportKpiCSV() {
+  var t = (document.getElementById('kpi-detail-title') || {}).textContent || 'export';
+  var skip = _openKpiType === 'inv' ? [4] : [];
+  exportTableCSV('#kpi-detail-panel table', t.toLowerCase().replace(/\s+/g, '-') + '.csv', skip);
 }
 
 function renderModelYear(idx) {
