@@ -3618,12 +3618,29 @@ function updateSliderUI() {
   updateSliderVisuals(lo, hi);
 }
 
+function nearestMonthStartIdx(v) {
+  var best = 0, bd = Infinity;
+  MONTH_DAY_STARTS.forEach(function(d, i) { var dd = Math.abs(d - v); if (dd < bd) { bd = dd; best = i; } });
+  return best;
+}
+function nearestMonthEndIdx(v) {
+  var best = 0, bd = Infinity;
+  MONTH_DAY_ENDS.forEach(function(d, i) { var dd = Math.abs(d - v); if (dd < bd) { bd = dd; best = i; } });
+  return best;
+}
+
 sliderMin.addEventListener('input', function() {
-  if (parseInt(sliderMin.value) >= parseInt(sliderMax.value)) sliderMin.value = parseInt(sliderMax.value) - 1;
+  var mi = nearestMonthStartIdx(parseInt(sliderMin.value));
+  var maxEi = nearestMonthEndIdx(parseInt(sliderMax.value));
+  if (mi >= maxEi) mi = Math.max(0, maxEi - 1);
+  sliderMin.value = MONTH_DAY_STARTS[mi];
   updateSliderUI();
 });
 sliderMax.addEventListener('input', function() {
-  if (parseInt(sliderMax.value) <= parseInt(sliderMin.value)) sliderMax.value = parseInt(sliderMin.value) + 1;
+  var ei = nearestMonthEndIdx(parseInt(sliderMax.value));
+  var minSi = nearestMonthStartIdx(parseInt(sliderMin.value));
+  if (ei <= minSi) ei = Math.min(MONTH_DAY_ENDS.length - 1, minSi + 1);
+  sliderMax.value = MONTH_DAY_ENDS[ei];
   updateSliderUI();
 });
 
@@ -3811,13 +3828,13 @@ function buildDashTicks() {
   if (!ticksDiv) return;
   var M = getMonths();
   var n = MONTH_DAY_STARTS.length;
-  var step = Math.max(1, Math.ceil(n / 9));
   ticksDiv.innerHTML = MONTH_DAY_STARTS.map(function(d, i) {
-    if (i % step !== 0 && i !== n - 1) return '';
     var pct = (d / (TOTAL_DAYS - 1) * 100).toFixed(1);
     var lbl = M[i] ? M[i].short : '';
-    var pos = i === 0 ? 'left:0;' : 'left:' + pct + '%;transform:translateX(-50%);';
-    return '<span style="position:absolute;font-size:10px;color:rgba(255,255,255,0.38);' + pos + '">' + lbl + '</span>';
+    var isJan = lbl.indexOf('Jan') === 0;
+    var col = isJan ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.38)';
+    var pos = i === 0 ? 'left:0;' : i === n - 1 ? 'left:100%;transform:translateX(-100%);' : 'left:' + pct + '%;transform:translateX(-50%);';
+    return '<span style="position:absolute;font-size:10px;color:' + col + ';' + pos + '">' + lbl + '</span>';
   }).join('');
 }
 
