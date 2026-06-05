@@ -374,14 +374,11 @@ tr:hover td { background: rgba(255,255,255,0.04); }
     <div class="login-co">Alma Tire Companies</div>
     <div class="login-title">Fleet Customer Portal</div>
     <div class="login-sub">Real-time visibility into your fleet&rsquo;s service history, compliance status, and invoices.</div>
-    <label class="login-label">Your Email Address</label>
-    <input type="email" class="login-input" id="email-input" placeholder="you@drbtransport.com" />
-    <button class="btn-red" onclick="sendLink()">Send Me a Login Link &rarr;</button>
-    <div class="login-hint">No password needed. We&rsquo;ll email you a secure, one-click link that expires in 15 minutes.</div>
-    <div class="divider">
-      <div class="divider-line"></div><div class="divider-text">or for this demo</div><div class="divider-line"></div>
-    </div>
-    <button class="btn-outline" onclick="goToAccounts()">Preview Portal Without Email &rarr;</button>
+    <label class="login-label">Password</label>
+    <input type="password" class="login-input" id="pw-input" placeholder="Enter your portal password"
+      onkeydown="if(event.key==='Enter'){doLogin();}" />
+    <div class="login-hint" id="login-err" style="display:none;margin-top:8px;color:#ff6b6b;"></div>
+    <button class="btn-red" onclick="doLogin()" style="margin-top:14px;">Sign In &rarr;</button>
   </div>
 </div>
 
@@ -923,7 +920,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 
 <script>
 // ── Customer config – injected by apply-portal-update.py ──
-var CUSTOMER_CONFIG = {"slug": "drb-transport", "display_name": "DRB Transport", "contact_email": "demo@drbtransport.com", "pm_days": 90, "salesman_name": "Danny Wernick", "salesman_email": "Danny@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
+var CUSTOMER_CONFIG = {"slug": "drb-transport", "display_name": "DRB Transport", "contact_email": "demo@drbtransport.com", "portal_password": "DRB-Fleet-2026", "pm_days": 90, "salesman_name": "Danny Wernick", "salesman_email": "Danny@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
 
 // ── Account data (refreshed 2026-06-05 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
@@ -942,9 +939,18 @@ function fmtCurrency(n) {
 }
 var selectedAcct = 0;
 
-function sendLink() {
-  var email = document.getElementById('email-input').value.trim();
-  if (!email) { document.getElementById('email-input').focus(); return; }
+function doLogin() {
+  var pw       = document.getElementById('pw-input').value;
+  var expected = (CUSTOMER_CONFIG || {}).portal_password || '';
+  var err      = document.getElementById('login-err');
+  if (!pw) { document.getElementById('pw-input').focus(); return; }
+  if (expected && pw !== expected) {
+    err.textContent = 'Incorrect password. Please try again.';
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  sessionStorage.setItem('alma_portal_token', 'pw-auth');
   goToAccounts();
 }
 
@@ -1140,8 +1146,10 @@ function logout() {
   sessionStorage.removeItem('alma_portal_token');
   sessionStorage.removeItem('alma_portal_customer');
   show('s-login');
-  var ei = document.getElementById('email-input');
+  var ei = document.getElementById('pw-input');
   if (ei) ei.value = '';
+  var loginErr = document.getElementById('login-err');
+  if (loginErr) loginErr.style.display = 'none';
   document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
   document.querySelector('.nav-item').classList.add('active');
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
