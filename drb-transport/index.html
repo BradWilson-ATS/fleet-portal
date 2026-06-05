@@ -923,7 +923,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 
 <script>
 // ── Customer config – injected by apply-portal-update.py ──
-var CUSTOMER_CONFIG = {"slug": "drb-transport", "display_name": "DRB Transport", "contact_email": "", "pm_days": 90, "salesman_name": "Danny Wernick", "salesman_email": "Danny@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
+var CUSTOMER_CONFIG = {"slug": "drb-transport", "display_name": "DRB Transport", "contact_email": "demo@drbtransport.com", "pm_days": 90, "salesman_name": "Danny Wernick", "salesman_email": "Danny@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
 
 // ── Account data (refreshed 2026-06-05 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
@@ -2921,6 +2921,7 @@ var INVOICE_DATA = [
 // Populated by query-drb-workorders-odbc.py + apply-portal-update.py
 // Each entry: { order, date, acct, store, po, total }
 var WO_DATA = { open_wo: [
+  {order:'200015887',date:'6/5/2026',acct:'1239',store:'200',po:'0067',total:807.74},
   {order:'725032162',date:'6/5/2026',acct:'1237',store:'725',po:'CASS CITY',total:2050.92}
 ], wo_no_po: [
 
