@@ -1139,21 +1139,14 @@ function logout() {
   // Clear session and return to login page
   sessionStorage.removeItem('alma_portal_token');
   sessionStorage.removeItem('alma_portal_customer');
-  // If running from GitHub Pages deployment, go to parent login page
-  if (window.location.pathname.indexOf('/drb-transport') !== -1 ||
-      window.location.pathname.indexOf('/fleet-portal/') !== -1) {
-    window.location.href = '../';
-  } else {
-    // Local file fallback — show internal login screen
-    show('s-login');
-    var ei = document.getElementById('email-input');
-    if (ei) ei.value = '';
-    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-    document.querySelector('.nav-item').classList.add('active');
-    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-    document.getElementById('page-overview').classList.add('active');
-    document.querySelectorAll('.acct-btn').forEach(function(b){ b.classList.remove('selected'); });
-  }
+  show('s-login');
+  var ei = document.getElementById('email-input');
+  if (ei) ei.value = '';
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  document.querySelector('.nav-item').classList.add('active');
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-overview').classList.add('active');
+  document.querySelectorAll('.acct-btn').forEach(function(b){ b.classList.remove('selected'); });
 }
 
 // Close dropdown on outside click
@@ -4209,8 +4202,7 @@ function submitRepForm() {
                    window.location.pathname.indexOf('/fleet-portal/') !== -1;
   if (isDeployed) {
     if (!token) {
-      // No session — back to login
-      window.location.href = '../';
+      // No session — login screen is shown by default, nothing to do
       return;
     }
     // Valid session — skip login screens, go straight to the app
