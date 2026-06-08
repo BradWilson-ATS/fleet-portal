@@ -631,7 +631,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             <div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-pm table','pm-status.csv')">Export CSV</button></div>
           </div>
           <table>
-            <thead><tr><th class="sort-th" data-tbl="pm" data-col="unit" onclick="tblSort('pm','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="pm" data-col="make" onclick="tblSort('pm','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="last_pm" onclick="tblSort('pm','last_pm');renderPMTable(currentAcct);">Last PM<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="next_pm" onclick="tblSort('pm','next_pm');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th>Mileage</th><th class="sort-th" data-tbl="pm" data-col="status" onclick="tblSort('pm','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="pm" data-col="unit" onclick="tblSort('pm','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="pm" data-col="make" onclick="tblSort('pm','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="last_pm" onclick="tblSort('pm','last_pm');renderPMTable(currentAcct);">Last PM<span class="sa"></span></th><th class="sort-th" data-tbl="pm" data-col="next_pm" onclick="tblSort('pm','next_pm');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th>Mileage</th><th class="sort-th" data-tbl="pm" data-col="status" onclick="tblSort('pm','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th><th>Schedule</th></tr></thead>
             <tbody>
               <tr><td>576</td><td>1GBHG31C291178576</td><td>2009 Chevrolet Express G3500</td><td>Mar 17, 2025</td><td>Jun 17, 2025</td><td>&mdash;</td><td><span class="badge b-red">Overdue 349 days</span></td></tr>
             </tbody>
@@ -1057,7 +1057,7 @@ function renderPMTable(idx) {
   // PM table
   var pmTbody = document.querySelector('#page-pm table tbody');
   if (!pmAcct.records || pmAcct.records.length === 0) {
-    pmTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No PM service records on file for this account. PM tracking is available for vehicles serviced through Alma Tire.</td></tr>';
+    pmTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No PM service records on file for this account. PM tracking is available for vehicles serviced through Alma Tire.</td></tr>';
   } else {
     var fleetLookup = {};
     FLEET_DATA.forEach(function(f) {
@@ -1077,6 +1077,7 @@ function renderPMTable(idx) {
       var fd    = fleetLookup[r.acct + '|' + r.unit];
       var vin   = fd && fd.vin  ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + fd.vin + '</span>' : '<span class="na">&mdash;</span>';
       var mkmdl = fd ? ((fd.make || '') + (fd.model ? ' ' + fd.model : '')).trim() : '';
+      var mkmdlRaw = mkmdl;
       if (!mkmdl) mkmdl = '<span class="na">&mdash;</span>';
       var lastFmt = fmtDateShort(r.last_pm);
       var nextFmt = fmtDateShort(r.next_pm);
@@ -1085,7 +1086,12 @@ function renderPMTable(idx) {
       var badgeTxt = r.status === 'overdue'  ? 'Overdue ' + days + ' days'
                    : r.status === 'due_soon' ? 'Due in '  + days + ' days'
                    : 'Current';
-      return '<tr><td style="font-weight:600;">' + r.unit + '</td><td>' + vin + '</td><td>' + mkmdl + '</td><td>' + lastFmt + '</td><td>' + nextFmt + '</td><td><span class="na">&mdash;</span></td><td><span class="badge ' + badgeCls + '">' + badgeTxt + '</span></td></tr>';
+      var unitSafe = r.unit.replace(/'/g, "\\'");
+      var mkSafe   = mkmdlRaw.replace(/'/g, "\\'");
+      var schedCell = (r.status === 'overdue' || r.status === 'due_soon')
+        ? '<button class="btn-sm" style="color:var(--red);border-color:rgba(200,16,46,0.4);font-size:11px;white-space:nowrap;" onclick="showScheduleModal(\'' + unitSafe + '\',\'' + mkSafe + '\',\'' + badgeTxt + '\')">Schedule Now</button>'
+        : '<span class="na">&mdash;</span>';
+      return '<tr><td style="font-weight:600;">' + r.unit + '</td><td>' + vin + '</td><td>' + mkmdl + '</td><td>' + lastFmt + '</td><td>' + nextFmt + '</td><td><span class="na">&mdash;</span></td><td><span class="badge ' + badgeCls + '">' + badgeTxt + '</span></td><td>' + schedCell + '</td></tr>';
     }).join('');
   }
 
@@ -2925,7 +2931,7 @@ var INVOICE_DATA = [
 // Populated by query-drb-workorders-odbc.py + apply-portal-update.py
 // Each entry: { order, date, acct, store, po, total }
 var WO_DATA = { open_wo: [
-
+  {order:'725032193',date:'6/8/2026',acct:'1237',store:'725',po:'CASS CITY',total:509.92}
 ], wo_no_po: [
 
 ] };
@@ -4233,6 +4239,25 @@ function submitRepForm() {
 
 window.addEventListener('load', function() { buildDashTicks(); updateSliderUI(); updateInvSliderUI(); });
 window.addEventListener('resize', function() { updateSliderUI(); });
+
+function showScheduleModal(unit, vehicle, status) {
+  var desc = 'Unit: ' + unit;
+  if (vehicle) desc += ' — ' + vehicle;
+  desc += ' (' + status + ')';
+  document.getElementById('sm-unit').textContent = desc;
+  document.getElementById('sm-note').value = '';
+  document.getElementById('sm-form').style.display = 'block';
+  document.getElementById('sm-success').style.display = 'none';
+  document.getElementById('schedule-modal').style.display = 'flex';
+}
+function closeScheduleModal() {
+  document.getElementById('schedule-modal').style.display = 'none';
+}
+function submitScheduleRequest() {
+  document.getElementById('sm-form').style.display = 'none';
+  document.getElementById('sm-success').style.display = 'block';
+  setTimeout(closeScheduleModal, 2500);
+}
 </script>
 
 <!-- Chart hover tooltip -->
@@ -4240,5 +4265,29 @@ window.addEventListener('resize', function() { updateSliderUI(); });
   <div id="tt-label" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:3px;"></div>
   <div id="tt-spend" style="font-size:15px;font-weight:800;color:#ff6b6b;"></div>
 </div>
+
+<!-- PM Schedule Request Modal -->
+<div id="schedule-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;width:420px;max-width:92vw;box-shadow:0 8px 40px rgba(0,0,0,0.6);">
+    <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;">Schedule PM Service</div>
+    <div id="sm-unit" style="font-size:13px;color:var(--text2);margin-bottom:20px;"></div>
+    <div id="sm-form">
+      <div style="margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">Notes (optional)</div>
+        <textarea id="sm-note" placeholder="Preferred dates, concerns, or other details..." style="width:100%;height:80px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:8px 10px;font-size:13px;resize:none;box-sizing:border-box;outline:none;"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:4px;">
+        <button class="btn-sm" onclick="closeScheduleModal()">Cancel</button>
+        <button class="btn-red" onclick="submitScheduleRequest()" style="padding:7px 18px;font-size:13px;">Send Request &rarr;</button>
+      </div>
+    </div>
+    <div id="sm-success" style="display:none;text-align:center;padding:16px 0 4px;">
+      <div style="color:#4ade80;font-size:28px;margin-bottom:10px;">&#10003;</div>
+      <div style="color:var(--text);font-weight:600;font-size:15px;margin-bottom:6px;">Request Sent</div>
+      <div style="color:var(--text2);font-size:13px;line-height:1.5;">Alma Tire will contact you within 1 business day to confirm your appointment.</div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
