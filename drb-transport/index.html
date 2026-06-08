@@ -656,9 +656,9 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             <div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-dot table','dot-inspection.csv')">Export CSV</button></div>
           </div>
           <table>
-            <thead><tr><th class="sort-th" data-tbl="dot" data-col="unit" onclick="tblSort('dot','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="dot" data-col="make" onclick="tblSort('dot','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="last_insp" onclick="tblSort('dot','last_insp');renderPMTable(currentAcct);">Last Inspection<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="next_due" onclick="tblSort('dot','next_due');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="days" onclick="tblSort('dot','days');renderPMTable(currentAcct);">Days<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="status" onclick="tblSort('dot','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="dot" data-col="unit" onclick="tblSort('dot','unit');renderPMTable(currentAcct);">Unit #<span class="sa"></span></th><th>VIN</th><th class="sort-th" data-tbl="dot" data-col="make" onclick="tblSort('dot','make');renderPMTable(currentAcct);">Make / Model<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="last_insp" onclick="tblSort('dot','last_insp');renderPMTable(currentAcct);">Last Inspection<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="next_due" onclick="tblSort('dot','next_due');renderPMTable(currentAcct);">Next Due<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="days" onclick="tblSort('dot','days');renderPMTable(currentAcct);">Days<span class="sa"></span></th><th class="sort-th" data-tbl="dot" data-col="status" onclick="tblSort('dot','status');renderPMTable(currentAcct);">Status<span class="sa"></span></th><th>Schedule</th></tr></thead>
             <tbody>
-              <tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles serviced through Alma Tire.</td></tr>
+              <tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles serviced through Alma Tire.</td></tr>
             </tbody>
           </table>
         </div>
@@ -1098,7 +1098,7 @@ function renderPMTable(idx) {
   // DOT table (separate tbody in page-dot)
   var dotTbody = document.querySelector('#page-dot table tbody');
   if (!dotAcct.records || dotAcct.records.length === 0) {
-    dotTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles inspected through Alma Tire.</td></tr>';
+    dotTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles inspected through Alma Tire.</td></tr>';
   } else {
     syncSortThs('dot');
     var dotRecs = doSort(dotAcct.records.slice(), 'dot', function(r, c) {
@@ -1113,6 +1113,7 @@ function renderPMTable(idx) {
       var fd    = (FLEET_DATA || []).find(function(f){ return f.acct === r.acct && f.unit === r.unit; });
       var vin   = fd && fd.vin  ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + fd.vin + '</span>' : '<span class="na">&mdash;</span>';
       var mkmdl = fd ? ((fd.make || '') + (fd.model ? ' ' + fd.model : '')).trim() : '';
+      var mkmdlRaw = mkmdl;
       if (!mkmdl) mkmdl = '<span class="na">&mdash;</span>';
       var lastFmt = fmtDateShort(r.last_dot);
       var nextFmt = fmtDateShort(r.next_dot);
@@ -1121,7 +1122,12 @@ function renderPMTable(idx) {
       var badgeTxt = r.status === 'overdue'  ? 'Overdue ' + Math.abs(days) + ' days'
                    : r.status === 'due_soon' ? 'Due in '  + days + ' days'
                    : 'Compliant';
-      return '<tr><td style="font-weight:600;">' + r.unit + '</td><td>' + vin + '</td><td>' + mkmdl + '</td><td>' + lastFmt + '</td><td>' + nextFmt + '</td><td>' + days + '</td><td><span class="badge ' + badgeCls + '">' + badgeTxt + '</span></td></tr>';
+      var unitSafe = r.unit.replace(/'/g, "\\'");
+      var mkSafe   = mkmdlRaw.replace(/'/g, "\\'");
+      var schedCell = (r.status === 'overdue' || r.status === 'due_soon')
+        ? '<button class="btn-sm" style="color:var(--red);border-color:rgba(200,16,46,0.4);font-size:11px;white-space:nowrap;" onclick="showScheduleModal(\'' + unitSafe + '\',\'' + mkSafe + '\',\'' + badgeTxt + '\')">Schedule Now</button>'
+        : '<span class="na">&mdash;</span>';
+      return '<tr><td style="font-weight:600;">' + r.unit + '</td><td>' + vin + '</td><td>' + mkmdl + '</td><td>' + lastFmt + '</td><td>' + nextFmt + '</td><td>' + days + '</td><td><span class="badge ' + badgeCls + '">' + badgeTxt + '</span></td><td>' + schedCell + '</td></tr>';
     }).join('');
   }
 }
