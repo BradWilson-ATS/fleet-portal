@@ -4259,7 +4259,7 @@ function openUnitInvModal(unit, acct) {
   document.getElementById('unit-inv-tbody').innerHTML = invs.length
     ? invs.map(function(r) {
         return '<tr style="border-bottom:1px solid var(--border);">' +
-          '<td style="padding:10px 16px;font-size:13px;font-weight:600;color:var(--text);">' + r.inv + '</td>' +
+          '<td style="padding:10px 16px;font-size:13px;"><span onclick="openInvoicePDF(\'' + r.inv + '\')" style="cursor:pointer;font-weight:600;color:#ef4444;text-decoration:underline;text-underline-offset:3px;">' + r.inv + '</span></td>' +
           '<td style="padding:10px 16px;font-size:13px;color:var(--text2);">' + r.date + '</td>' +
           '<td style="padding:10px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right;">$' + fmtCurrency(r.total) + '</td>' +
           '</tr>';
