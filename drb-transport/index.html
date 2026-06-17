@@ -918,6 +918,32 @@ tr:hover td { background: rgba(255,255,255,0.04); }
   </div>
 </div>
 
+<!-- ── Unit Invoice Drill-Down Modal ── -->
+<div class="modal-overlay" id="modal-unit-inv" onclick="if(event.target===this)closeUnitInvModal()">
+  <div class="modal-card" style="width:640px;max-width:calc(100vw - 32px);">
+    <div class="modal-hdr">
+      <span class="modal-title" id="unit-inv-title">Invoices</span>
+      <button class="modal-close" onclick="closeUnitInvModal()">&#x2715;</button>
+    </div>
+    <div style="max-height:55vh;overflow-y:auto;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);">
+            <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;">Invoice #</th>
+            <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;">Date</th>
+            <th style="padding:10px 16px;text-align:right;font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;">Total</th>
+          </tr>
+        </thead>
+        <tbody id="unit-inv-tbody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <span id="unit-inv-summary" style="margin-right:auto;font-size:13px;font-weight:600;color:var(--text2);"></span>
+      <button class="btn-sm" onclick="closeUnitInvModal()">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── Customer config – injected by apply-portal-update.py ──
 var CUSTOMER_CONFIG = {"slug": "drb-transport", "display_name": "DRB Transport", "contact_email": "demo@drbtransport.com", "portal_password": "DRB-Fleet-2026", "pm_days": 90, "salesman_name": "Danny Wernick", "salesman_email": "Danny@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
@@ -2075,7 +2101,10 @@ function renderUnitSpend(idx) {
     var model = fd && fd.model ? fd.model : '<span class="na">&mdash;</span>';
     var yr    = fd && fd.year > 0 ? fd.year : '<span class="na">&mdash;</span>';
     var pct   = totalSpend > 0 ? (u.spend / totalSpend * 100).toFixed(1) + '%' : '—';
-    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + make + '</td><td>' + model + '</td><td>' + yr + '</td><td>' + u.inv + '</td><td class="amt">$' + fmtCurrency(u.spend) + '</td><td>' + pct + '</td></tr>';
+    var invCell = u.inv > 0
+      ? '<span data-unit="' + (u.unit||'').replace(/"/g,'&quot;') + '" data-acct="' + (u.acct||'') + '" onclick="openUnitInvModal(this.dataset.unit,this.dataset.acct)" style="cursor:pointer;color:#ef4444;font-weight:700;text-decoration:underline;text-underline-offset:3px;">' + u.inv + '</span>'
+      : u.inv;
+    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + make + '</td><td>' + model + '</td><td>' + yr + '</td><td>' + invCell + '</td><td class="amt">$' + fmtCurrency(u.spend) + '</td><td>' + pct + '</td></tr>';
   }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No unit spend in the selected date range.</td></tr>';
   document.getElementById('us-tbody').innerHTML = tbodyHtml;
 }
@@ -2956,9 +2985,9 @@ var INVOICE_DATA = [
 // Populated by query-drb-workorders-odbc.py + apply-portal-update.py
 // Each entry: { order, date, acct, store, po, total }
 var WO_DATA = { open_wo: [
-
+  {order:'200016032',date:'6/17/2026',acct:'1239',store:'200',po:'',total:58.78}
 ], wo_no_po: [
-
+  {order:'200016032',date:'6/17/2026',acct:'1239',store:'200',po:'',total:58.78}
 ] };
 
 var _openKpiType = null;
@@ -4211,6 +4240,35 @@ function openRepModal() {
 }
 function closeRepModal() {
   document.getElementById('modal-rep').classList.remove('open');
+}
+function openUnitInvModal(unit, acct) {
+  var lo = parseInt(sliderMin.value);
+  var hi = parseInt(sliderMax.value);
+  function _iso(d) {
+    return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
+  }
+  var loISO = _iso(new Date(PORTAL_START_YEAR, PORTAL_START_MONTH_JS, 1 + lo));
+  var hiISO = _iso(new Date(PORTAL_START_YEAR, PORTAL_START_MONTH_JS, 1 + hi));
+  var invs = INVOICE_DATA.filter(function(r) {
+    return r.acct === acct && r.po === unit && r.dt >= loISO && r.dt <= hiISO;
+  }).sort(function(a, b) { return b.dt.localeCompare(a.dt); });
+  document.getElementById('unit-inv-title').textContent = 'Invoices — Unit ' + unit;
+  var total = invs.reduce(function(s, r) { return s + r.total; }, 0);
+  document.getElementById('unit-inv-summary').textContent =
+    invs.length + ' invoice' + (invs.length === 1 ? '' : 's') + ' · $' + fmtCurrency(total) + ' total';
+  document.getElementById('unit-inv-tbody').innerHTML = invs.length
+    ? invs.map(function(r) {
+        return '<tr style="border-bottom:1px solid var(--border);">' +
+          '<td style="padding:10px 16px;font-size:13px;font-weight:600;color:var(--text);">' + r.inv + '</td>' +
+          '<td style="padding:10px 16px;font-size:13px;color:var(--text2);">' + r.date + '</td>' +
+          '<td style="padding:10px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right;">$' + fmtCurrency(r.total) + '</td>' +
+          '</tr>';
+      }).join('')
+    : '<tr><td colspan="3" style="text-align:center;color:var(--text2);padding:32px 0;font-size:13px;">No invoices found for this unit in the selected period.</td></tr>';
+  document.getElementById('modal-unit-inv').classList.add('open');
+}
+function closeUnitInvModal() {
+  document.getElementById('modal-unit-inv').classList.remove('open');
 }
 function submitRepForm() {
   var msg = document.getElementById('rep-msg').value.trim();
