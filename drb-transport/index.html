@@ -829,7 +829,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
               <canvas id="my-chart-units" style="width:100%;height:180px;display:block;"></canvas>
             </div>
             <div class="chart-card">
-              <div class="chart-ttl">Total Spend</div>
+              <div class="chart-ttl" style="display:flex;align-items:baseline;gap:10px;">Total Spend <span id="chart-spend-total" style="color:#ef4444;font-size:16px;font-weight:700;"></span></div>
               <canvas id="my-chart-spend" style="width:100%;height:180px;display:block;"></canvas>
             </div>
             <div class="chart-card">
@@ -4100,6 +4100,8 @@ function updateSliderVisuals(lo, hi) {
 
   // Period Spend KPI
   document.getElementById('kpi-spend').textContent = '$' + fmtCurrency(period.totalSpend);
+  var chartSpendTotal = document.getElementById('chart-spend-total');
+  if (chartSpendTotal) chartSpendTotal.textContent = '$' + fmtCurrency(period.totalSpend);
   var spendTrend = document.getElementById('kpi-spend-t');
   if (spendTrend) spendTrend.textContent = loLabel + ' – ' + hiLabel;
 
