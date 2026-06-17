@@ -798,7 +798,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
           <div class="table-card">
             <div class="table-hdr"><div class="table-ttl">Product Categories</div><div class="table-acts"><button class="btn-sm" onclick="exportTableCSV('#page-repair-groups .table-card table','repair-groups.csv')">Export CSV</button></div></div>
             <table>
-              <thead><tr><th class="sort-th" data-tbl="rg" data-col="name" onclick="tblSort('rg','name');renderRepairGroups(currentAcct);">Category<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="spend" onclick="tblSort('rg','spend');renderRepairGroups(currentAcct);">Spend<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="avg" onclick="tblSort('rg','avg');renderRepairGroups(currentAcct);">Avg / Invoice<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="pct" onclick="tblSort('rg','pct');renderRepairGroups(currentAcct);">% of Total<span class="sa"></span></th></tr></thead>
+              <thead><tr><th class="sort-th" data-tbl="rg" data-col="name" onclick="tblSort('rg','name');renderRepairGroups(currentAcct);">Category<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="spend" onclick="tblSort('rg','spend');renderRepairGroups(currentAcct);">Spend<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="inv" onclick="tblSort('rg','inv');renderRepairGroups(currentAcct);"># Invoices<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="avg" onclick="tblSort('rg','avg');renderRepairGroups(currentAcct);">Avg / Invoice<span class="sa"></span></th><th class="sort-th" data-tbl="rg" data-col="pct" onclick="tblSort('rg','pct');renderRepairGroups(currentAcct);">% of Total<span class="sa"></span></th></tr></thead>
               <tbody id="rg-tbody"></tbody>
             </table>
           </div>
@@ -3410,7 +3410,7 @@ function renderRepairGroups(idx) {
 
   if (result.frac <= 0 || result.total <= 0) {
     document.getElementById('rg-sub').textContent = loLabel + ' – ' + hiLabel + ' · No category data for this period';
-    document.getElementById('rg-tbody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">Category breakdown is available for Jun 2024 – Jun 2026. Adjust the date range to include that period.</td></tr>';
+    document.getElementById('rg-tbody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">Category breakdown is available for Jun 2024 – Jun 2026. Adjust the date range to include that period.</td></tr>';
     return;
   }
 
@@ -3424,6 +3424,7 @@ function renderRepairGroups(idx) {
   syncSortThs('rg');
   visibleGroups = doSort(visibleGroups, 'rg', function(g, c) {
     if (c === 'name') return g.name;
+    if (c === 'inv') return g.inv;
     if (c === 'avg') return g.inv > 0 ? g.spend / g.inv : 0;
     if (c === 'pct') return result.total > 0 ? g.spend / result.total : 0;
     return g.spend;
@@ -3431,7 +3432,7 @@ function renderRepairGroups(idx) {
   var html = visibleGroups.map(function(g) {
     var pct = result.total > 0 ? (g.spend / result.total * 100).toFixed(1) : '0.0';
     var avg = g.inv > 0 ? '$' + (g.spend / g.inv).toFixed(2) : '—';
-    return '<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + g.color + ';margin-right:8px;vertical-align:middle;"></span>' + g.name + '</td><td class="amt">$' + fmtCurrency(g.spend) + '</td><td>' + avg + '</td><td>' + pct + '%</td></tr>';
+    return '<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + g.color + ';margin-right:8px;vertical-align:middle;"></span>' + g.name + '</td><td class="amt">$' + fmtCurrency(g.spend) + '</td><td class="amt">' + g.inv + '</td><td>' + avg + '</td><td>' + pct + '%</td></tr>';
   }).join('');
   document.getElementById('rg-tbody').innerHTML = html;
 }
