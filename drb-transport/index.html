@@ -538,7 +538,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
         <input type="range" id="slider-max" min="0" max="759" value="759" step="1">
       </div>
       <div class="range-ticks" id="dash-ticks"></div>
-      <div class="dash-chart-lbl">Total Spend</div>
+      <div class="dash-chart-lbl" style="display:flex;align-items:baseline;gap:10px;">Total Spend <span id="chart-spend-total" style="color:#ef4444;font-size:16px;font-weight:700;"></span></div>
       <canvas id="spend-chart" style="width:100%;height:130px;display:block;"></canvas>
     </div>
 
@@ -829,7 +829,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
               <canvas id="my-chart-units" style="width:100%;height:180px;display:block;"></canvas>
             </div>
             <div class="chart-card">
-              <div class="chart-ttl" style="display:flex;align-items:baseline;gap:10px;">Total Spend <span id="chart-spend-total" style="color:#ef4444;font-size:16px;font-weight:700;"></span></div>
+              <div class="chart-ttl">Total Spend</div>
               <canvas id="my-chart-spend" style="width:100%;height:180px;display:block;"></canvas>
             </div>
             <div class="chart-card">
