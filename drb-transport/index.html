@@ -3334,7 +3334,9 @@ function getScaledRepairGroups(lo, hi, acctNum) {
     var baseTotal     = baseGroups.reduce(function(s,g){ return s+g.spend; }, 0);
     // Only return if we actually found category data; otherwise fall through to proportional
     if (scaledTotal > 0) {
-      return { groups: scaled, total: scaledTotal, frac: baseTotal > 0 ? scaledTotal / baseTotal : 0 };
+      var frac = baseTotal > 0 ? scaledTotal / baseTotal : 0;
+      scaled.forEach(function(g) { g.inv = Math.round(g.inv * frac); });
+      return { groups: scaled, total: scaledTotal, frac: frac };
     }
   }
 
@@ -3349,7 +3351,7 @@ function getScaledRepairGroups(lo, hi, acctNum) {
   }
   var frac = moTotal > 0 ? moInRange / moTotal : 0;
   var scaled2 = baseGroups.map(function(g) {
-    return { name:g.name, color:g.color, spend: g.spend * frac, inv:g.inv };
+    return { name:g.name, color:g.color, spend: g.spend * frac, inv: Math.round(g.inv * frac) };
   });
   var t2 = scaled2.reduce(function(s,g){ return s+g.spend; }, 0);
   return { groups: scaled2, total: t2, frac: frac };
