@@ -948,10 +948,10 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 // ── Customer config – injected by apply-portal-update.py ──
 var CUSTOMER_CONFIG = {"slug": "drb-transport", "display_name": "DRB Transport", "contact_email": "demo@drbtransport.com", "portal_password": "DRB-Fleet-2026", "pm_days": 90, "salesman_name": "Danny Wernick", "salesman_email": "Danny@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
 
-// ── Account data (refreshed 2026-07-14 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-07-15 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
-  { num:'ALL', label:'All Accounts', units:129, wo:0, po:0, inv:'816', spend:'$860,344', monthSpend:'$0', rgInv:4792, pmO:2, pmD:1, pmC:0, dotO:0, dotD:1, dotC:0, alert:'Action needed: 2 vehicles overdue for PM service; 1 vehicle due for PM within 30 days; 1 vehicle due for DOT inspection within 60 days.' },
+  { num:'ALL', label:'All Accounts', units:129, wo:0, po:0, inv:'817', spend:'$861,157', monthSpend:'$0', rgInv:4798, pmO:2, pmD:1, pmC:0, dotO:0, dotD:1, dotC:0, alert:'Action needed: 2 vehicles overdue for PM service; 1 vehicle due for PM within 30 days; 1 vehicle due for DOT inspection within 60 days.' },
   { num:'7083643', label:'National Account', units:0, wo:0, po:0, inv:'216', spend:'$5,496', monthSpend:'$0', rgInv:4, pmO:0, pmD:0, pmC:0, dotO:0, dotD:0, dotC:0, alert:null },
   { num:'1237', label:'Cass City', units:49, wo:0, po:0, inv:'887', spend:'$41,410', monthSpend:'$0', rgInv:44, pmO:0, pmD:0, pmC:0, dotO:0, dotD:0, dotC:0, alert:null },
   { num:'1238', label:'Fowler', units:44, wo:0, po:0, inv:'525', spend:'$21,815', monthSpend:'$0', rgInv:26, pmO:0, pmD:0, pmC:0, dotO:0, dotD:0, dotC:0, alert:null },
@@ -1273,6 +1273,7 @@ var UNIT_SPEND_DATA = [
   { unit:'128', make:'WESTERN STAR', model:'CONVENTIONAL 4900SA', acct:'1238', spend:3223.74, inv:4, last:'Mar 16, 2026' },
   { unit:'794', make:'KENWORTH', model:'CONSTRUCT T600', acct:'1239', spend:3034.86, inv:7, last:'Jun 10, 2026' },
   { unit:'1060', make:'', model:'', acct:'1239', spend:3011.78, inv:3, last:'Apr 23, 2026' },
+  { unit:'0099', make:'BURCH', model:'', acct:'1239', spend:2741.63, inv:3, last:'Jul 14, 2026' },
   { unit:'202', make:'BURCH', model:'8 AXLE', acct:'1239', spend:2736.26, inv:5, last:'Jun 23, 2025' },
   { unit:'815', make:'', model:'', acct:'1239', spend:2651.70, inv:5, last:'Jun 8, 2026' },
   { unit:'114', make:'ALMONT', model:'TANK', acct:'1238', spend:2636.39, inv:5, last:'May 21, 2026' },
@@ -1287,7 +1288,6 @@ var UNIT_SPEND_DATA = [
   { unit:'225', make:'BURCH', model:'TANK', acct:'1237', spend:2147.48, inv:3, last:'Jun 30, 2025' },
   { unit:'363', make:'KENWORTH', model:'CONSTRUCT T800', acct:'1239', spend:2118.12, inv:4, last:'Aug 26, 2025' },
   { unit:'117', make:'WALKER', model:'TANK', acct:'1238', spend:2085.27, inv:2, last:'Mar 13, 2026' },
-  { unit:'0099', make:'BURCH', model:'', acct:'1239', spend:1928.41, inv:2, last:'Jun 15, 2026' },
   { unit:'17-0089', make:'', model:'', acct:'1239', spend:1845.78, inv:3, last:'Dec 18, 2025' },
   { unit:'561', make:'', model:'', acct:'1238', spend:1811.07, inv:3, last:'Feb 9, 2026' },
   { unit:'064', make:'WESTERN STAR', model:'', acct:'1237', spend:1740.04, inv:2, last:'May 21, 2026' },
@@ -1364,7 +1364,7 @@ var UNIT_SPEND_MONTHLY = {
     '202604': [{unit:'.',acct:'1237',spend:5460.80,inv:4},{unit:'CASS CITY',acct:'1237',spend:3514.20,inv:1},{unit:'643',acct:'1239',spend:3101.40,inv:2},{unit:'200',acct:'1239',spend:2724.32,inv:2},{unit:'727',acct:'1238',spend:2629.40,inv:1},{unit:'340',acct:'1239',spend:2023.44,inv:1},{unit:'606',acct:'1239',spend:2001.72,inv:2},{unit:'2015 JEEP GRAND CHER',acct:'1240',spend:1562.31,inv:1},{unit:'065',acct:'1239',spend:1505.20,inv:1},{unit:'126',acct:'1239',spend:1454.32,inv:1},{unit:'1413',acct:'1239',spend:1447.20,inv:1},{unit:'1060',acct:'1239',spend:1250.10,inv:1},{unit:'661',acct:'1239',spend:1225.20,inv:1},{unit:'CASS CITY',acct:'7083643',spend:1221.34,inv:1},{unit:'0064',acct:'1239',spend:1174.58,inv:1},{unit:'281',acct:'1239',spend:1156.69,inv:3},{unit:'16-1024',acct:'1239',spend:1082.10,inv:1},{unit:'339',acct:'1238',spend:1002.96,inv:1},{unit:'184',acct:'1239',spend:994.47,inv:2},{unit:'KAY ADAMS',acct:'1240',spend:975.82,inv:1},{unit:'509',acct:'1239',spend:900.48,inv:1},{unit:'1150',acct:'1239',spend:893.50,inv:1},{unit:'1152',acct:'1239',spend:829.48,inv:1},{unit:'19-0995',acct:'1239',spend:792.30,inv:1},{unit:'17-0022',acct:'1239',spend:724.80,inv:1},{unit:'194',acct:'1239',spend:644.74,inv:1},{unit:'0067',acct:'1237',spend:577.48,inv:1},{unit:'0099',acct:'1239',spend:561.48,inv:1},{unit:'939',acct:'1239',spend:109.00,inv:2},{unit:'4.10.26',acct:'1239',spend:105.00,inv:1},{unit:'246',acct:'1239',spend:89.50,inv:1},{unit:'5602',acct:'1240',spend:85.74,inv:1},{unit:'159',acct:'1239',spend:63.00,inv:1}],
     '202605': [{unit:'BOAT MOTOR',acct:'1240',spend:5453.70,inv:1},{unit:'CASS CITY',acct:'1237',spend:5364.60,inv:3},{unit:'128',acct:'1239',spend:2843.41,inv:2},{unit:'1152',acct:'1239',spend:2553.55,inv:1},{unit:'472',acct:'1239',spend:2327.40,inv:1},{unit:'TRAILER',acct:'1240',spend:2168.23,inv:1},{unit:'.',acct:'1237',spend:2167.02,inv:2},{unit:'068',acct:'1239',spend:2103.20,inv:1},{unit:'1150',acct:'1239',spend:1989.74,inv:2},{unit:'281',acct:'1239',spend:1926.80,inv:1},{unit:'606',acct:'1239',spend:1848.66,inv:1},{unit:'960',acct:'1237',spend:1848.50,inv:1},{unit:'246',acct:'1239',spend:1845.18,inv:1},{unit:'0067',acct:'1239',spend:1536.32,inv:2},{unit:'644',acct:'1239',spend:1483.72,inv:1},{unit:'159',acct:'1239',spend:1433.12,inv:1},{unit:'*',acct:'1239',spend:1237.98,inv:1},{unit:'855',acct:'1238',spend:1236.74,inv:1},{unit:'064',acct:'7083643',spend:1221.34,inv:1},{unit:'802',acct:'7083643',spend:1221.34,inv:1},{unit:'0017',acct:'1237',spend:919.48,inv:1},{unit:'509',acct:'1238',spend:903.48,inv:1},{unit:'340',acct:'1239',spend:754.74,inv:1},{unit:'1413',acct:'1239',spend:435.00,inv:1},{unit:'114',acct:'1238',spend:431.00,inv:1},{unit:'0592',acct:'1237',spend:370.00,inv:1},{unit:'210',acct:'1239',spend:332.50,inv:1},{unit:'563',acct:'1238',spend:326.86,inv:1},{unit:'064',acct:'1237',spend:149.00,inv:1},{unit:'509',acct:'1239',spend:146.00,inv:1},{unit:'592',acct:'1237',spend:85.00,inv:1},{unit:'882',acct:'1238',spend:79.50,inv:1},{unit:'585',acct:'1238',spend:63.00,inv:1}],
     '202606': [{unit:'CASS CITY',acct:'1237',spend:8432.74,inv:5},{unit:'098',acct:'1237',spend:4318.70,inv:1},{unit:'835',acct:'1239',spend:3877.86,inv:2},{unit:'482',acct:'1239',spend:3247.92,inv:2},{unit:'959',acct:'1239',spend:3097.90,inv:1},{unit:'794',acct:'7083643',spend:2629.32,inv:1},{unit:'792',acct:'1239',spend:2173.20,inv:1},{unit:'815',acct:'1239',spend:2125.20,inv:1},{unit:'0067',acct:'1239',spend:1968.68,inv:2},{unit:'787',acct:'1237',spend:1745.92,inv:1},{unit:'330',acct:'1239',spend:1643.46,inv:2},{unit:'281',acct:'1239',spend:1470.12,inv:1},{unit:'C22',acct:'1239',spend:1411.10,inv:3},{unit:'883 CASS CITY',acct:'1237',spend:1373.20,inv:1},{unit:'0099',acct:'1239',spend:1366.93,inv:1},{unit:'843',acct:'1239',spend:1324.20,inv:1},{unit:'098',acct:'1240',spend:1209.33,inv:1},{unit:'339',acct:'1238',spend:1188.96,inv:1},{unit:'02-0063',acct:'1239',spend:976.26,inv:1},{unit:'156',acct:'1239',spend:931.94,inv:1},{unit:'C23',acct:'1237',spend:927.00,inv:2},{unit:'128',acct:'1239',spend:866.98,inv:1},{unit:'893',acct:'1239',spend:673.80,inv:1},{unit:'0067',acct:'1237',spend:459.74,inv:1},{unit:'19-1039',acct:'1239',spend:420.50,inv:1},{unit:'794',acct:'1239',spend:300.00,inv:1},{unit:'DUANE',acct:'1240',spend:40.05,inv:1},{unit:'0025',acct:'1239',spend:22.50,inv:1}],
-    '202607': [{unit:'CASS CITY',acct:'1237',spend:7524.08,inv:2},{unit:'961',acct:'1239',spend:3733.52,inv:1},{unit:'1023',acct:'1239',spend:1783.80,inv:1},{unit:'1413',acct:'1239',spend:1443.12,inv:1},{unit:'883',acct:'1239',spend:1440.20,inv:1},{unit:'068',acct:'1239',spend:1390.10,inv:2},{unit:'540',acct:'1239',spend:976.40,inv:1},{unit:'C23',acct:'1239',spend:904.30,inv:1},{unit:'0997',acct:'1239',spend:383.45,inv:1},{unit:'835',acct:'1239',spend:85.50,inv:1}],
+    '202607': [{unit:'CASS CITY',acct:'1237',spend:7524.08,inv:2},{unit:'961',acct:'1239',spend:3733.52,inv:1},{unit:'1023',acct:'1239',spend:1783.80,inv:1},{unit:'1413',acct:'1239',spend:1443.12,inv:1},{unit:'883',acct:'1239',spend:1440.20,inv:1},{unit:'068',acct:'1239',spend:1390.10,inv:2},{unit:'540',acct:'1239',spend:976.40,inv:1},{unit:'C23',acct:'1239',spend:904.30,inv:1},{unit:'0099',acct:'1239',spend:813.22,inv:1},{unit:'0997',acct:'1239',spend:383.45,inv:1},{unit:'835',acct:'1239',spend:85.50,inv:1}],
   },
   '7083643': {
     '202407': [{unit:'KEVIN',acct:'7083643',spend:1068.78,inv:1},{unit:'KEVIN 071524',acct:'7083643',spend:1046.24,inv:1},{unit:'156',acct:'7083643',spend:1046.24,inv:1},{unit:'FRED',acct:'7083643',spend:740.54,inv:1}],
@@ -1461,7 +1461,7 @@ var UNIT_SPEND_MONTHLY = {
     '202604': [{unit:'643',acct:'1239',spend:3101.40,inv:2},{unit:'200',acct:'1239',spend:2724.32,inv:2},{unit:'340',acct:'1239',spend:2023.44,inv:1},{unit:'606',acct:'1239',spend:2001.72,inv:2},{unit:'065',acct:'1239',spend:1505.20,inv:1},{unit:'126',acct:'1239',spend:1454.32,inv:1},{unit:'1413',acct:'1239',spend:1447.20,inv:1},{unit:'1060',acct:'1239',spend:1250.10,inv:1},{unit:'661',acct:'1239',spend:1225.20,inv:1},{unit:'0064',acct:'1239',spend:1174.58,inv:1},{unit:'281',acct:'1239',spend:1156.69,inv:3},{unit:'16-1024',acct:'1239',spend:1082.10,inv:1},{unit:'184',acct:'1239',spend:994.47,inv:2},{unit:'509',acct:'1239',spend:900.48,inv:1},{unit:'1150',acct:'1239',spend:893.50,inv:1},{unit:'1152',acct:'1239',spend:829.48,inv:1},{unit:'19-0995',acct:'1239',spend:792.30,inv:1},{unit:'17-0022',acct:'1239',spend:724.80,inv:1},{unit:'194',acct:'1239',spend:644.74,inv:1},{unit:'0099',acct:'1239',spend:561.48,inv:1},{unit:'939',acct:'1239',spend:109.00,inv:2},{unit:'4.10.26',acct:'1239',spend:105.00,inv:1},{unit:'246',acct:'1239',spend:89.50,inv:1},{unit:'159',acct:'1239',spend:63.00,inv:1}],
     '202605': [{unit:'128',acct:'1239',spend:2843.41,inv:2},{unit:'1152',acct:'1239',spend:2553.55,inv:1},{unit:'472',acct:'1239',spend:2327.40,inv:1},{unit:'068',acct:'1239',spend:2103.20,inv:1},{unit:'1150',acct:'1239',spend:1989.74,inv:2},{unit:'281',acct:'1239',spend:1926.80,inv:1},{unit:'606',acct:'1239',spend:1848.66,inv:1},{unit:'246',acct:'1239',spend:1845.18,inv:1},{unit:'0067',acct:'1239',spend:1536.32,inv:2},{unit:'644',acct:'1239',spend:1483.72,inv:1},{unit:'159',acct:'1239',spend:1433.12,inv:1},{unit:'*',acct:'1239',spend:1237.98,inv:1},{unit:'340',acct:'1239',spend:754.74,inv:1},{unit:'1413',acct:'1239',spend:435.00,inv:1},{unit:'210',acct:'1239',spend:332.50,inv:1},{unit:'509',acct:'1239',spend:146.00,inv:1}],
     '202606': [{unit:'835',acct:'1239',spend:3877.86,inv:2},{unit:'482',acct:'1239',spend:3247.92,inv:2},{unit:'959',acct:'1239',spend:3097.90,inv:1},{unit:'792',acct:'1239',spend:2173.20,inv:1},{unit:'815',acct:'1239',spend:2125.20,inv:1},{unit:'0067',acct:'1239',spend:1968.68,inv:2},{unit:'330',acct:'1239',spend:1643.46,inv:2},{unit:'281',acct:'1239',spend:1470.12,inv:1},{unit:'C22',acct:'1239',spend:1411.10,inv:3},{unit:'0099',acct:'1239',spend:1366.93,inv:1},{unit:'843',acct:'1239',spend:1324.20,inv:1},{unit:'02-0063',acct:'1239',spend:976.26,inv:1},{unit:'156',acct:'1239',spend:931.94,inv:1},{unit:'128',acct:'1239',spend:866.98,inv:1},{unit:'893',acct:'1239',spend:673.80,inv:1},{unit:'19-1039',acct:'1239',spend:420.50,inv:1},{unit:'794',acct:'1239',spend:300.00,inv:1},{unit:'0025',acct:'1239',spend:22.50,inv:1}],
-    '202607': [{unit:'961',acct:'1239',spend:3733.52,inv:1},{unit:'1023',acct:'1239',spend:1783.80,inv:1},{unit:'1413',acct:'1239',spend:1443.12,inv:1},{unit:'883',acct:'1239',spend:1440.20,inv:1},{unit:'068',acct:'1239',spend:1390.10,inv:2},{unit:'540',acct:'1239',spend:976.40,inv:1},{unit:'C23',acct:'1239',spend:904.30,inv:1},{unit:'0997',acct:'1239',spend:383.45,inv:1},{unit:'835',acct:'1239',spend:85.50,inv:1}],
+    '202607': [{unit:'961',acct:'1239',spend:3733.52,inv:1},{unit:'1023',acct:'1239',spend:1783.80,inv:1},{unit:'1413',acct:'1239',spend:1443.12,inv:1},{unit:'883',acct:'1239',spend:1440.20,inv:1},{unit:'068',acct:'1239',spend:1390.10,inv:2},{unit:'540',acct:'1239',spend:976.40,inv:1},{unit:'C23',acct:'1239',spend:904.30,inv:1},{unit:'0099',acct:'1239',spend:813.22,inv:1},{unit:'0997',acct:'1239',spend:383.45,inv:1},{unit:'835',acct:'1239',spend:85.50,inv:1}],
   },
   '1240': {
     '202407': [{unit:'FRED',acct:'1240',spend:1222.54,inv:1},{unit:'TYLER',acct:'1240',spend:218.88,inv:1}],
@@ -1700,20 +1700,20 @@ var FLEET_DATA = [
 // ── Repair Groups – product category spend Jul 2024 – Jul 2026 from MaddenCo ODBC ──
 var REPAIR_GROUPS = {
   'ALL': [
-    { name:'Customer Retreads',                             color:'#C8102E', spend:182665.37, inv:278,  pct:21.23  },
-    { name:'Med Truck All Position',                        color:'#3b82f6', spend:175707.13, inv:183,  pct:20.42  },
-    { name:'Stock Retreads',                                color:'#b01228', spend:171721.76, inv:181,  pct:19.96  },
-    { name:'Tire Service',                                  color:'#4D4D4D', spend:82780.73,  inv:743,  pct:9.62   },
+    { name:'Customer Retreads',                             color:'#C8102E', spend:182665.37, inv:278,  pct:21.21  },
+    { name:'Med Truck All Position',                        color:'#3b82f6', spend:176372.35, inv:184,  pct:20.48  },
+    { name:'Stock Retreads',                                color:'#b01228', spend:171721.76, inv:181,  pct:19.94  },
+    { name:'Tire Service',                                  color:'#4D4D4D', spend:82863.73,  inv:744,  pct:9.62   },
     { name:'Road Service/Mileage',                          color:'#d97706', spend:53629.48,  inv:273,  pct:6.23   },
     { name:'Fuel Surcharge',                                color:'#f59e0b', spend:33308.0,   inv:258,  pct:3.87   },
     { name:'Wheels/Rims',                                   color:'#374151', spend:28810.12,  inv:90,   pct:3.35   },
     { name:'Med Truck Steer',                               color:'#2d2d2d', spend:23523.2,   inv:26,   pct:2.73   },
     { name:'Med Truck Drive',                               color:'#444', spend:20991.74,  inv:11,   pct:2.44   },
-    { name:'Valve Stems',                                   color:'#64748b', spend:13421.51,  inv:665,  pct:1.56   },
-    { name:'Disposal Expense',                              color:'#6b7280', spend:10383.0,   inv:246,  pct:1.21   },
+    { name:'Valve Stems',                                   color:'#64748b', spend:13431.51,  inv:666,  pct:1.56   },
+    { name:'Disposal Expense',                              color:'#6b7280', spend:10433.0,   inv:247,  pct:1.21   },
     { name:'Misc Parts/Access',                             color:'#6b7280', spend:6816.53,   inv:5,    pct:0.79   },
     { name:'Driveline Parts',                               color:'#6b7280', spend:6803.69,   inv:6,    pct:0.79   },
-    { name:'Shop Supplies',                                 color:'#9ca3af', spend:5424.07,   inv:629,  pct:0.63   },
+    { name:'Shop Supplies',                                 color:'#9ca3af', spend:5429.07,   inv:630,  pct:0.63   },
     { name:'Retread Repairs',                               color:'#991b1b', spend:5334.0,    inv:136,  pct:0.62   },
     { name:'Tire Balance',                                  color:'#4b5563', spend:4757.5,    inv:58,   pct:0.55   },
     { name:'Lt All Terrain',                                color:'#6b7280', spend:4683.58,   inv:8,    pct:0.54   },
@@ -1724,7 +1724,7 @@ var REPAIR_GROUPS = {
     { name:'Electrical Parts',                              color:'#6b7280', spend:1903.05,   inv:6,    pct:0.22   },
     { name:'Pass Broadline/All Season',                     color:'#6b7280', spend:1768.86,   inv:2,    pct:0.21   },
     { name:'Driveline Labor',                               color:'#6b7280', spend:1588.9,    inv:6,    pct:0.18   },
-    { name:'Sales Taxes',                                   color:'#6b7280', spend:1514.6,    inv:816,  pct:0.18   },
+    { name:'Sales Taxes',                                   color:'#6b7280', spend:1514.6,    inv:817,  pct:0.18   },
     { name:'Brake Labor',                                   color:'#6b7280', spend:1158.3,    inv:5,    pct:0.13   },
     { name:'Steer/Suspension Parts',                        color:'#6b7280', spend:1039.81,   inv:6,    pct:0.12   },
     { name:'Used Tires',                                    color:'#57534e', spend:1015.0,    inv:6,    pct:0.12   },
@@ -1797,25 +1797,25 @@ var REPAIR_GROUPS = {
     { name:'Sales Taxes',                                   color:'#6b7280', spend:0.0,       inv:82,   pct:0.00   },
   ],
   '1239': [
-    { name:'Med Truck All Position',                        color:'#3b82f6', spend:128694.66, inv:132,  pct:25.66  },
-    { name:'Stock Retreads',                                color:'#b01228', spend:86747.17,  inv:96,   pct:17.30  },
-    { name:'Customer Retreads',                             color:'#C8102E', spend:81524.0,   inv:131,  pct:16.25  },
-    { name:'Tire Service',                                  color:'#4D4D4D', spend:54408.23,  inv:477,  pct:10.85  },
-    { name:'Road Service/Mileage',                          color:'#d97706', spend:42297.23,  inv:206,  pct:8.43   },
+    { name:'Med Truck All Position',                        color:'#3b82f6', spend:129359.88, inv:133,  pct:25.75  },
+    { name:'Stock Retreads',                                color:'#b01228', spend:86747.17,  inv:96,   pct:17.27  },
+    { name:'Customer Retreads',                             color:'#C8102E', spend:81524.0,   inv:131,  pct:16.23  },
+    { name:'Tire Service',                                  color:'#4D4D4D', spend:54491.23,  inv:478,  pct:10.85  },
+    { name:'Road Service/Mileage',                          color:'#d97706', spend:42297.23,  inv:206,  pct:8.42   },
     { name:'Fuel Surcharge',                                color:'#f59e0b', spend:24441.0,   inv:194,  pct:4.87   },
-    { name:'Med Truck Steer',                               color:'#2d2d2d', spend:16240.2,   inv:18,   pct:3.24   },
+    { name:'Med Truck Steer',                               color:'#2d2d2d', spend:16240.2,   inv:18,   pct:3.23   },
     { name:'Med Truck Drive',                               color:'#444', spend:12592.96,  inv:7,    pct:2.51   },
     { name:'Wheels/Rims',                                   color:'#374151', spend:9885.44,   inv:42,   pct:1.97   },
-    { name:'Valve Stems',                                   color:'#64748b', spend:7399.04,   inv:424,  pct:1.48   },
-    { name:'Disposal Expense',                              color:'#6b7280', spend:7212.0,    inv:159,  pct:1.44   },
+    { name:'Valve Stems',                                   color:'#64748b', spend:7409.04,   inv:425,  pct:1.47   },
+    { name:'Disposal Expense',                              color:'#6b7280', spend:7262.0,    inv:160,  pct:1.45   },
     { name:'Misc Parts/Access',                             color:'#6b7280', spend:6375.0,    inv:2,    pct:1.27   },
     { name:'Tire Balance',                                  color:'#4b5563', spend:4327.5,    inv:53,   pct:0.86   },
-    { name:'Shop Supplies',                                 color:'#9ca3af', spend:3392.98,   inv:428,  pct:0.68   },
+    { name:'Shop Supplies',                                 color:'#9ca3af', spend:3397.98,   inv:429,  pct:0.68   },
     { name:'Retread Repairs',                               color:'#991b1b', spend:2087.0,    inv:61,   pct:0.42   },
     { name:'Lt All Terrain',                                color:'#6b7280', spend:1969.12,   inv:3,    pct:0.39   },
     { name:'Tuneup Labor',                                  color:'#6b7280', spend:1894.0,    inv:3,    pct:0.38   },
-    { name:'Brake Parts',                                   color:'#6b7280', spend:1832.63,   inv:7,    pct:0.37   },
-    { name:'Driveline Labor',                               color:'#6b7280', spend:1178.9,    inv:4,    pct:0.24   },
+    { name:'Brake Parts',                                   color:'#6b7280', spend:1832.63,   inv:7,    pct:0.36   },
+    { name:'Driveline Labor',                               color:'#6b7280', spend:1178.9,    inv:4,    pct:0.23   },
     { name:'Driveline Parts',                               color:'#6b7280', spend:1058.75,   inv:3,    pct:0.21   },
     { name:'Steer/Suspension Parts',                        color:'#6b7280', spend:992.11,    inv:4,    pct:0.20   },
     { name:'Misc Mech Labor',                               color:'#6b7280', spend:917.0,     inv:10,   pct:0.18   },
@@ -1823,7 +1823,7 @@ var REPAIR_GROUPS = {
     { name:'Brake Labor',                                   color:'#6b7280', spend:663.3,     inv:3,    pct:0.13   },
     { name:'Used Tires',                                    color:'#57534e', spend:575.0,     inv:4,    pct:0.11   },
     { name:'Farm Rear',                                     color:'#6b7280', spend:575.0,     inv:1,    pct:0.11   },
-    { name:'Transmission Labor',                            color:'#6b7280', spend:427.0,     inv:3,    pct:0.09   },
+    { name:'Transmission Labor',                            color:'#6b7280', spend:427.0,     inv:3,    pct:0.08   },
     { name:'Lt Highway (All Season)',                       color:'#6b7280', spend:323.86,    inv:1,    pct:0.06   },
     { name:'Air/Hyd System Parts',                          color:'#6b7280', spend:259.26,    inv:1,    pct:0.05   },
     { name:'Tuneup Parts',                                  color:'#6b7280', spend:246.36,    inv:2,    pct:0.05   },
@@ -1836,7 +1836,7 @@ var REPAIR_GROUPS = {
     { name:'Pm Labor',                                      color:'#6b7280', spend:27.0,      inv:2,    pct:0.01   },
     { name:'Exhaust Parts',                                 color:'#6b7280', spend:0.0,       inv:1,    pct:0.00   },
     { name:'Finished Casings',                              color:'#6b7280', spend:0.0,       inv:1,    pct:0.00   },
-    { name:'Sales Taxes',                                   color:'#6b7280', spend:0.0,       inv:506,  pct:0.00   },
+    { name:'Sales Taxes',                                   color:'#6b7280', spend:0.0,       inv:507,  pct:0.00   },
     { name:'Non Retreadable Tires',                         color:'#6b7280', spend:0.0,       inv:1,    pct:0.00   },
     { name:'Cooling System Parts',                          color:'#6b7280', spend:0.0,       inv:1,    pct:0.00   },
     { name:'Exhaust Labor',                                 color:'#6b7280', spend:0.0,       inv:1,    pct:0.00   },
@@ -1913,7 +1913,7 @@ var REPAIR_GROUPS_MONTHLY = {
     '202604': [{name:'Stock Retreads',spend:11233.84}, {name:'Med Truck All Position',spend:9767.22}, {name:'Customer Retreads',spend:8781.14}, {name:'Tire Service',spend:3732.50}, {name:'Road Service/Mileage',spend:2683.50}, {name:'Fuel Surcharge',spend:2199.00}, {name:'Electrical Parts',spend:1140.08}, {name:'Disposal Expense',spend:960.00}, {name:'Valve Stems',spend:592.50}, {name:'Retread Repairs',spend:458.00}, {name:'Wheels/Rims',spend:400.00}, {name:'Driveline Parts',spend:369.00}, {name:'Driveline Labor',spend:312.00}, {name:'Shop Supplies',spend:217.53}, {name:'Electrical Labor',spend:208.00}, {name:'Tire Balance',spend:180.00}, {name:'Tuneup Parts',spend:132.02}, {name:'Sales Taxes',spend:112.50}, {name:'Vendor Commission/Handling',spend:100.00}, {name:'Oil Change/Pm Parts',spend:98.84}, {name:'Misc Parts/Access',spend:90.00}, {name:'Misc Mech Labor',spend:62.40}, {name:'Pm Labor',spend:54.00}],
     '202605': [{name:'Customer Retreads',spend:10237.04}, {name:'Med Truck All Position',spend:7135.48}, {name:'Stock Retreads',spend:5462.48}, {name:'Driveline Parts',spend:5145.00}, {name:'Tire Service',spend:4784.48}, {name:'Fuel Surcharge',spend:3648.00}, {name:'Road Service/Mileage',spend:3463.75}, {name:'Med Truck Drive',spend:1783.20}, {name:'Med Truck Steer',spend:1291.72}, {name:'Wheels/Rims',spend:1219.03}, {name:'Pass Broadline/All Season',spend:809.86}, {name:'Valve Stems',spend:519.32}, {name:'Retread Repairs',spend:518.00}, {name:'Brake Parts',spend:483.48}, {name:'Misc Mech Labor',spend:416.00}, {name:'Sales Taxes',spend:406.07}, {name:'Used Tires',spend:375.00}, {name:'Disposal Expense',spend:372.00}, {name:'Trailer (Utility)',spend:260.24}, {name:'Vendor Commission/Handling',spend:200.00}, {name:'Tire Balance',spend:180.00}, {name:'Shop Supplies',spend:165.96}, {name:'Casing Purchase Default Class',spend:-70.00}],
     '202606': [{name:'Stock Retreads',spend:11086.92}, {name:'Customer Retreads',spend:10937.32}, {name:'Med Truck All Position',spend:6506.76}, {name:'Med Truck Drive',spend:5915.72}, {name:'Tire Service',spend:5303.00}, {name:'Road Service/Mileage',spend:3605.00}, {name:'Fuel Surcharge',spend:2794.00}, {name:'Wheels/Rims',spend:943.43}, {name:'Valve Stems',spend:689.00}, {name:'Disposal Expense',spend:630.00}, {name:'Med Truck Steer',spend:590.94}, {name:'Retread Repairs',spend:509.00}, {name:'Vendor Commission/Handling',spend:280.00}, {name:'Shop Supplies',spend:225.00}, {name:'Tire Balance',spend:135.00}, {name:'Sales Taxes',spend:48.79}, {name:'Tubes/Flaps',spend:23.63}],
-    '202607': [{name:'Stock Retreads',spend:5990.06}, {name:'Med Truck All Position',spend:4735.44}, {name:'Customer Retreads',spend:3887.92}, {name:'Tire Service',spend:1772.00}, {name:'Med Truck Steer',spend:1015.60}, {name:'Wheels/Rims',spend:420.45}, {name:'Tire Balance',spend:360.00}, {name:'Disposal Expense',spend:320.00}, {name:'Valve Stems',spend:292.50}, {name:'Road Service/Mileage',spend:285.00}, {name:'Fuel Surcharge',spend:213.00}, {name:'Retread Repairs',spend:165.00}, {name:'Used Tires',spend:150.00}, {name:'Shop Supplies',spend:57.50}, {name:'Sales Taxes',spend:0.00}],
+    '202607': [{name:'Stock Retreads',spend:5990.06}, {name:'Med Truck All Position',spend:5400.66}, {name:'Customer Retreads',spend:3887.92}, {name:'Tire Service',spend:1855.00}, {name:'Med Truck Steer',spend:1015.60}, {name:'Wheels/Rims',spend:420.45}, {name:'Disposal Expense',spend:370.00}, {name:'Tire Balance',spend:360.00}, {name:'Valve Stems',spend:302.50}, {name:'Road Service/Mileage',spend:285.00}, {name:'Fuel Surcharge',spend:213.00}, {name:'Retread Repairs',spend:165.00}, {name:'Used Tires',spend:150.00}, {name:'Shop Supplies',spend:62.50}, {name:'Sales Taxes',spend:0.00}],
   },
   '7083643': {
     '202407': [{name:'Med Truck Steer',spend:2563.02}, {name:'Med Truck All Position',spend:968.78}, {name:'Vendor Commission/Handling',spend:370.00}, {name:'Sales Taxes',spend:0.00}],
@@ -2010,7 +2010,7 @@ var REPAIR_GROUPS_MONTHLY = {
     '202604': [{name:'Med Truck All Position',spend:8218.58}, {name:'Stock Retreads',spend:4834.88}, {name:'Customer Retreads',spend:4794.56}, {name:'Tire Service',spend:2726.50}, {name:'Road Service/Mileage',spend:2458.50}, {name:'Fuel Surcharge',spend:2109.00}, {name:'Disposal Expense',spend:680.00}, {name:'Valve Stems',spend:311.50}, {name:'Retread Repairs',spend:293.00}, {name:'Tire Balance',spend:180.00}, {name:'Shop Supplies',spend:142.50}, {name:'Wheels/Rims',spend:105.00}, {name:'Sales Taxes',spend:0.00}],
     '202605': [{name:'Customer Retreads',spend:4200.28}, {name:'Med Truck All Position',spend:4001.48}, {name:'Stock Retreads',spend:3265.88}, {name:'Tire Service',spend:3237.48}, {name:'Road Service/Mileage',spend:2578.75}, {name:'Fuel Surcharge',spend:2403.00}, {name:'Med Truck Drive',spend:1783.20}, {name:'Med Truck Steer',spend:1291.72}, {name:'Wheels/Rims',spend:1114.03}, {name:'Disposal Expense',spend:230.00}, {name:'Valve Stems',spend:218.00}, {name:'Tire Balance',spend:180.00}, {name:'Used Tires',spend:150.00}, {name:'Retread Repairs',spend:111.00}, {name:'Shop Supplies',spend:102.50}, {name:'Sales Taxes',spend:0.00}, {name:'Casing Purchase Default Class',spend:-70.00}],
     '202606': [{name:'Med Truck All Position',spend:5650.98}, {name:'Stock Retreads',spend:4421.06}, {name:'Customer Retreads',spend:4134.72}, {name:'Med Truck Drive',spend:3566.40}, {name:'Tire Service',spend:3183.00}, {name:'Road Service/Mileage',spend:2625.00}, {name:'Fuel Surcharge',spend:2146.00}, {name:'Med Truck Steer',spend:590.94}, {name:'Wheels/Rims',spend:524.45}, {name:'Disposal Expense',spend:330.00}, {name:'Valve Stems',spend:318.00}, {name:'Shop Supplies',spend:165.00}, {name:'Tire Balance',spend:135.00}, {name:'Retread Repairs',spend:108.00}, {name:'Sales Taxes',spend:0.00}],
-    '202607': [{name:'Med Truck All Position',spend:4735.44}, {name:'Customer Retreads',spend:2288.00}, {name:'Tire Service',spend:1397.00}, {name:'Med Truck Steer',spend:1015.60}, {name:'Stock Retreads',spend:941.40}, {name:'Wheels/Rims',spend:420.45}, {name:'Tire Balance',spend:360.00}, {name:'Road Service/Mileage',spend:285.00}, {name:'Fuel Surcharge',spend:213.00}, {name:'Used Tires',spend:150.00}, {name:'Valve Stems',spend:130.00}, {name:'Disposal Expense',spend:110.00}, {name:'Shop Supplies',spend:57.50}, {name:'Retread Repairs',spend:37.00}, {name:'Sales Taxes',spend:0.00}],
+    '202607': [{name:'Med Truck All Position',spend:5400.66}, {name:'Customer Retreads',spend:2288.00}, {name:'Tire Service',spend:1480.00}, {name:'Med Truck Steer',spend:1015.60}, {name:'Stock Retreads',spend:941.40}, {name:'Wheels/Rims',spend:420.45}, {name:'Tire Balance',spend:360.00}, {name:'Road Service/Mileage',spend:285.00}, {name:'Fuel Surcharge',spend:213.00}, {name:'Disposal Expense',spend:160.00}, {name:'Used Tires',spend:150.00}, {name:'Valve Stems',spend:140.00}, {name:'Shop Supplies',spend:62.50}, {name:'Retread Repairs',spend:37.00}, {name:'Sales Taxes',spend:0.00}],
   },
   '1240': {
     '202407': [{name:'Customer Retreads',spend:809.64}, {name:'Tire Service',spend:288.00}, {name:'Electrical Parts',spend:162.15}, {name:'Sales Taxes',spend:62.63}, {name:'Valve Stems',spend:52.00}, {name:'Misc Mech Labor',spend:47.00}, {name:'Shop Supplies',spend:20.00}],
@@ -2040,7 +2040,7 @@ var MODEL_YEAR_DATA = [
   { year:1999, count:5, inv:1, spend:420.00 },   { year:2001, count:1, inv:4, spend:3975.00 },   { year:2002, count:2, inv:2, spend:5302.00 },
   { year:2003, count:4, inv:0, spend:0.00 },   { year:2004, count:3, inv:5, spend:4907.00 },   { year:2005, count:8, inv:9, spend:10975.00 },
   { year:2006, count:11, inv:6, spend:5305.00 },   { year:2007, count:6, inv:9, spend:11097.00 },   { year:2008, count:3, inv:0, spend:0.00 },
-  { year:2009, count:7, inv:14, spend:9090.00 },   { year:2012, count:6, inv:24, spend:19889.00 },   { year:2013, count:5, inv:17, spend:12390.00 },
+  { year:2009, count:7, inv:15, spend:9904.00 },   { year:2012, count:6, inv:24, spend:19889.00 },   { year:2013, count:5, inv:17, spend:12390.00 },
   { year:2014, count:9, inv:14, spend:11898.00 },   { year:2015, count:8, inv:37, spend:31051.00 },   { year:2017, count:7, inv:27, spend:21714.00 },
   { year:2018, count:8, inv:18, spend:26180.00 },   { year:2019, count:13, inv:30, spend:37594.00 },   { year:2020, count:1, inv:6, spend:6076.00 },
   { year:2021, count:4, inv:11, spend:18419.00 },   { year:2022, count:3, inv:11, spend:13351.00 },   { year:2024, count:2, inv:9, spend:10877.00 },
@@ -2113,9 +2113,9 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   'ALL': { overdue:2, due_soon:1, current:0, records:[
-    {unit:'ISSABELLA\'S JEEP', acct:'1240', last_pm:'2026-02-20', next_pm:'2026-05-20', days:-55, status:'overdue'},
-    {unit:'2015 JEEP GRAND CHER', acct:'1240', last_pm:'2026-04-17', next_pm:'2026-07-17', days:3, status:'due_soon'},
-    {unit:'5602', acct:'1240', last_pm:'2026-04-07', next_pm:'2026-07-07', days:-7, status:'overdue'},
+    {unit:'ISSABELLA\'S JEEP', acct:'1240', last_pm:'2026-02-20', next_pm:'2026-05-20', days:-56, status:'overdue'},
+    {unit:'2015 JEEP GRAND CHER', acct:'1240', last_pm:'2026-04-17', next_pm:'2026-07-17', days:2, status:'due_soon'},
+    {unit:'5602', acct:'1240', last_pm:'2026-04-07', next_pm:'2026-07-07', days:-8, status:'overdue'},
   ] },
   '7083643': { overdue:0, due_soon:0, current:0, records:[
   ] },
@@ -2126,14 +2126,14 @@ var PM_DATA = {
   '1239': { overdue:0, due_soon:0, current:0, records:[
   ] },
   '1240': { overdue:2, due_soon:1, current:0, records:[
-    {unit:'ISSABELLA\'S JEEP', acct:'1240', last_pm:'2026-02-20', next_pm:'2026-05-20', days:-55, status:'overdue'},
-    {unit:'2015 JEEP GRAND CHER', acct:'1240', last_pm:'2026-04-17', next_pm:'2026-07-17', days:3, status:'due_soon'},
-    {unit:'5602', acct:'1240', last_pm:'2026-04-07', next_pm:'2026-07-07', days:-7, status:'overdue'},
+    {unit:'ISSABELLA\'S JEEP', acct:'1240', last_pm:'2026-02-20', next_pm:'2026-05-20', days:-56, status:'overdue'},
+    {unit:'2015 JEEP GRAND CHER', acct:'1240', last_pm:'2026-04-17', next_pm:'2026-07-17', days:2, status:'due_soon'},
+    {unit:'5602', acct:'1240', last_pm:'2026-04-07', next_pm:'2026-07-07', days:-8, status:'overdue'},
   ] },
 };
 var DOT_DATA = {
   'ALL': { overdue:0, due_soon:1, current:0, records:[
-    {unit:'DUANE', acct:'1240', last_dot:'2025-07-23', next_dot:'2026-07-23', days:9, status:'due_soon'},
+    {unit:'DUANE', acct:'1240', last_dot:'2025-07-23', next_dot:'2026-07-23', days:8, status:'due_soon'},
   ] },
   '7083643': { overdue:0, due_soon:0, current:0, records:[
   ] },
@@ -2144,7 +2144,7 @@ var DOT_DATA = {
   '1239': { overdue:0, due_soon:0, current:0, records:[
   ] },
   '1240': { overdue:0, due_soon:1, current:0, records:[
-    {unit:'DUANE', acct:'1240', last_dot:'2025-07-23', next_dot:'2026-07-23', days:9, status:'due_soon'},
+    {unit:'DUANE', acct:'1240', last_dot:'2025-07-23', next_dot:'2026-07-23', days:8, status:'due_soon'},
   ] },
 };
 
@@ -2159,6 +2159,7 @@ function fmtDateShort(s) {
 // ── Invoice Data – from MaddenCo TMIHSH/TMIHSL via ODBC (Jul 2024 – Jul 2026) ──
 // Populated by query-drb-invoices-odbc.py + apply-portal-update.py
 var INVOICE_DATA = [
+  {inv:'200016377',date:'Jul 14, 2026',dt:'2026-07-14',acct:'1239',po:'0099',store:'200',total:813.22,lines:[{c:'289001S',d:'11R22.5/H SAMSON GL289A',q:2.00,p:303.31,f:29.30,t:665.22},{c:'V105',d:'VALVE STEM MED TRK',q:2.00,p:5.00,f:0.00,t:10.00},{c:'TL114',d:'MOUNT/DISMOUNT VEHICLE MED TRK',q:2.00,p:26.50,f:0.00,t:53.00},{c:'TL113',d:'MOUNT/DISMOUNT TIRE MED TRK',q:2.00,p:15.00,f:0.00,t:30.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:2.00,p:2.50,f:0.00,t:5.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:0.00,f:0.00,t:0.00}]},
   {inv:'725032908',date:'Jul 13, 2026',dt:'2026-07-13',acct:'1237',po:'CASS CITY',store:'725',total:5059.42,lines:[{c:'RPO',d:'***SUBMITTED FOR REPAIR ONLY***',q:1.00,p:0.00,f:0.00,t:0.00},{c:'2R0000B24',d:'B-24 REPAIR ONLY',q:1.00,p:57.00,f:0.00,t:57.00},{c:'338ECM',d:'385/65R22.5 ECL ST-M (ECM)',q:1.00,p:294.36,f:0.00,t:294.36},{c:'338ECM',d:'385/65R22.5 ECL ST-M (ECM)',q:1.00,p:294.36,f:0.00,t:294.36},{c:'1R000BEAD',d:'BEAD REPAIR',q:1.00,p:10.00,f:0.00,t:10.00},{c:'366ETSS',d:'315/80R22.5 BTL-SA (ECL) (ETS) W',q:1.00,p:293.46,f:0.00,t:293.46},{c:'388ETSS',d:'11R22.5 BTL-SA (ECL) (ETS) WC',q:6.00,p:287.24,f:0.00,t:1723.44},{c:'388UDRS',d:'11R22.5 ULTRA DRIVE (UDR) WC',q:6.00,p:313.80,f:0.00,t:1882.80},{c:'TL113',d:'MOUNT/DISMOUNT TIRE MED TRK',q:16.00,p:15.00,f:0.00,t:240.00},{c:'V105',d:'VALVE STEM MED TRK',q:16.00,p:6.50,f:0.00,t:104.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:0.00,f:0.00,t:0.00}]},
   {inv:'725032904',date:'Jul 13, 2026',dt:'2026-07-13',acct:'1239',po:'883',store:'725',total:1440.20,lines:[{c:'388UDR',d:'11R22.5 ULTRA DRIVE (UDR)',q:1.00,p:228.80,f:0.00,t:228.80},{c:'388UDRS',d:'11R22.5 ULTRA DRIVE (UDR) WC',q:3.00,p:313.80,f:0.00,t:941.40},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'D222',d:'FEE TIRE DISPOSAL MED TRK',q:1.00,p:10.00,f:0.00,t:10.00},{c:'TL115',d:'TIRE CHANGE MED TRK (OUTSIDE/STEER)',q:4.00,p:52.50,f:0.00,t:210.00},{c:'V105',d:'VALVE STEM MED TRK',q:4.00,p:5.00,f:0.00,t:20.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:0.00,f:0.00,t:0.00}]},
   {inv:'200016354',date:'Jul 13, 2026',dt:'2026-07-13',acct:'1239',po:'0997',store:'200',total:383.45,lines:[{c:'WHL174',d:'22.5X8.25 10H HP ALM PLSH LVL1',q:1.00,p:315.45,f:0.00,t:315.45},{c:'TL114',d:'MOUNT/DISMOUNT VEHICLE MED TRK',q:2.00,p:26.50,f:0.00,t:53.00},{c:'TL113',d:'MOUNT/DISMOUNT TIRE MED TRK',q:1.00,p:15.00,f:0.00,t:15.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:0.00,f:0.00,t:0.00}]},
@@ -3725,7 +3726,7 @@ var MONTHS_BY_ACCT = {
     { label:'Apr 2026', short:'Apr 26', spend:43884.07 },
     { label:'May 2026', short:'May 26', spend:48806.11 },
     { label:'Jun 2026', short:'Jun 26', spend:50223.51 },
-    { label:'Jul 2026', short:'Jul 26', spend:19664.47 },
+    { label:'Jul 2026', short:'Jul 26', spend:20477.69 },
   ],
   '7083643': [
     { label:'Jul 2024', short:'Jul 24', spend:3901.80 },
@@ -3833,7 +3834,7 @@ var MONTHS_BY_ACCT = {
     { label:'Apr 2026', short:'Apr 26', spend:26854.02 },
     { label:'May 2026', short:'May 26', spend:24797.32 },
     { label:'Jun 2026', short:'Jun 26', spend:27898.55 },
-    { label:'Jul 2026', short:'Jul 26', spend:12140.39 },
+    { label:'Jul 2026', short:'Jul 26', spend:12953.61 },
   ],
   '1240': [
     { label:'Jul 2024', short:'Jul 24', spend:1441.42 },
