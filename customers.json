@@ -3,29 +3,5 @@
     "email": "demo@drbtransport.com",
     "slug": "drb-transport",
     "name": "DRB Transport"
-  },
-  {
-    "emails": [
-      "jeremy.jones@almatire.com",
-      "brad.wilson@almatire.com"
-    ],
-    "slug": "tcb-logistics",
-    "name": "TCB Logistics"
-  },
-  {
-    "emails": [
-      "jeremy.jones@almatire.com",
-      "brad.wilson@almatire.com"
-    ],
-    "slug": "cedar-crest",
-    "name": "Cedar Crest Dairy"
-  },
-  {
-    "emails": [
-      "jeremy.jones@almatire.com",
-      "brad.wilson@almatire.com"
-    ],
-    "slug": "roth-trucking",
-    "name": "Roth Trucking"
   }
 ]
