@@ -951,12 +951,12 @@ var CUSTOMER_CONFIG = {"slug": "drb-transport", "display_name": "DRB Transport",
 // ── Account data (refreshed 2026-07-24 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
-  { num:'ALL', label:'All Accounts', units:129, wo:0, po:0, inv:'827', spend:'$872,092', monthSpend:'$0', rgInv:4868, pmO:3, pmD:0, pmC:0, dotO:1, dotD:0, dotC:0, alert:'Action needed: 3 vehicles overdue for PM service; 1 vehicle overdue for DOT inspection.' },
+  { num:'ALL', label:'All Accounts', units:132, wo:0, po:0, inv:'827', spend:'$872,092', monthSpend:'$0', rgInv:4868, pmO:3, pmD:0, pmC:0, dotO:1, dotD:0, dotC:0, alert:'Action needed: 3 vehicles overdue for PM service; 1 vehicle overdue for DOT inspection.' },
   { num:'7083643', label:'National Account', units:0, wo:0, po:0, inv:'216', spend:'$5,496', monthSpend:'$0', rgInv:4, pmO:0, pmD:0, pmC:0, dotO:0, dotD:0, dotC:0, alert:null },
   { num:'1237', label:'Cass City', units:49, wo:0, po:0, inv:'887', spend:'$41,410', monthSpend:'$0', rgInv:44, pmO:0, pmD:0, pmC:0, dotO:0, dotD:0, dotC:0, alert:null },
   { num:'1238', label:'Fowler', units:44, wo:0, po:0, inv:'525', spend:'$21,815', monthSpend:'$0', rgInv:26, pmO:0, pmD:0, pmC:0, dotO:0, dotD:0, dotC:0, alert:null },
   { num:'1239', label:'Alma', units:125, wo:0, po:0, inv:'1,532', spend:'$114,994', monthSpend:'$0', rgInv:129, pmO:0, pmD:0, pmC:0, dotO:0, dotD:0, dotC:0, alert:null },
-  { num:'1240', label:'DUANE LALONE, INC', units:0, wo:0, po:0, inv:'36', spend:'$33,950', monthSpend:'$0', rgInv:205, pmO:3, pmD:0, pmC:0, dotO:1, dotD:0, dotC:0, alert:'Action needed: 3 vehicles overdue for PM service; 1 vehicle overdue for DOT inspection.' }
+  { num:'1240', label:'DUANE LALONE, INC', units:3, wo:0, po:0, inv:'36', spend:'$33,950', monthSpend:'$0', rgInv:205, pmO:3, pmD:0, pmC:0, dotO:1, dotD:0, dotC:0, alert:'Action needed: 3 vehicles overdue for PM service; 1 vehicle overdue for DOT inspection.' }
 ];
 var currentAcct = 0;
 
@@ -1272,6 +1272,7 @@ var UNIT_SPEND_DATA = [
   { unit:'128', make:'WESTERN STAR', model:'CONVENTIONAL 4900SA', acct:'1238', spend:3223.74, inv:4, last:'Mar 16, 2026' },
   { unit:'794', make:'KENWORTH', model:'CONSTRUCT T600', acct:'1239', spend:3034.86, inv:7, last:'Jun 10, 2026' },
   { unit:'1060', make:'', model:'', acct:'1239', spend:3011.78, inv:3, last:'Apr 23, 2026' },
+  { unit:'1413', make:'KENWORTH', model:'CONSTRUCT T800', acct:'1240', spend:2927.34, inv:1, last:'Oct 22, 2024' },
   { unit:'0099', make:'BURCH', model:'', acct:'1239', spend:2741.63, inv:3, last:'Jul 14, 2026' },
   { unit:'202', make:'BURCH', model:'8 AXLE', acct:'1239', spend:2736.26, inv:5, last:'Jun 23, 2025' },
   { unit:'815', make:'', model:'', acct:'1239', spend:2651.70, inv:5, last:'Jun 8, 2026' },
@@ -1294,6 +1295,7 @@ var UNIT_SPEND_DATA = [
   { unit:'19-0997', make:'', model:'', acct:'1239', spend:1696.00, inv:1, last:'Jun 17, 2025' },
   { unit:'19-1041', make:'', model:'', acct:'1239', spend:1680.85, inv:2, last:'May 5, 2025' },
   { unit:'19-0987', make:'WALKER', model:'TANK', acct:'1239', spend:1677.36, inv:1, last:'Oct 28, 2024' },
+  { unit:'340', make:'8 AXLE', model:'', acct:'1240', spend:1577.24, inv:1, last:'Dec 19, 2018' },
   { unit:'855', make:'ALMONT', model:'', acct:'1239', spend:1509.01, inv:1, last:'Jul 22, 2026' },
   { unit:'159', make:'WESTERN STAR', model:'49X CHASSIS', acct:'1239', spend:1496.12, inv:2, last:'May 22, 2026' },
   { unit:'644', make:'WESTERN STAR', model:'', acct:'1239', spend:1483.72, inv:1, last:'May 22, 2026' },
@@ -1319,6 +1321,7 @@ var UNIT_SPEND_DATA = [
   { unit:'0591', make:'BURCH', model:'', acct:'1237', spend:810.06, inv:2, last:'Sep 28, 2022' },
   { unit:'836', make:'', model:'', acct:'1239', spend:789.82, inv:1, last:'Oct 14, 2024' },
   { unit:'434', make:'', model:'', acct:'1239', spend:727.76, inv:1, last:'Jul 15, 2024' },
+  { unit:'272', make:'STNTE', model:'TANK', acct:'1240', spend:713.14, inv:1, last:'Jun 23, 2023' },
   { unit:'0990', make:'', model:'', acct:'1239', spend:701.80, inv:1, last:'Feb 20, 2026' },
   { unit:'194', make:'BURCH', model:'', acct:'1239', spend:644.74, inv:1, last:'Apr 13, 2026' },
   { unit:'0099', make:'BURCH', model:'TANK', acct:'1237', spend:604.00, inv:2, last:'Mar 23, 2026' },
@@ -1693,6 +1696,27 @@ var FLEET_DATA = [
   { unit:'SKY TRACK', vin:'', make:'', model:'', year:0, acct:'1239' },
   { unit:'SPARE RACK', vin:'', make:'', model:'', year:0, acct:'1239' },
   { unit:'TEST', vin:'TEST', make:'', model:'TRAILER', year:1999, acct:'1239' },
+  // Account 1240
+  { unit:'001', vin:'3WKDDU9X1YF842549', make:'KENWORTH', model:'CONSTRUCT T800', year:2000, acct:'1240' },
+  { unit:'100', vin:'', make:'', model:'', year:0, acct:'1240' },
+  { unit:'1410', vin:'1XKDD49X1EJ410812', make:'KENWORTH', model:'CONSTRUCT T800', year:2014, acct:'1240' },
+  { unit:'1412', vin:'', make:'KENWORTH', model:'CONSTRUCT T800', year:2015, acct:'1240' },
+  { unit:'1413', vin:'3WKDD40X4FF456038', make:'KENWORTH', model:'CONSTRUCT T800', year:2015, acct:'1240' },
+  { unit:'272', vin:'1S9T4447950017037', make:'STNTE', model:'TANK', year:2005, acct:'1240' },
+  { unit:'281', vin:'', make:'WESTERN STAR', model:'CONVENTIONAL 4900SA', year:2012, acct:'1240' },
+  { unit:'306', vin:'', make:'KENWORTH', model:'CONSTRUCT T800', year:2006, acct:'1240' },
+  { unit:'330', vin:'', make:'BURCH', model:'TANK', year:2012, acct:'1240' },
+  { unit:'340', vin:'', make:'BURCH', model:'TANK', year:2013, acct:'1240' },
+  { unit:'504', vin:'', make:'INTERNATIONAL', model:'5900I', year:2004, acct:'1240' },
+  { unit:'509', vin:'', make:'WALKER', model:'TANK', year:1989, acct:'1240' },
+  { unit:'603', vin:'1XKDDB0X66J151611', make:'KENWORTH', model:'CONSTRUCT T800', year:2006, acct:'1240' },
+  { unit:'606', vin:'1S9T4488490017061', make:'', model:'', year:2009, acct:'1240' },
+  { unit:'614', vin:'', make:'KENWORTH', model:'CONSTRUCT T800', year:2015, acct:'1240' },
+  { unit:'643', vin:'', make:'KENWORTH', model:'CONSTRUCT T880', year:2017, acct:'1240' },
+  { unit:'9121', vin:'', make:'', model:'', year:0, acct:'1240' },
+  { unit:'BACK HOE', vin:'', make:'CAT', model:'426', year:0, acct:'1240' },
+  { unit:'CASE', vin:'', make:'CASE', model:'LOADER', year:0, acct:'1240' },
+  { unit:'TRL 202', vin:'', make:'', model:'', year:0, acct:'1240' },
 ];
 
 // Repair group data — direct from MaddenCo ODBC (TMIHSH + TMIHSL + TMPCLS)
@@ -2039,14 +2063,14 @@ var REPAIR_GROUPS_MONTHLY = {
 
 // ── Model Year – vehicle counts from TMVEHC + spend via unit-invoice join ──
 var MODEL_YEAR_DATA = [
-  { year:1999, count:5, inv:1, spend:420.00 },   { year:2001, count:1, inv:4, spend:3975.00 },   { year:2002, count:2, inv:2, spend:5302.00 },
-  { year:2003, count:4, inv:0, spend:0.00 },   { year:2004, count:3, inv:5, spend:4907.00 },   { year:2005, count:8, inv:9, spend:10975.00 },
-  { year:2006, count:11, inv:6, spend:5305.00 },   { year:2007, count:6, inv:9, spend:11097.00 },   { year:2008, count:3, inv:0, spend:0.00 },
-  { year:2009, count:7, inv:15, spend:9904.00 },   { year:2012, count:6, inv:24, spend:19889.00 },   { year:2013, count:5, inv:17, spend:12390.00 },
-  { year:2014, count:9, inv:15, spend:11956.00 },   { year:2015, count:8, inv:38, spend:32887.00 },   { year:2017, count:7, inv:27, spend:21714.00 },
-  { year:2018, count:8, inv:18, spend:26180.00 },   { year:2019, count:13, inv:30, spend:37594.00 },   { year:2020, count:1, inv:6, spend:6076.00 },
-  { year:2021, count:4, inv:11, spend:18419.00 },   { year:2022, count:3, inv:11, spend:13351.00 },   { year:2024, count:2, inv:9, spend:10877.00 },
-  { year:2025, count:1, inv:2, spend:1496.00 }
+  { year:1999, count:5, inv:1, spend:420.00 },   { year:2000, count:1, inv:0, spend:0.00 },   { year:2001, count:1, inv:4, spend:3975.00 },
+  { year:2002, count:2, inv:2, spend:5302.00 },   { year:2003, count:4, inv:0, spend:0.00 },   { year:2004, count:4, inv:5, spend:4907.00 },
+  { year:2005, count:9, inv:10, spend:11688.00 },   { year:2006, count:13, inv:6, spend:5305.00 },   { year:2007, count:6, inv:9, spend:11097.00 },
+  { year:2008, count:3, inv:0, spend:0.00 },   { year:2009, count:8, inv:15, spend:9904.00 },   { year:2012, count:8, inv:24, spend:19889.00 },
+  { year:2013, count:6, inv:18, spend:13967.00 },   { year:2014, count:10, inv:15, spend:11956.00 },   { year:2015, count:11, inv:39, spend:35814.00 },
+  { year:2017, count:8, inv:27, spend:21714.00 },   { year:2018, count:8, inv:18, spend:26180.00 },   { year:2019, count:13, inv:30, spend:37594.00 },
+  { year:2020, count:1, inv:6, spend:6076.00 },   { year:2021, count:4, inv:11, spend:18419.00 },   { year:2022, count:3, inv:11, spend:13351.00 },
+  { year:2024, count:2, inv:9, spend:10877.00 },   { year:2025, count:1, inv:2, spend:1496.00 }
 ];
 
 // ── Unit Spend — slider-driven via UNIT_SPEND_MONTHLY ──
