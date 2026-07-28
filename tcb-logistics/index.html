@@ -398,7 +398,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
       <div>
         <div class="acct-num" style="color:var(--red);">Account #2163</div>
         <div class="acct-name">TCB Logistics</div>
-        <div class="acct-detail">10 active units &middot; $185,250 over past 24 months</div>
+        <div class="acct-detail">9 active units &middot; $185,250 over past 24 months</div>
       </div>
       <div style="font-size:11px;font-weight:700;background:var(--red);color:white;padding:4px 12px;border-radius:20px;">DEFAULT</div>
     </div>
@@ -463,7 +463,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
           <div class="dd-item current" id="dd-0" onclick="switchAcct(0)" style="border-left:3px solid var(--red);">
             <div class="dd-acct-num"><span class="dd-active-dot"></span>Account #2163</div>
             <div class="dd-acct-name">TCB Logistics</div>
-            <div class="dd-acct-detail">10 active units</div>
+            <div class="dd-acct-detail">9 active units</div>
           </div>
         </div>
       </div>
@@ -894,10 +894,10 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 // ── Customer config – injected by apply-portal-generic.py ──
 var CUSTOMER_CONFIG = {"slug": "tcb-logistics", "display_name": "TCB Logistics", "contact_email": "jeremy.jones@almatire.com, brad.wilson@almatire.com", "portal_password": "TCB-Fleet-2026", "pm_days": 90, "salesman_name": "Jeremy Jones", "salesman_email": "Jeremy.jones@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
 
-// ── Account data (refreshed 2026-07-27 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-07-28 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
-  { num:'2163', label:'TCB Logistics', units:10, wo:1, po:0, inv:'225', spend:'$185,250', monthSpend:'$0', rgInv:1134, pmO:3, pmD:2, pmC:2, dotO:11, dotD:0, dotC:6, alert:'Action needed: 3 vehicles overdue for PM service; 2 vehicles due for PM within 30 days; 11 vehicles overdue for DOT inspection.' }
+  { num:'2163', label:'TCB Logistics', units:9, wo:2, po:0, inv:'225', spend:'$185,250', monthSpend:'$0', rgInv:1134, pmO:3, pmD:2, pmC:2, dotO:11, dotD:0, dotC:6, alert:'Action needed: 3 vehicles overdue for PM service; 2 vehicles due for PM within 30 days; 11 vehicles overdue for DOT inspection.' }
 ];
 var currentAcct = 0;
 
@@ -1151,7 +1151,6 @@ var UNIT_SPEND_DATA = [
   { unit:'157244', make:'INTERNATIONAL', model:'PRO-STAR ESN# 79347018', acct:'2163', spend:11008.78, inv:14, last:'Sep 24, 2021' },
   { unit:'293594', make:'INTERNATIONAL', model:'PROSTAR ESN# 79835258', acct:'2163', spend:3478.30, inv:4, last:'Jul 2, 2025' },
   { unit:'168545', make:'INTERNATIONAL', model:'PROSTAR ESN# 79897481', acct:'2163', spend:2385.09, inv:6, last:'May 23, 2025' },
-  { unit:'NEW', make:'FREIGHTLINER', model:'CASCADIA', acct:'2163', spend:1945.73, inv:2, last:'May 19, 2026' },
   { unit:'SON', make:'GMC', model:'ACADIA', acct:'2163', spend:538.65, inv:1, last:'Dec 21, 2022' },
   { unit:'WYATT', make:'MERCURY', model:'MILAN', acct:'2163', spend:321.84, inv:1, last:'Nov 30, 2023' },
   { unit:'157423', make:'INTERNATIONAL', model:'9200I ESN# MBL09169', acct:'2163', spend:211.00, inv:1, last:'Feb 22, 2021' },
@@ -1199,9 +1198,9 @@ var FLEET_DATA = [
   { unit:'163165', vin:'3HSDJAPR9GN001911', make:'INTERNATIONAL', model:'PRO STAR ESN# 79811595', year:2016, acct:'2163' },
   { unit:'168545', vin:'3HCDJAPR8HL642217', make:'INTERNATIONAL', model:'PROSTAR ESN# 79897481', year:2017, acct:'2163' },
   { unit:'293594', vin:'3HSDJAPR0GN180792', make:'INTERNATIONAL', model:'PROSTAR ESN# 79835258', year:2016, acct:'2163' },
+  { unit:'336998', vin:'1FUJHTDV1MLMT5918', make:'FREIGHTLINER', model:'CASCADIA', year:2021, acct:'2163' },
   { unit:'527641', vin:'3HSDZAPR8NN278152', make:'INTERNATIONAL', model:'LT ESN# 80385843', year:2022, acct:'2163' },
   { unit:'529632', vin:'3HSDZAPR4NN278147', make:'INTERNATIONAL', model:'LT62F     ESN#80385836', year:2022, acct:'2163' },
-  { unit:'NEW', vin:'1FUJHTDV1MLMT5918', make:'FREIGHTLINER', model:'CASCADIA', year:2021, acct:'2163' },
   { unit:'SON', vin:'', make:'GMC', model:'ACADIA', year:0, acct:'2163' },
   { unit:'WYATT', vin:'3MEHM08Z78R658631', make:'MERCURY', model:'MILAN', year:2008, acct:'2163' },
 ];
@@ -1289,7 +1288,7 @@ var REPAIR_GROUPS_MONTHLY = {
 var MODEL_YEAR_DATA = [
   { year:2004, count:1, inv:1, spend:211.00 },   { year:2008, count:1, inv:1, spend:322.00 },   { year:2010, count:1, inv:14, spend:11009.00 },
   { year:2015, count:1, inv:18, spend:17326.00 },   { year:2016, count:2, inv:20, spend:15373.00 },   { year:2017, count:1, inv:6, spend:2385.00 },
-  { year:2021, count:1, inv:2, spend:1946.00 },   { year:2022, count:2, inv:0, spend:0.00 }
+  { year:2021, count:1, inv:0, spend:0.00 },   { year:2022, count:2, inv:0, spend:0.00 }
 ];
 
 // ── Unit Spend — slider-driven via UNIT_SPEND_MONTHLY ──
@@ -1358,34 +1357,34 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   '2163': { overdue:3, due_soon:2, current:2, records:[
-    {unit:'NEW FREIGHTLINER', acct:'2163', last_pm:'2026-05-01', next_pm:'2026-08-01', days:5, status:'due_soon'},
-    {unit:'112', acct:'2163', last_pm:'2025-12-04', next_pm:'2026-03-04', days:-145, status:'overdue'},
-    {unit:'165', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-14, status:'overdue'},
-    {unit:'545', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-14, status:'overdue'},
-    {unit:'594', acct:'2163', last_pm:'2026-05-11', next_pm:'2026-08-11', days:15, status:'due_soon'},
-    {unit:'632', acct:'2163', last_pm:'2026-06-10', next_pm:'2026-09-10', days:45, status:'current'},
-    {unit:'641', acct:'2163', last_pm:'2026-06-05', next_pm:'2026-09-05', days:40, status:'current'},
+    {unit:'NEW FREIGHTLINER', acct:'2163', last_pm:'2026-05-01', next_pm:'2026-08-01', days:4, status:'due_soon'},
+    {unit:'112', acct:'2163', last_pm:'2025-12-04', next_pm:'2026-03-04', days:-146, status:'overdue'},
+    {unit:'165', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-15, status:'overdue'},
+    {unit:'545', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-15, status:'overdue'},
+    {unit:'594', acct:'2163', last_pm:'2026-05-11', next_pm:'2026-08-11', days:14, status:'due_soon'},
+    {unit:'632', acct:'2163', last_pm:'2026-06-10', next_pm:'2026-09-10', days:44, status:'current'},
+    {unit:'641', acct:'2163', last_pm:'2026-06-05', next_pm:'2026-09-05', days:39, status:'current'},
   ] },
 };
 var DOT_DATA = {
   '2163': { overdue:11, due_soon:0, current:6, records:[
-    {unit:'139026 BLACK COUCH', acct:'2163', last_dot:'2021-06-30', next_dot:'2022-06-30', days:-1488, status:'overdue'},
-    {unit:'TCB', acct:'2163', last_dot:'2020-07-20', next_dot:'2021-07-20', days:-1833, status:'overdue'},
-    {unit:'417', acct:'2163', last_dot:'2022-04-19', next_dot:'2023-04-19', days:-1195, status:'overdue'},
-    {unit:'1', acct:'2163', last_dot:'2021-05-05', next_dot:'2022-05-05', days:-1544, status:'overdue'},
-    {unit:'632', acct:'2163', last_dot:'2026-06-30', next_dot:'2027-06-30', days:338, status:'current'},
-    {unit:'026', acct:'2163', last_dot:'2022-06-15', next_dot:'2023-06-15', days:-1138, status:'overdue'},
-    {unit:'139371', acct:'2163', last_dot:'2020-07-10', next_dot:'2021-07-10', days:-1843, status:'overdue'},
-    {unit:'NEW INT', acct:'2163', last_dot:'2021-04-27', next_dot:'2022-04-27', days:-1552, status:'overdue'},
-    {unit:'594', acct:'2163', last_dot:'2026-05-29', next_dot:'2027-05-29', days:306, status:'current'},
-    {unit:'545', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:298, status:'current'},
-    {unit:'165', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:298, status:'current'},
-    {unit:'INTERNATIONAL', acct:'2163', last_dot:'2019-07-19', next_dot:'2020-07-19', days:-2199, status:'overdue'},
-    {unit:'112', acct:'2163', last_dot:'2026-04-10', next_dot:'2027-04-10', days:257, status:'current'},
-    {unit:'293594', acct:'2163', last_dot:'2025-05-02', next_dot:'2026-05-02', days:-86, status:'overdue'},
-    {unit:'168545', acct:'2163', last_dot:'2025-05-23', next_dot:'2026-05-23', days:-65, status:'overdue'},
-    {unit:'641', acct:'2163', last_dot:'2025-10-01', next_dot:'2026-10-01', days:66, status:'current'},
-    {unit:'KENWORTH', acct:'2163', last_dot:'2019-07-17', next_dot:'2020-07-17', days:-2201, status:'overdue'},
+    {unit:'139026 BLACK COUCH', acct:'2163', last_dot:'2021-06-30', next_dot:'2022-06-30', days:-1489, status:'overdue'},
+    {unit:'TCB', acct:'2163', last_dot:'2020-07-20', next_dot:'2021-07-20', days:-1834, status:'overdue'},
+    {unit:'417', acct:'2163', last_dot:'2022-04-19', next_dot:'2023-04-19', days:-1196, status:'overdue'},
+    {unit:'1', acct:'2163', last_dot:'2021-05-05', next_dot:'2022-05-05', days:-1545, status:'overdue'},
+    {unit:'632', acct:'2163', last_dot:'2026-06-30', next_dot:'2027-06-30', days:337, status:'current'},
+    {unit:'026', acct:'2163', last_dot:'2022-06-15', next_dot:'2023-06-15', days:-1139, status:'overdue'},
+    {unit:'139371', acct:'2163', last_dot:'2020-07-10', next_dot:'2021-07-10', days:-1844, status:'overdue'},
+    {unit:'NEW INT', acct:'2163', last_dot:'2021-04-27', next_dot:'2022-04-27', days:-1553, status:'overdue'},
+    {unit:'594', acct:'2163', last_dot:'2026-05-29', next_dot:'2027-05-29', days:305, status:'current'},
+    {unit:'545', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:297, status:'current'},
+    {unit:'165', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:297, status:'current'},
+    {unit:'INTERNATIONAL', acct:'2163', last_dot:'2019-07-19', next_dot:'2020-07-19', days:-2200, status:'overdue'},
+    {unit:'112', acct:'2163', last_dot:'2026-04-10', next_dot:'2027-04-10', days:256, status:'current'},
+    {unit:'293594', acct:'2163', last_dot:'2025-05-02', next_dot:'2026-05-02', days:-87, status:'overdue'},
+    {unit:'168545', acct:'2163', last_dot:'2025-05-23', next_dot:'2026-05-23', days:-66, status:'overdue'},
+    {unit:'641', acct:'2163', last_dot:'2025-10-01', next_dot:'2026-10-01', days:65, status:'current'},
+    {unit:'KENWORTH', acct:'2163', last_dot:'2019-07-17', next_dot:'2020-07-17', days:-2202, status:'overdue'},
   ] },
 };
 
@@ -1631,6 +1630,7 @@ var INVOICE_DATA = [
 // Populated by query-portal-customer.py + apply-portal-generic.py
 // Each entry: { order, date, acct, store, po, total }
 var WO_DATA = { open_wo: [
+  {order:'517023939',date:'7/28/2026',acct:'2163',store:'517',po:'998',total:0.00},
   {order:'517023852',date:'7/20/2026',acct:'2163',store:'517',po:'641',total:58.14}
 ], wo_no_po: [
 
