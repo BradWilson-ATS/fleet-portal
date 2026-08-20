@@ -894,7 +894,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 // ── Customer config – injected by apply-portal-generic.py ──
 var CUSTOMER_CONFIG = {"slug": "roth-trucking", "display_name": "Roth Trucking", "contact_email": "jeremy.jones@almatire.com, brad.wilson@almatire.com", "portal_password": "Roth-Fleet-2026", "pm_days": 90, "salesman_name": "Jeremy Jones", "salesman_email": "Jeremy.jones@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
 
-// ── Account data (refreshed 2026-08-19 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-08-20 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
   { num:'2485', label:'Roth Trucking', units:34, wo:0, po:0, inv:'347', spend:'$225,079', monthSpend:'$0', rgInv:1774, pmO:8, pmD:1, pmC:5, dotO:4, dotD:0, dotC:0, alert:'Action needed: 8 vehicles overdue for PM service; 1 vehicle due for PM within 30 days; 4 vehicles overdue for DOT inspection.' }
@@ -1407,28 +1407,28 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   '2485': { overdue:8, due_soon:1, current:5, records:[
-    {unit:'105', acct:'2485', last_pm:'2026-04-01', next_pm:'2026-07-01', days:-49, status:'overdue'},
-    {unit:'307', acct:'2485', last_pm:'2025-12-30', next_pm:'2026-03-30', days:-142, status:'overdue'},
-    {unit:'359', acct:'2485', last_pm:'2025-12-10', next_pm:'2026-03-10', days:-162, status:'overdue'},
-    {unit:'396', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:59, status:'current'},
-    {unit:'399', acct:'2485', last_pm:'2026-07-07', next_pm:'2026-10-07', days:49, status:'current'},
-    {unit:'4270', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:59, status:'current'},
-    {unit:'501', acct:'2485', last_pm:'2026-03-27', next_pm:'2026-06-27', days:-53, status:'overdue'},
-    {unit:'502', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:72, status:'current'},
-    {unit:'514', acct:'2485', last_pm:'2026-01-09', next_pm:'2026-04-09', days:-132, status:'overdue'},
-    {unit:'531', acct:'2485', last_pm:'2026-01-02', next_pm:'2026-04-02', days:-139, status:'overdue'},
-    {unit:'664', acct:'2485', last_pm:'2026-03-24', next_pm:'2026-06-24', days:-56, status:'overdue'},
-    {unit:'845', acct:'2485', last_pm:'2026-04-15', next_pm:'2026-07-15', days:-35, status:'overdue'},
-    {unit:'847', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:72, status:'current'},
-    {unit:'871', acct:'2485', last_pm:'2026-05-29', next_pm:'2026-08-29', days:10, status:'due_soon'},
+    {unit:'105', acct:'2485', last_pm:'2026-04-01', next_pm:'2026-07-01', days:-50, status:'overdue'},
+    {unit:'307', acct:'2485', last_pm:'2025-12-30', next_pm:'2026-03-30', days:-143, status:'overdue'},
+    {unit:'359', acct:'2485', last_pm:'2025-12-10', next_pm:'2026-03-10', days:-163, status:'overdue'},
+    {unit:'396', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:58, status:'current'},
+    {unit:'399', acct:'2485', last_pm:'2026-07-07', next_pm:'2026-10-07', days:48, status:'current'},
+    {unit:'4270', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:58, status:'current'},
+    {unit:'501', acct:'2485', last_pm:'2026-03-27', next_pm:'2026-06-27', days:-54, status:'overdue'},
+    {unit:'502', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:71, status:'current'},
+    {unit:'514', acct:'2485', last_pm:'2026-01-09', next_pm:'2026-04-09', days:-133, status:'overdue'},
+    {unit:'531', acct:'2485', last_pm:'2026-01-02', next_pm:'2026-04-02', days:-140, status:'overdue'},
+    {unit:'664', acct:'2485', last_pm:'2026-03-24', next_pm:'2026-06-24', days:-57, status:'overdue'},
+    {unit:'845', acct:'2485', last_pm:'2026-04-15', next_pm:'2026-07-15', days:-36, status:'overdue'},
+    {unit:'847', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:71, status:'current'},
+    {unit:'871', acct:'2485', last_pm:'2026-05-29', next_pm:'2026-08-29', days:9, status:'due_soon'},
   ] },
 };
 var DOT_DATA = {
   '2485': { overdue:4, due_soon:0, current:0, records:[
-    {unit:'845', acct:'2485', last_dot:'2025-05-21', next_dot:'2026-05-21', days:-90, status:'overdue'},
-    {unit:'245', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-92, status:'overdue'},
-    {unit:'91505', acct:'2485', last_dot:'2025-05-29', next_dot:'2026-05-29', days:-82, status:'overdue'},
-    {unit:'103', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-92, status:'overdue'},
+    {unit:'845', acct:'2485', last_dot:'2025-05-21', next_dot:'2026-05-21', days:-91, status:'overdue'},
+    {unit:'245', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-93, status:'overdue'},
+    {unit:'91505', acct:'2485', last_dot:'2025-05-29', next_dot:'2026-05-29', days:-83, status:'overdue'},
+    {unit:'103', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-93, status:'overdue'},
   ] },
 };
 
