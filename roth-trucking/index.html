@@ -398,7 +398,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
       <div>
         <div class="acct-num" style="color:var(--red);">Account #2485</div>
         <div class="acct-name">Roth Trucking</div>
-        <div class="acct-detail">34 active units &middot; $226,550 over past 24 months</div>
+        <div class="acct-detail">34 active units &middot; $226,638 over past 24 months</div>
       </div>
       <div style="font-size:11px;font-weight:700;background:var(--red);color:white;padding:4px 12px;border-radius:20px;">DEFAULT</div>
     </div>
@@ -718,7 +718,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             </div>
           </div>
           <table>
-            <thead><tr><th class="sort-th" data-tbl="fl" data-col="unit" onclick="tblSort('fl','unit');filterFleet();">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="vin" onclick="tblSort('fl','vin');filterFleet();">VIN<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="make" onclick="tblSort('fl','make');filterFleet();">Make<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="model" onclick="tblSort('fl','model');filterFleet();">Model<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="year" onclick="tblSort('fl','year');filterFleet();">Year<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="acct" onclick="tblSort('fl','acct');filterFleet();">Account<span class="sa"></span></th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="fl" data-col="unit" onclick="tblSort('fl','unit');filterFleet();">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="vin" onclick="tblSort('fl','vin');filterFleet();">VIN<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="make" onclick="tblSort('fl','make');filterFleet();">Make<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="model" onclick="tblSort('fl','model');filterFleet();">Model<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="year" onclick="tblSort('fl','year');filterFleet();">Year<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="acct" onclick="tblSort('fl','acct');filterFleet();">Account<span class="sa"></span></th><th style="text-align:center;">&nbsp;</th></tr></thead>
             <tbody id="fl-tbody"></tbody>
           </table>
           <div class="tbl-footer">
@@ -731,6 +731,18 @@ tr:hover td { background: rgba(255,255,255,0.04); }
               <button class="pg-btn" id="fl-last-page">17</button>
             </div>
           </div>
+        </div>
+
+        <!-- Deleted Vehicles — hidden while empty. Restoring here just clears the exclusion; -->
+        <!-- nothing was ever removed from MaddenCo or from Spend/Invoices history. -->
+        <div class="table-card" id="fl-deleted-card" style="margin-top:16px;display:none;">
+          <div class="table-hdr">
+            <div class="table-ttl">Deleted Vehicles &nbsp;<span style="font-size:12px;color:var(--g400);font-weight:400;" id="fl-deleted-count">(0)</span></div>
+          </div>
+          <table>
+            <thead><tr><th>Unit Number</th><th>VIN</th><th>Make</th><th>Model</th><th>Year</th><th>Account</th><th style="text-align:center;">&nbsp;</th></tr></thead>
+            <tbody id="fl-deleted-tbody"></tbody>
+          </table>
         </div>
       </div>
 
@@ -892,12 +904,14 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 
 <script>
 // ── Customer config – injected by apply-portal-generic.py ──
-var CUSTOMER_CONFIG = {"slug": "roth-trucking", "display_name": "Roth Trucking", "contact_email": "jeremy.jones@almatire.com, brad.wilson@almatire.com", "portal_password": "Roth-Fleet-2026", "pm_days": 90, "salesman_name": "Jeremy Jones", "salesman_email": "Jeremy.jones@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
+var CUSTOMER_CONFIG = {"customer_key": "ROTH", "slug": "roth-trucking", "display_name": "Roth Trucking", "contact_email": "jeremy.jones@almatire.com, brad.wilson@almatire.com", "portal_password": "Roth-Fleet-2026", "pm_days": 90, "salesman_name": "Jeremy Jones", "salesman_email": "Jeremy.jones@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep", "delete_webhook": "https://almatire.app.n8n.cloud/webhook/portal-delete-vehicle"};
+// ── Deleted vehicles – acct|unit keys, from deleted_vehicles.json via fetch_deleted() ──
+var DELETED_VEHICLES = [];
 
-// ── Account data (refreshed 2026-09-14 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-09-15 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
-  { num:'2485', label:'Roth Trucking', units:34, wo:0, po:0, inv:'356', spend:'$226,550', monthSpend:'$0', rgInv:1815, pmO:8, pmD:1, pmC:5, dotO:4, dotD:0, dotC:0, alert:'Action needed: 8 vehicles overdue for PM service; 1 vehicle due for PM within 30 days; 4 vehicles overdue for DOT inspection.' }
+  { num:'2485', label:'Roth Trucking', units:34, wo:1, po:0, inv:'357', spend:'$226,638', monthSpend:'$0', rgInv:1819, pmO:8, pmD:1, pmC:5, dotO:4, dotD:0, dotC:0, alert:'Action needed: 8 vehicles overdue for PM service; 1 vehicle due for PM within 30 days; 4 vehicles overdue for DOT inspection.' }
 ];
 var currentAcct = 0;
 
@@ -979,15 +993,18 @@ function applyAcct(idx) {
   document.getElementById('kpi-po').textContent = a.po;
   document.getElementById('kpi-inv').textContent = a.inv;
   // kpi-month-spend is set by updateSliderUI() below — do not pre-fill from ACCOUNTS.monthSpend
-  // PM / DOT counts — read from PM_DATA/DOT_DATA (live data) rather than ACCOUNTS
-  var pmAcct2  = PM_DATA[a.num]  || { overdue:0, due_soon:0, current:0 };
-  var dotAcct2 = DOT_DATA[a.num] || { overdue:0, due_soon:0, current:0 };
+  // PM / DOT counts — read from PM_DATA/DOT_DATA (live data) rather than ACCOUNTS,
+  // excluding any vehicle the customer has deleted from their Fleet List
+  var pmAcct2  = PM_DATA[a.num]  || { overdue:0, due_soon:0, current:0, records:[] };
+  var dotAcct2 = DOT_DATA[a.num] || { overdue:0, due_soon:0, current:0, records:[] };
+  var pmCounts2  = computeCounts(filterDeletedRecords(pmAcct2.records));
+  var dotCounts2 = computeCounts(filterDeletedRecords(dotAcct2.records));
   // sidebar badges
-  document.getElementById('badge-pm').textContent = pmAcct2.overdue;
-  if (pmAcct2.overdue === 0) document.getElementById('badge-pm').style.display = 'none';
+  document.getElementById('badge-pm').textContent = pmCounts2.overdue;
+  if (pmCounts2.overdue === 0) document.getElementById('badge-pm').style.display = 'none';
   else document.getElementById('badge-pm').style.display = '';
-  document.getElementById('badge-dot').textContent = dotAcct2.overdue;
-  if (dotAcct2.overdue === 0) document.getElementById('badge-dot').style.display = 'none';
+  document.getElementById('badge-dot').textContent = dotCounts2.overdue;
+  if (dotCounts2.overdue === 0) document.getElementById('badge-dot').style.display = 'none';
   else document.getElementById('badge-dot').style.display = '';
   // Invoice count + slider base
   currentInvBaseCount = parseInt(a.inv.replace(/,/g, ''));
@@ -1011,19 +1028,25 @@ function renderPMTable(idx) {
   var a = ACCOUNTS[idx];
   var pmAcct  = PM_DATA[a.num]  || { overdue:0, due_soon:0, current:0, records:[] };
   var dotAcct = DOT_DATA[a.num] || { overdue:0, due_soon:0, current:0, records:[] };
+  // Exclude deleted vehicles -- these are forward-looking compliance alerts, not
+  // history, so a retired/sold unit shouldn't keep nagging as overdue.
+  var pmRecords  = filterDeletedRecords(pmAcct.records);
+  var dotRecords = filterDeletedRecords(dotAcct.records);
+  var pmCounts   = computeCounts(pmRecords);
+  var dotCounts  = computeCounts(dotRecords);
 
   // PM status counts
-  document.getElementById('pm-s1').textContent = pmAcct.overdue;
-  document.getElementById('pm-s2').textContent = pmAcct.due_soon;
-  document.getElementById('pm-s3').textContent = pmAcct.current;
+  document.getElementById('pm-s1').textContent = pmCounts.overdue;
+  document.getElementById('pm-s2').textContent = pmCounts.due_soon;
+  document.getElementById('pm-s3').textContent = pmCounts.current;
   // DOT status counts
-  document.getElementById('dot-s1').textContent = dotAcct.overdue;
-  document.getElementById('dot-s2').textContent = dotAcct.due_soon;
-  document.getElementById('dot-s3').textContent = dotAcct.current;
+  document.getElementById('dot-s1').textContent = dotCounts.overdue;
+  document.getElementById('dot-s2').textContent = dotCounts.due_soon;
+  document.getElementById('dot-s3').textContent = dotCounts.current;
 
   // PM table
   var pmTbody = document.querySelector('#page-pm table tbody');
-  if (!pmAcct.records || pmAcct.records.length === 0) {
+  if (pmRecords.length === 0) {
     pmTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No PM service records on file for this account. PM tracking is available for vehicles serviced through Alma Tire.</td></tr>';
   } else {
     var fleetLookup = {};
@@ -1032,7 +1055,7 @@ function renderPMTable(idx) {
       if (!fleetLookup[k] || (f.vin && !fleetLookup[k].vin)) fleetLookup[k] = f;
     });
     syncSortThs('pm');
-    var pmRecs = doSort(pmAcct.records.slice(), 'pm', function(r, c) {
+    var pmRecs = doSort(pmRecords.slice(), 'pm', function(r, c) {
       if (c === 'unit') return r.unit;
       if (c === 'make') { var _fd = fleetLookup[r.acct + '|' + r.unit]; return _fd ? ((_fd.make || '') + (_fd.model ? ' ' + _fd.model : '')).trim() : ''; }
       if (c === 'last_pm') return r.last_pm || 0;
@@ -1064,11 +1087,11 @@ function renderPMTable(idx) {
 
   // DOT table (separate tbody in page-dot)
   var dotTbody = document.querySelector('#page-dot table tbody');
-  if (!dotAcct.records || dotAcct.records.length === 0) {
+  if (dotRecords.length === 0) {
     dotTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles inspected through Alma Tire.</td></tr>';
   } else {
     syncSortThs('dot');
-    var dotRecs = doSort(dotAcct.records.slice(), 'dot', function(r, c) {
+    var dotRecs = doSort(dotRecords.slice(), 'dot', function(r, c) {
       if (c === 'unit') return r.unit;
       if (c === 'make') { var _fdd = (FLEET_DATA || []).find(function(f){ return f.acct === r.acct && f.unit === r.unit; }); return _fdd ? ((_fdd.make || '') + (_fdd.model ? ' ' + _fdd.model : '')).trim() : ''; }
       if (c === 'last_insp') return r.last_dot || 0;
@@ -1153,8 +1176,8 @@ var UNIT_SPEND_DATA = [
   { unit:'103', make:'STOUGHTON', model:'DRY VAN', acct:'2485', spend:9382.00, inv:24, last:'Sep 8, 2026' },
   { unit:'2817', make:'INTERNATIONAL', model:'8600 ESN# 35128308', acct:'2485', spend:8867.57, inv:10, last:'Mar 7, 2025' },
   { unit:'3006', make:'FREIGHTLINER', model:'M2 ESN# 57800644', acct:'2485', spend:8811.82, inv:7, last:'Aug 27, 2025' },
+  { unit:'502', make:'UTILITY MFG', model:'TRAILER', acct:'2485', spend:8023.30, inv:13, last:'Sep 14, 2026' },
   { unit:'531', make:'INTERNATIONAL', model:'RH', acct:'2485', spend:7987.05, inv:16, last:'May 4, 2026' },
-  { unit:'502', make:'UTILITY MFG', model:'TRAILER', acct:'2485', spend:7935.26, inv:12, last:'Sep 2, 2026' },
   { unit:'726', make:'TODCO', model:'DRY VAN', acct:'2485', spend:7783.87, inv:13, last:'Jul 10, 2025' },
   { unit:'655', make:'VOLVO', model:'VNM', acct:'2485', spend:7546.96, inv:9, last:'Jul 16, 2026' },
   { unit:'501', make:'UTILITY', model:'TRAILER', acct:'2485', spend:7383.26, inv:16, last:'Apr 8, 2026' },
@@ -1207,7 +1230,7 @@ var UNIT_SPEND_MONTHLY = {
     '202606': [{unit:'514',acct:'2485',spend:1842.27,inv:3},{unit:'847',acct:'2485',spend:595.03,inv:2},{unit:'4270',acct:'2485',spend:477.30,inv:1},{unit:'871',acct:'2485',spend:379.57,inv:2},{unit:'664',acct:'2485',spend:347.37,inv:2},{unit:'396',acct:'2485',spend:340.76,inv:1},{unit:'105',acct:'2485',spend:307.00,inv:1},{unit:'307',acct:'2485',spend:159.13,inv:1},{unit:'68404',acct:'2485',spend:83.78,inv:1},{unit:'359',acct:'2485',spend:79.56,inv:1}],
     '202607': [{unit:'396',acct:'2485',spend:1293.27,inv:2},{unit:'399',acct:'2485',spend:1287.46,inv:2},{unit:'502',acct:'2485',spend:1232.84,inv:4},{unit:'847',acct:'2485',spend:1198.56,inv:3},{unit:'871',acct:'2485',spend:731.01,inv:2},{unit:'4270',acct:'2485',spend:713.41,inv:2},{unit:'514',acct:'2485',spend:511.18,inv:1},{unit:'655',acct:'2485',spend:90.11,inv:1}],
     '202608': [{unit:'105',acct:'2485',spend:281.08,inv:2},{unit:'4270',acct:'2485',spend:253.56,inv:2},{unit:'359',acct:'2485',spend:102.88,inv:1}],
-    '202609': [{unit:'4270',acct:'2485',spend:472.69,inv:1},{unit:'103',acct:'2485',spend:250.51,inv:2},{unit:'502',acct:'2485',spend:189.87,inv:1},{unit:'845',acct:'2485',spend:100.76,inv:1},{unit:'359',acct:'2485',spend:91.22,inv:1}],
+    '202609': [{unit:'4270',acct:'2485',spend:472.69,inv:1},{unit:'502',acct:'2485',spend:277.91,inv:2},{unit:'103',acct:'2485',spend:250.51,inv:2},{unit:'845',acct:'2485',spend:100.76,inv:1},{unit:'359',acct:'2485',spend:91.22,inv:1}],
   },
 };
 
@@ -1258,28 +1281,28 @@ var FLEET_DATA = [
 // ── Repair Groups – product category spend Sep 2024 – Sep 2026 from MaddenCo ODBC ──
 var REPAIR_GROUPS = {
   '2485': [
-    { name:'Tuneup Labor',                                  color:'#6b7280', spend:26530.5,   inv:130,  pct:11.71  },
-    { name:'Brake Parts',                                   color:'#6b7280', spend:22878.15,  inv:59,   pct:10.10  },
+    { name:'Tuneup Labor',                                  color:'#6b7280', spend:26599.5,   inv:131,  pct:11.74  },
+    { name:'Brake Parts',                                   color:'#6b7280', spend:22878.15,  inv:59,   pct:10.09  },
     { name:'Electrical Labor',                              color:'#6b7280', spend:20069.0,   inv:136,  pct:8.86   },
-    { name:'Brake Labor',                                   color:'#6b7280', spend:19251.0,   inv:56,   pct:8.50   },
-    { name:'Tuneup Parts',                                  color:'#6b7280', spend:17525.62,  inv:62,   pct:7.74   },
+    { name:'Brake Labor',                                   color:'#6b7280', spend:19251.0,   inv:56,   pct:8.49   },
+    { name:'Tuneup Parts',                                  color:'#6b7280', spend:17525.62,  inv:62,   pct:7.73   },
     { name:'Stock Retreads',                                color:'#b01228', spend:11811.07,  inv:25,   pct:5.21   },
-    { name:'Pm Labor',                                      color:'#6b7280', spend:11454.0,   inv:56,   pct:5.06   },
-    { name:'Shop Supplies',                                 color:'#9ca3af', spend:11038.26,  inv:321,  pct:4.87   },
-    { name:'Oil Change/Pm Parts',                           color:'#6b7280', spend:9142.5,    inv:46,   pct:4.04   },
+    { name:'Pm Labor',                                      color:'#6b7280', spend:11454.0,   inv:56,   pct:5.05   },
+    { name:'Shop Supplies',                                 color:'#9ca3af', spend:11048.22,  inv:322,  pct:4.87   },
+    { name:'Oil Change/Pm Parts',                           color:'#6b7280', spend:9142.5,    inv:46,   pct:4.03   },
     { name:'Electrical Parts',                              color:'#6b7280', spend:8286.27,   inv:112,  pct:3.66   },
     { name:'Exhaust Parts',                                 color:'#6b7280', spend:7996.62,   inv:8,    pct:3.53   },
     { name:'Misc Mech Labor',                               color:'#6b7280', spend:7643.0,    inv:50,   pct:3.37   },
-    { name:'Sales Taxes',                                   color:'#6b7280', spend:6708.75,   inv:356,  pct:2.96   },
+    { name:'Sales Taxes',                                   color:'#6b7280', spend:6709.83,   inv:357,  pct:2.96   },
     { name:'Med Truck Steer',                               color:'#2d2d2d', spend:5307.4,    inv:9,    pct:2.34   },
     { name:'Tire Service',                                  color:'#4D4D4D', spend:5003.5,    inv:42,   pct:2.21   },
     { name:'Road Service/Mileage',                          color:'#d97706', spend:4659.53,   inv:12,   pct:2.06   },
     { name:'Suspension Labor',                              color:'#6b7280', spend:3967.5,    inv:14,   pct:1.75   },
     { name:'Cooling System Labor',                          color:'#6b7280', spend:3450.0,    inv:9,    pct:1.52   },
     { name:'Steer/Suspension Parts',                        color:'#6b7280', spend:2996.24,   inv:12,   pct:1.32   },
-    { name:'Driveline Parts',                               color:'#6b7280', spend:2934.09,   inv:12,   pct:1.30   },
+    { name:'Driveline Parts',                               color:'#6b7280', spend:2934.09,   inv:12,   pct:1.29   },
     { name:'Wheel-End Parts',                               color:'#6b7280', spend:2647.46,   inv:3,    pct:1.17   },
-    { name:'Misc Parts/Access',                             color:'#6b7280', spend:2630.88,   inv:85,   pct:1.16   },
+    { name:'Misc Parts/Access',                             color:'#6b7280', spend:2638.88,   inv:86,   pct:1.16   },
     { name:'Exhaust Labor',                                 color:'#6b7280', spend:2311.5,    inv:4,    pct:1.02   },
     { name:'Valve Stems',                                   color:'#64748b', spend:1715.22,   inv:90,   pct:0.76   },
     { name:'Driveline Labor',                               color:'#6b7280', spend:1414.5,    inv:6,    pct:0.62   },
@@ -1330,14 +1353,14 @@ var REPAIR_GROUPS_MONTHLY = {
     '202606': [{name:'Stock Retreads',spend:724.03}, {name:'Brake Labor',spend:690.00}, {name:'Brake Parts',spend:664.47}, {name:'Med Truck Steer',spend:400.31}, {name:'Road Service/Mileage',spend:310.00}, {name:'Misc Mech Labor',spend:309.00}, {name:'Electrical Labor',spend:261.50}, {name:'Tire Service',spend:252.00}, {name:'Shop Supplies',spend:247.53}, {name:'Tuneup Labor',spend:207.00}, {name:'Sales Taxes',spend:138.94}, {name:'Hvac Labor',spend:138.00}, {name:'Misc Parts/Access',spend:63.97}, {name:'Hvac Parts',spend:48.00}, {name:'Wheel Recon Service',spend:46.00}, {name:'Valve Stems',spend:44.10}, {name:'Disposal Expense',spend:36.00}, {name:'Electrical Parts',spend:30.92}, {name:'Fuel Surcharge',spend:0.00}],
     '202607': [{name:'Pm Labor',spend:1587.00}, {name:'Oil Change/Pm Parts',spend:1254.19}, {name:'Tuneup Labor',spend:1173.00}, {name:'Electrical Labor',spend:621.00}, {name:'Shop Supplies',spend:594.56}, {name:'Stock Retreads',spend:304.83}, {name:'Suspension Labor',spend:241.50}, {name:'Misc Mech Labor',spend:240.00}, {name:'Tuneup Parts',spend:220.07}, {name:'Steer/Suspension Parts',spend:188.62}, {name:'Sales Taxes',spend:177.32}, {name:'Wheels/Rims',spend:99.48}, {name:'Misc Parts/Access',spend:92.95}, {name:'Electrical Parts',spend:91.82}, {name:'Tire Service',spend:63.00}, {name:'Brake Parts',spend:55.02}, {name:'Valve Stems',spend:26.48}, {name:'Cooling System Parts',spend:15.00}, {name:'Disposal Expense',spend:12.00}],
     '202608': [{name:'Electrical Labor',spend:345.00}, {name:'Tuneup Labor',spend:138.00}, {name:'Shop Supplies',spend:82.77}, {name:'Electrical Parts',spend:33.00}, {name:'Cooling System Parts',spend:22.00}, {name:'Sales Taxes',spend:8.76}, {name:'Valve Stems',spend:5.99}, {name:'Misc Parts/Access',spend:2.00}],
-    '202609': [{name:'Electrical Labor',spend:483.00}, {name:'Pm Labor',spend:138.00}, {name:'Shop Supplies',spend:126.78}, {name:'Electrical Parts',spend:119.95}, {name:'Tire Service',spend:73.50}, {name:'Cooling System Labor',spend:69.00}, {name:'Retread Repairs',spend:41.42}, {name:'Sales Taxes',spend:19.35}, {name:'Disposal Expense',spend:12.00}, {name:'Valve Stems',spend:11.05}, {name:'Cooling System Parts',spend:11.00}],
+    '202609': [{name:'Electrical Labor',spend:483.00}, {name:'Pm Labor',spend:138.00}, {name:'Shop Supplies',spend:136.74}, {name:'Electrical Parts',spend:119.95}, {name:'Tire Service',spend:73.50}, {name:'Tuneup Labor',spend:69.00}, {name:'Cooling System Labor',spend:69.00}, {name:'Retread Repairs',spend:41.42}, {name:'Sales Taxes',spend:20.43}, {name:'Disposal Expense',spend:12.00}, {name:'Valve Stems',spend:11.05}, {name:'Cooling System Parts',spend:11.00}, {name:'Misc Parts/Access',spend:8.00}],
   },
 };
 
 // ── Model Year – vehicle counts from TMVEHC + spend via unit-invoice join ──
 var MODEL_YEAR_DATA = [
   { year:2005, count:2, inv:25, spend:13410.00 },   { year:2006, count:3, inv:24, spend:16679.00 },   { year:2007, count:2, inv:26, spend:15125.00 },
-  { year:2008, count:5, inv:40, spend:25352.00 },   { year:2009, count:1, inv:9, spend:6903.00 },   { year:2011, count:1, inv:24, spend:9382.00 },
+  { year:2008, count:5, inv:41, spend:25440.00 },   { year:2009, count:1, inv:9, spend:6903.00 },   { year:2011, count:1, inv:24, spend:9382.00 },
   { year:2012, count:2, inv:16, spend:13413.00 },   { year:2013, count:2, inv:16, spend:5809.00 },   { year:2014, count:3, inv:23, spend:13510.00 },
   { year:2015, count:2, inv:20, spend:12674.00 },   { year:2017, count:1, inv:9, spend:7547.00 },   { year:2020, count:6, inv:45, spend:35394.00 },
   { year:2021, count:1, inv:19, spend:20584.00 },   { year:2024, count:3, inv:27, spend:16771.00 },   { year:2025, count:1, inv:0, spend:0.00 }
@@ -1409,28 +1432,28 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   '2485': { overdue:8, due_soon:1, current:5, records:[
-    {unit:'103', acct:'2485', last_pm:'2026-09-08', next_pm:'2026-12-08', days:85, status:'current'},
-    {unit:'105', acct:'2485', last_pm:'2026-04-01', next_pm:'2026-07-01', days:-75, status:'overdue'},
-    {unit:'307', acct:'2485', last_pm:'2025-12-30', next_pm:'2026-03-30', days:-168, status:'overdue'},
-    {unit:'396', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:33, status:'current'},
-    {unit:'399', acct:'2485', last_pm:'2026-07-07', next_pm:'2026-10-07', days:23, status:'due_soon'},
-    {unit:'4270', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:33, status:'current'},
-    {unit:'501', acct:'2485', last_pm:'2026-03-27', next_pm:'2026-06-27', days:-79, status:'overdue'},
-    {unit:'502', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:46, status:'current'},
-    {unit:'514', acct:'2485', last_pm:'2026-01-09', next_pm:'2026-04-09', days:-158, status:'overdue'},
-    {unit:'531', acct:'2485', last_pm:'2026-01-02', next_pm:'2026-04-02', days:-165, status:'overdue'},
-    {unit:'664', acct:'2485', last_pm:'2026-03-24', next_pm:'2026-06-24', days:-82, status:'overdue'},
-    {unit:'845', acct:'2485', last_pm:'2026-04-15', next_pm:'2026-07-15', days:-61, status:'overdue'},
-    {unit:'847', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:46, status:'current'},
-    {unit:'871', acct:'2485', last_pm:'2026-05-29', next_pm:'2026-08-29', days:-16, status:'overdue'},
+    {unit:'103', acct:'2485', last_pm:'2026-09-08', next_pm:'2026-12-08', days:84, status:'current'},
+    {unit:'105', acct:'2485', last_pm:'2026-04-01', next_pm:'2026-07-01', days:-76, status:'overdue'},
+    {unit:'307', acct:'2485', last_pm:'2025-12-30', next_pm:'2026-03-30', days:-169, status:'overdue'},
+    {unit:'396', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:32, status:'current'},
+    {unit:'399', acct:'2485', last_pm:'2026-07-07', next_pm:'2026-10-07', days:22, status:'due_soon'},
+    {unit:'4270', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:32, status:'current'},
+    {unit:'501', acct:'2485', last_pm:'2026-03-27', next_pm:'2026-06-27', days:-80, status:'overdue'},
+    {unit:'502', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:45, status:'current'},
+    {unit:'514', acct:'2485', last_pm:'2026-01-09', next_pm:'2026-04-09', days:-159, status:'overdue'},
+    {unit:'531', acct:'2485', last_pm:'2026-01-02', next_pm:'2026-04-02', days:-166, status:'overdue'},
+    {unit:'664', acct:'2485', last_pm:'2026-03-24', next_pm:'2026-06-24', days:-83, status:'overdue'},
+    {unit:'845', acct:'2485', last_pm:'2026-04-15', next_pm:'2026-07-15', days:-62, status:'overdue'},
+    {unit:'847', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:45, status:'current'},
+    {unit:'871', acct:'2485', last_pm:'2026-05-29', next_pm:'2026-08-29', days:-17, status:'overdue'},
   ] },
 };
 var DOT_DATA = {
   '2485': { overdue:4, due_soon:0, current:0, records:[
-    {unit:'845', acct:'2485', last_dot:'2025-05-21', next_dot:'2026-05-21', days:-116, status:'overdue'},
-    {unit:'245', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-118, status:'overdue'},
-    {unit:'91505', acct:'2485', last_dot:'2025-05-29', next_dot:'2026-05-29', days:-108, status:'overdue'},
-    {unit:'103', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-118, status:'overdue'},
+    {unit:'845', acct:'2485', last_dot:'2025-05-21', next_dot:'2026-05-21', days:-117, status:'overdue'},
+    {unit:'245', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-119, status:'overdue'},
+    {unit:'91505', acct:'2485', last_dot:'2025-05-29', next_dot:'2026-05-29', days:-109, status:'overdue'},
+    {unit:'103', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-119, status:'overdue'},
   ] },
 };
 
@@ -1445,6 +1468,7 @@ function fmtDateShort(s) {
 // ── Invoice Data – from MaddenCo TMIHSH/TMIHSL via ODBC (Sep 2024 – Sep 2026) ──
 // Populated by query-portal-customer.py + apply-portal-generic.py
 var INVOICE_DATA = [
+  {inv:'517024470',date:'Sep 14, 2026',dt:'2026-09-14',acct:'2485',po:'502',store:'517',total:88.04,lines:[{c:'BOLTS',d:'MISC NUTS/BOLTS/HARDWARE',q:4.00,p:2.00,f:0.00,t:8.00},{c:'ML125',d:'SHOP MECHANICAL LABOR',q:0.50,p:138.00,f:0.00,t:69.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:9.96,f:0.00,t:9.96},{c:'SLTAX',d:'SALES TAX',q:1.00,p:1.08,f:0.00,t:1.08}]},
   {inv:'517024389',date:'Sep 8, 2026',dt:'2026-09-08',acct:'2485',po:'103',store:'517',total:164.59,lines:[{c:'BGREASE',d:'BULK GREASE',q:1.00,p:5.15,f:0.00,t:5.15},{c:'ML117',d:'PM LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:19.93,f:0.00,t:19.93},{c:'SLTAX',d:'SALES TAX',q:1.00,p:1.51,f:0.00,t:1.51}]},
   {inv:'517024388',date:'Sep 8, 2026',dt:'2026-09-08',acct:'2485',po:'845',store:'517',total:100.76,lines:[{c:'ELECCON',d:'MISC ELECTRIC CONECTOR',q:4.00,p:4.00,f:0.00,t:16.00},{c:'HSTUBE',d:'HEAT SHRINK TUBE PER "',q:4.00,p:1.00,f:0.00,t:4.00},{c:'ML128',d:'ELECTRICAL LABOR MECHANICAL',q:0.50,p:138.00,f:0.00,t:69.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:9.96,f:0.00,t:9.96},{c:'SLTAX',d:'SALES TAX',q:1.00,p:1.80,f:0.00,t:1.80}]},
   {inv:'517024381',date:'Sep 4, 2026',dt:'2026-09-04',acct:'2485',po:'359',store:'517',total:91.22,lines:[{c:'AFREEZER',d:'EXT LIFE RED ANTIFREEZE GAL',q:1.00,p:11.00,f:0.00,t:11.00},{c:'ML126',d:'COOLING SYSTEM LABOR MECHANICAL',q:0.50,p:138.00,f:0.00,t:69.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:9.96,f:0.00,t:9.96},{c:'SLTAX',d:'SALES TAX',q:1.00,p:1.26,f:0.00,t:1.26}]},
@@ -1807,7 +1831,7 @@ var INVOICE_DATA = [
 // Populated by query-portal-customer.py + apply-portal-generic.py
 // Each entry: { order, date, acct, store, po, total }
 var WO_DATA = { open_wo: [
-
+  {order:'517024466',date:'9/14/2026',acct:'2485',store:'517',po:'871',total:0.00}
 ], wo_no_po: [
 
 ] };
@@ -2032,8 +2056,8 @@ function closeKpiDetail() {
 // Grouped by TIHHNUMPO; non-unit PO values (driver names) excluded below
 var CURRENT_MONTH_SPEND = [
   { unit:'4270',      acct:'2485', spend:472.69, inv:1 },
+  { unit:'502',       acct:'2485', spend:277.91, inv:2 },
   { unit:'103',       acct:'2485', spend:250.51, inv:2 },
-  { unit:'502',       acct:'2485', spend:189.87, inv:1 },
   { unit:'845',       acct:'2485', spend:100.76, inv:1 },
   { unit:'359',       acct:'2485', spend:91.22, inv:1 },
 ];
@@ -2090,12 +2114,14 @@ function renderFleetList(idx) {
   scaled.forEach(function(u) { activeKeys[u.acct + '|' + u.unit] = true; });
 
   var allUnits = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
-  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit]; });
+  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit] && !isDeleted(u.acct, u.unit); });
+  var deletedUnits = allUnits.filter(function(u){ return isDeleted(u.acct, u.unit); });
 
   document.getElementById('fl-sub').textContent = loLabel + ' – ' + hiLabel + ' · ' + units.length + ' vehicles with service activity';
   document.getElementById('fl-count').textContent = units.length + ' vehicles shown';
   document.getElementById('fl-footer-info').textContent = 'Showing ' + units.length + ' of ' + a.units + ' registered fleet vehicles';
   renderFleetTable(units);
+  renderDeletedFleetTable(deletedUnits);
 }
 
 function renderFleetTable(units) {
@@ -2113,9 +2139,85 @@ function renderFleetTable(units) {
   }
   var html = filtered.map(function(u) {
     var vin = u.vin ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + u.vin + '</span>' : '<span class="na">&mdash;</span>';
-    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + vin + '</td><td>' + (u.make || '<span class="na">&mdash;</span>') + '</td><td>' + (u.model || '<span class="na">&mdash;</span>') + '</td><td>' + (u.year > 0 ? u.year : '<span class="na">&mdash;</span>') + '</td><td>#' + u.acct + '</td></tr>';
-  }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No results match your search.</td></tr>';
+    var uEsc = u.unit.replace(/'/g, "\\'");
+    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + vin + '</td><td>' + (u.make || '<span class="na">&mdash;</span>') + '</td><td>' + (u.model || '<span class="na">&mdash;</span>') + '</td><td>' + (u.year > 0 ? u.year : '<span class="na">&mdash;</span>') + '</td><td>#' + u.acct + '</td>' +
+      '<td style="text-align:center;"><button class="btn-sm" style="font-size:11px;padding:3px 10px;" onclick="deleteVehicle(\'' + u.acct + '\',\'' + uEsc + '\')">Delete</button></td></tr>';
+  }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No results match your search.</td></tr>';
   document.getElementById('fl-tbody').innerHTML = html;
+}
+
+// ── Deleted Vehicles ──
+// Customer-facing "Delete" is an exclusion list layered on top of FLEET_DATA, not a
+// removal from it -- Invoices/Spend/Unit Spend still need full history for a unit the
+// customer deleted from this list view. DELETED_VEHICLES comes from the server (last
+// nightly refresh); sessionStorage overrides make a delete/restore stick immediately
+// in this tab without waiting for tonight's rebuild, same pattern as the login token.
+function getDeletedOverrides() {
+  try { return JSON.parse(sessionStorage.getItem('alma_portal_deleted_overrides') || '{}'); }
+  catch (e) { return {}; }
+}
+function setDeletedOverride(key, action) {
+  var o = getDeletedOverrides();
+  o[key] = action; // 'deleted' or 'restored'
+  try { sessionStorage.setItem('alma_portal_deleted_overrides', JSON.stringify(o)); } catch (e) {}
+}
+function isDeleted(acct, unit) {
+  var key = acct + '|' + unit;
+  var o = getDeletedOverrides();
+  if (o[key] === 'restored') return false;
+  if (o[key] === 'deleted') return true;
+  return (DELETED_VEHICLES || []).indexOf(key) !== -1;
+}
+// PM/DOT records are forward-looking compliance alerts, not history, so a deleted
+// (retired/sold) vehicle is excluded from both the counts and the record tables.
+function filterDeletedRecords(records) {
+  return (records || []).filter(function(r) { return !isDeleted(r.acct, r.unit); });
+}
+function computeCounts(records) {
+  var c = { overdue: 0, due_soon: 0, current: 0 };
+  records.forEach(function(r) {
+    if (r.status === 'overdue') c.overdue++;
+    else if (r.status === 'due_soon') c.due_soon++;
+    else c.current++;
+  });
+  return c;
+}
+function postVehicleAction(acct, unit, action) {
+  var url = (CUSTOMER_CONFIG || {}).delete_webhook;
+  if (!url) return;
+  var payload = {
+    type: 'portal_vehicle_delete',
+    customer_key: (CUSTOMER_CONFIG || {}).customer_key,
+    customer_slug: (CUSTOMER_CONFIG || {}).slug,
+    acct: acct, unit: unit, action: action,
+    submitted: new Date().toLocaleString()
+  };
+  fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
+    .catch(function(e) { console.warn('Delete-vehicle webhook error:', e); });
+}
+function deleteVehicle(acct, unit) {
+  if (!confirm('Delete unit ' + unit + ' from your fleet list?\n\nYou can restore it anytime from the Deleted Vehicles section below.')) return;
+  setDeletedOverride(acct + '|' + unit, 'deleted');
+  postVehicleAction(acct, unit, 'delete');
+  renderFleetList(currentAcct);
+}
+function restoreVehicle(acct, unit) {
+  setDeletedOverride(acct + '|' + unit, 'restored');
+  postVehicleAction(acct, unit, 'restore');
+  renderFleetList(currentAcct);
+}
+function renderDeletedFleetTable(units) {
+  var wrap = document.getElementById('fl-deleted-card');
+  if (!wrap) return;
+  document.getElementById('fl-deleted-count').textContent = '(' + units.length + ')';
+  wrap.style.display = units.length ? 'block' : 'none';
+  var sorted = units.slice().sort(function(a, b) { return a.unit.localeCompare(b.unit, undefined, {numeric:true}); });
+  document.getElementById('fl-deleted-tbody').innerHTML = sorted.map(function(u) {
+    var vin = u.vin ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + u.vin + '</span>' : '<span class="na">&mdash;</span>';
+    var uEsc = u.unit.replace(/'/g, "\\'");
+    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + vin + '</td><td>' + (u.make || '<span class="na">&mdash;</span>') + '</td><td>' + (u.model || '<span class="na">&mdash;</span>') + '</td><td>' + (u.year > 0 ? u.year : '<span class="na">&mdash;</span>') + '</td><td>#' + u.acct + '</td>' +
+      '<td style="text-align:center;"><button class="btn-sm primary" style="font-size:11px;padding:3px 10px;" onclick="restoreVehicle(\'' + u.acct + '\',\'' + uEsc + '\')">Restore</button></td></tr>';
+  }).join('');
 }
 
 function filterFleet() {
@@ -2126,7 +2228,7 @@ function filterFleet() {
   var activeKeys = {};
   scaled.forEach(function(u) { activeKeys[u.acct + '|' + u.unit] = true; });
   var allUnits = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
-  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit]; });
+  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit] && !isDeleted(u.acct, u.unit); });
   renderFleetTable(units);
 }
 
@@ -2555,7 +2657,7 @@ var MONTHS_BY_ACCT = {
     { label:'Jun 2026', short:'Jun 26', spend:4611.77 },
     { label:'Jul 2026', short:'Jul 26', spend:7057.84 },
     { label:'Aug 2026', short:'Aug 26', spend:637.52 },
-    { label:'Sep 2026', short:'Sep 26', spend:1105.05 },
+    { label:'Sep 2026', short:'Sep 26', spend:1193.09 },
   ],
 };
 function getMonths() { return MONTHS_BY_ACCT[ACCOUNTS[currentAcct].num] || MONTHS_BY_ACCT['ALL']; }
