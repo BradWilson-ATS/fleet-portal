@@ -718,7 +718,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
             </div>
           </div>
           <table>
-            <thead><tr><th class="sort-th" data-tbl="fl" data-col="unit" onclick="tblSort('fl','unit');filterFleet();">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="vin" onclick="tblSort('fl','vin');filterFleet();">VIN<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="make" onclick="tblSort('fl','make');filterFleet();">Make<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="model" onclick="tblSort('fl','model');filterFleet();">Model<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="year" onclick="tblSort('fl','year');filterFleet();">Year<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="acct" onclick="tblSort('fl','acct');filterFleet();">Account<span class="sa"></span></th></tr></thead>
+            <thead><tr><th class="sort-th" data-tbl="fl" data-col="unit" onclick="tblSort('fl','unit');filterFleet();">Unit Number<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="vin" onclick="tblSort('fl','vin');filterFleet();">VIN<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="make" onclick="tblSort('fl','make');filterFleet();">Make<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="model" onclick="tblSort('fl','model');filterFleet();">Model<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="year" onclick="tblSort('fl','year');filterFleet();">Year<span class="sa"></span></th><th class="sort-th" data-tbl="fl" data-col="acct" onclick="tblSort('fl','acct');filterFleet();">Account<span class="sa"></span></th><th style="text-align:center;">&nbsp;</th></tr></thead>
             <tbody id="fl-tbody"></tbody>
           </table>
           <div class="tbl-footer">
@@ -731,6 +731,18 @@ tr:hover td { background: rgba(255,255,255,0.04); }
               <button class="pg-btn" id="fl-last-page">17</button>
             </div>
           </div>
+        </div>
+
+        <!-- Deleted Vehicles — hidden while empty. Restoring here just clears the exclusion; -->
+        <!-- nothing was ever removed from MaddenCo or from Spend/Invoices history. -->
+        <div class="table-card" id="fl-deleted-card" style="margin-top:16px;display:none;">
+          <div class="table-hdr">
+            <div class="table-ttl">Deleted Vehicles &nbsp;<span style="font-size:12px;color:var(--g400);font-weight:400;" id="fl-deleted-count">(0)</span></div>
+          </div>
+          <table>
+            <thead><tr><th>Unit Number</th><th>VIN</th><th>Make</th><th>Model</th><th>Year</th><th>Account</th><th style="text-align:center;">&nbsp;</th></tr></thead>
+            <tbody id="fl-deleted-tbody"></tbody>
+          </table>
         </div>
       </div>
 
@@ -892,12 +904,14 @@ tr:hover td { background: rgba(255,255,255,0.04); }
 
 <script>
 // ── Customer config – injected by apply-portal-generic.py ──
-var CUSTOMER_CONFIG = {"slug": "tcb-logistics", "display_name": "TCB Logistics", "contact_email": "jeremy.jones@almatire.com, brad.wilson@almatire.com", "portal_password": "TCB-Fleet-2026", "pm_days": 90, "salesman_name": "Jeremy Jones", "salesman_email": "Jeremy.jones@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep"};
+var CUSTOMER_CONFIG = {"customer_key": "TCB", "slug": "tcb-logistics", "display_name": "TCB Logistics", "contact_email": "jeremy.jones@almatire.com, brad.wilson@almatire.com", "portal_password": "TCB-Fleet-2026", "pm_days": 90, "salesman_name": "Jeremy Jones", "salesman_email": "Jeremy.jones@almatire.com", "support_webhook": "https://almatire.app.n8n.cloud/webhook/portal-support", "rep_webhook": "https://almatire.app.n8n.cloud/webhook/portal-rep", "delete_webhook": "https://almatire.app.n8n.cloud/webhook/portal-delete-vehicle"};
+// ── Deleted vehicles – acct|unit keys, from deleted_vehicles.json via fetch_deleted() ──
+var DELETED_VEHICLES = [];
 
-// ── Account data (refreshed 2026-09-14 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-09-15 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
-  { num:'2163', label:'TCB Logistics', units:10, wo:1, po:0, inv:'220', spend:'$173,854', monthSpend:'$0', rgInv:1108, pmO:4, pmD:0, pmC:4, dotO:11, dotD:0, dotC:8, alert:'Action needed: 4 vehicles overdue for PM service; 11 vehicles overdue for DOT inspection.' }
+  { num:'2163', label:'TCB Logistics', units:10, wo:0, po:0, inv:'220', spend:'$173,854', monthSpend:'$0', rgInv:1108, pmO:4, pmD:0, pmC:4, dotO:11, dotD:0, dotC:8, alert:'Action needed: 4 vehicles overdue for PM service; 11 vehicles overdue for DOT inspection.' }
 ];
 var currentAcct = 0;
 
@@ -979,15 +993,18 @@ function applyAcct(idx) {
   document.getElementById('kpi-po').textContent = a.po;
   document.getElementById('kpi-inv').textContent = a.inv;
   // kpi-month-spend is set by updateSliderUI() below — do not pre-fill from ACCOUNTS.monthSpend
-  // PM / DOT counts — read from PM_DATA/DOT_DATA (live data) rather than ACCOUNTS
-  var pmAcct2  = PM_DATA[a.num]  || { overdue:0, due_soon:0, current:0 };
-  var dotAcct2 = DOT_DATA[a.num] || { overdue:0, due_soon:0, current:0 };
+  // PM / DOT counts — read from PM_DATA/DOT_DATA (live data) rather than ACCOUNTS,
+  // excluding any vehicle the customer has deleted from their Fleet List
+  var pmAcct2  = PM_DATA[a.num]  || { overdue:0, due_soon:0, current:0, records:[] };
+  var dotAcct2 = DOT_DATA[a.num] || { overdue:0, due_soon:0, current:0, records:[] };
+  var pmCounts2  = computeCounts(filterDeletedRecords(pmAcct2.records));
+  var dotCounts2 = computeCounts(filterDeletedRecords(dotAcct2.records));
   // sidebar badges
-  document.getElementById('badge-pm').textContent = pmAcct2.overdue;
-  if (pmAcct2.overdue === 0) document.getElementById('badge-pm').style.display = 'none';
+  document.getElementById('badge-pm').textContent = pmCounts2.overdue;
+  if (pmCounts2.overdue === 0) document.getElementById('badge-pm').style.display = 'none';
   else document.getElementById('badge-pm').style.display = '';
-  document.getElementById('badge-dot').textContent = dotAcct2.overdue;
-  if (dotAcct2.overdue === 0) document.getElementById('badge-dot').style.display = 'none';
+  document.getElementById('badge-dot').textContent = dotCounts2.overdue;
+  if (dotCounts2.overdue === 0) document.getElementById('badge-dot').style.display = 'none';
   else document.getElementById('badge-dot').style.display = '';
   // Invoice count + slider base
   currentInvBaseCount = parseInt(a.inv.replace(/,/g, ''));
@@ -1011,19 +1028,25 @@ function renderPMTable(idx) {
   var a = ACCOUNTS[idx];
   var pmAcct  = PM_DATA[a.num]  || { overdue:0, due_soon:0, current:0, records:[] };
   var dotAcct = DOT_DATA[a.num] || { overdue:0, due_soon:0, current:0, records:[] };
+  // Exclude deleted vehicles -- these are forward-looking compliance alerts, not
+  // history, so a retired/sold unit shouldn't keep nagging as overdue.
+  var pmRecords  = filterDeletedRecords(pmAcct.records);
+  var dotRecords = filterDeletedRecords(dotAcct.records);
+  var pmCounts   = computeCounts(pmRecords);
+  var dotCounts  = computeCounts(dotRecords);
 
   // PM status counts
-  document.getElementById('pm-s1').textContent = pmAcct.overdue;
-  document.getElementById('pm-s2').textContent = pmAcct.due_soon;
-  document.getElementById('pm-s3').textContent = pmAcct.current;
+  document.getElementById('pm-s1').textContent = pmCounts.overdue;
+  document.getElementById('pm-s2').textContent = pmCounts.due_soon;
+  document.getElementById('pm-s3').textContent = pmCounts.current;
   // DOT status counts
-  document.getElementById('dot-s1').textContent = dotAcct.overdue;
-  document.getElementById('dot-s2').textContent = dotAcct.due_soon;
-  document.getElementById('dot-s3').textContent = dotAcct.current;
+  document.getElementById('dot-s1').textContent = dotCounts.overdue;
+  document.getElementById('dot-s2').textContent = dotCounts.due_soon;
+  document.getElementById('dot-s3').textContent = dotCounts.current;
 
   // PM table
   var pmTbody = document.querySelector('#page-pm table tbody');
-  if (!pmAcct.records || pmAcct.records.length === 0) {
+  if (pmRecords.length === 0) {
     pmTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No PM service records on file for this account. PM tracking is available for vehicles serviced through Alma Tire.</td></tr>';
   } else {
     var fleetLookup = {};
@@ -1032,7 +1055,7 @@ function renderPMTable(idx) {
       if (!fleetLookup[k] || (f.vin && !fleetLookup[k].vin)) fleetLookup[k] = f;
     });
     syncSortThs('pm');
-    var pmRecs = doSort(pmAcct.records.slice(), 'pm', function(r, c) {
+    var pmRecs = doSort(pmRecords.slice(), 'pm', function(r, c) {
       if (c === 'unit') return r.unit;
       if (c === 'make') { var _fd = fleetLookup[r.acct + '|' + r.unit]; return _fd ? ((_fd.make || '') + (_fd.model ? ' ' + _fd.model : '')).trim() : ''; }
       if (c === 'last_pm') return r.last_pm || 0;
@@ -1064,11 +1087,11 @@ function renderPMTable(idx) {
 
   // DOT table (separate tbody in page-dot)
   var dotTbody = document.querySelector('#page-dot table tbody');
-  if (!dotAcct.records || dotAcct.records.length === 0) {
+  if (dotRecords.length === 0) {
     dotTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No DOT inspection records on file for this account. DOT compliance tracking is available for vehicles inspected through Alma Tire.</td></tr>';
   } else {
     syncSortThs('dot');
-    var dotRecs = doSort(dotAcct.records.slice(), 'dot', function(r, c) {
+    var dotRecs = doSort(dotRecords.slice(), 'dot', function(r, c) {
       if (c === 'unit') return r.unit;
       if (c === 'make') { var _fdd = (FLEET_DATA || []).find(function(f){ return f.acct === r.acct && f.unit === r.unit; }); return _fdd ? ((_fdd.make || '') + (_fdd.model ? ' ' + _fdd.model : '')).trim() : ''; }
       if (c === 'last_insp') return r.last_dot || 0;
@@ -1360,37 +1383,37 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   '2163': { overdue:4, due_soon:0, current:4, records:[
-    {unit:'NEW', acct:'2163', last_pm:'2026-09-02', next_pm:'2026-12-02', days:79, status:'current'},
-    {unit:'NEW FREIGHTLINER', acct:'2163', last_pm:'2026-05-01', next_pm:'2026-08-01', days:-44, status:'overdue'},
-    {unit:'165', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-63, status:'overdue'},
-    {unit:'545', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-63, status:'overdue'},
-    {unit:'594', acct:'2163', last_pm:'2026-05-11', next_pm:'2026-08-11', days:-34, status:'overdue'},
-    {unit:'632', acct:'2163', last_pm:'2026-08-07', next_pm:'2026-11-07', days:54, status:'current'},
-    {unit:'641', acct:'2163', last_pm:'2026-08-07', next_pm:'2026-11-07', days:54, status:'current'},
-    {unit:'998', acct:'2163', last_pm:'2026-07-29', next_pm:'2026-10-29', days:45, status:'current'},
+    {unit:'NEW', acct:'2163', last_pm:'2026-09-02', next_pm:'2026-12-02', days:78, status:'current'},
+    {unit:'NEW FREIGHTLINER', acct:'2163', last_pm:'2026-05-01', next_pm:'2026-08-01', days:-45, status:'overdue'},
+    {unit:'165', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-64, status:'overdue'},
+    {unit:'545', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-64, status:'overdue'},
+    {unit:'594', acct:'2163', last_pm:'2026-05-11', next_pm:'2026-08-11', days:-35, status:'overdue'},
+    {unit:'632', acct:'2163', last_pm:'2026-08-07', next_pm:'2026-11-07', days:53, status:'current'},
+    {unit:'641', acct:'2163', last_pm:'2026-08-07', next_pm:'2026-11-07', days:53, status:'current'},
+    {unit:'998', acct:'2163', last_pm:'2026-07-29', next_pm:'2026-10-29', days:44, status:'current'},
   ] },
 };
 var DOT_DATA = {
   '2163': { overdue:11, due_soon:0, current:8, records:[
-    {unit:'139026 BLACK COUCH', acct:'2163', last_dot:'2021-06-30', next_dot:'2022-06-30', days:-1537, status:'overdue'},
-    {unit:'TCB', acct:'2163', last_dot:'2020-07-20', next_dot:'2021-07-20', days:-1882, status:'overdue'},
-    {unit:'417', acct:'2163', last_dot:'2022-04-19', next_dot:'2023-04-19', days:-1244, status:'overdue'},
-    {unit:'NEW', acct:'2163', last_dot:'2026-09-02', next_dot:'2027-09-02', days:353, status:'current'},
-    {unit:'1', acct:'2163', last_dot:'2021-05-05', next_dot:'2022-05-05', days:-1593, status:'overdue'},
-    {unit:'632', acct:'2163', last_dot:'2026-06-30', next_dot:'2027-06-30', days:289, status:'current'},
-    {unit:'026', acct:'2163', last_dot:'2022-06-15', next_dot:'2023-06-15', days:-1187, status:'overdue'},
-    {unit:'139371', acct:'2163', last_dot:'2020-07-10', next_dot:'2021-07-10', days:-1892, status:'overdue'},
-    {unit:'NEW INT', acct:'2163', last_dot:'2021-04-27', next_dot:'2022-04-27', days:-1601, status:'overdue'},
-    {unit:'594', acct:'2163', last_dot:'2026-05-29', next_dot:'2027-05-29', days:257, status:'current'},
-    {unit:'545', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:249, status:'current'},
-    {unit:'165', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:249, status:'current'},
-    {unit:'INTERNATIONAL', acct:'2163', last_dot:'2019-07-19', next_dot:'2020-07-19', days:-2248, status:'overdue'},
-    {unit:'112', acct:'2163', last_dot:'2026-04-10', next_dot:'2027-04-10', days:208, status:'current'},
-    {unit:'998', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:348, status:'current'},
-    {unit:'293594', acct:'2163', last_dot:'2025-05-02', next_dot:'2026-05-02', days:-135, status:'overdue'},
-    {unit:'168545', acct:'2163', last_dot:'2025-05-23', next_dot:'2026-05-23', days:-114, status:'overdue'},
-    {unit:'641', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:348, status:'current'},
-    {unit:'KENWORTH', acct:'2163', last_dot:'2019-07-17', next_dot:'2020-07-17', days:-2250, status:'overdue'},
+    {unit:'139026 BLACK COUCH', acct:'2163', last_dot:'2021-06-30', next_dot:'2022-06-30', days:-1538, status:'overdue'},
+    {unit:'TCB', acct:'2163', last_dot:'2020-07-20', next_dot:'2021-07-20', days:-1883, status:'overdue'},
+    {unit:'417', acct:'2163', last_dot:'2022-04-19', next_dot:'2023-04-19', days:-1245, status:'overdue'},
+    {unit:'NEW', acct:'2163', last_dot:'2026-09-02', next_dot:'2027-09-02', days:352, status:'current'},
+    {unit:'1', acct:'2163', last_dot:'2021-05-05', next_dot:'2022-05-05', days:-1594, status:'overdue'},
+    {unit:'632', acct:'2163', last_dot:'2026-06-30', next_dot:'2027-06-30', days:288, status:'current'},
+    {unit:'026', acct:'2163', last_dot:'2022-06-15', next_dot:'2023-06-15', days:-1188, status:'overdue'},
+    {unit:'139371', acct:'2163', last_dot:'2020-07-10', next_dot:'2021-07-10', days:-1893, status:'overdue'},
+    {unit:'NEW INT', acct:'2163', last_dot:'2021-04-27', next_dot:'2022-04-27', days:-1602, status:'overdue'},
+    {unit:'594', acct:'2163', last_dot:'2026-05-29', next_dot:'2027-05-29', days:256, status:'current'},
+    {unit:'545', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:248, status:'current'},
+    {unit:'165', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:248, status:'current'},
+    {unit:'INTERNATIONAL', acct:'2163', last_dot:'2019-07-19', next_dot:'2020-07-19', days:-2249, status:'overdue'},
+    {unit:'112', acct:'2163', last_dot:'2026-04-10', next_dot:'2027-04-10', days:207, status:'current'},
+    {unit:'998', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:347, status:'current'},
+    {unit:'293594', acct:'2163', last_dot:'2025-05-02', next_dot:'2026-05-02', days:-136, status:'overdue'},
+    {unit:'168545', acct:'2163', last_dot:'2025-05-23', next_dot:'2026-05-23', days:-115, status:'overdue'},
+    {unit:'641', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:347, status:'current'},
+    {unit:'KENWORTH', acct:'2163', last_dot:'2019-07-17', next_dot:'2020-07-17', days:-2251, status:'overdue'},
   ] },
 };
 
@@ -1631,7 +1654,7 @@ var INVOICE_DATA = [
 // Populated by query-portal-customer.py + apply-portal-generic.py
 // Each entry: { order, date, acct, store, po, total }
 var WO_DATA = { open_wo: [
-  {order:'517024412',date:'9/9/2026',acct:'2163',store:'517',po:'CHANGE CUSTOMER',total:0.00}
+
 ], wo_no_po: [
 
 ] };
@@ -1912,12 +1935,14 @@ function renderFleetList(idx) {
   scaled.forEach(function(u) { activeKeys[u.acct + '|' + u.unit] = true; });
 
   var allUnits = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
-  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit]; });
+  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit] && !isDeleted(u.acct, u.unit); });
+  var deletedUnits = allUnits.filter(function(u){ return isDeleted(u.acct, u.unit); });
 
   document.getElementById('fl-sub').textContent = loLabel + ' – ' + hiLabel + ' · ' + units.length + ' vehicles with service activity';
   document.getElementById('fl-count').textContent = units.length + ' vehicles shown';
   document.getElementById('fl-footer-info').textContent = 'Showing ' + units.length + ' of ' + a.units + ' registered fleet vehicles';
   renderFleetTable(units);
+  renderDeletedFleetTable(deletedUnits);
 }
 
 function renderFleetTable(units) {
@@ -1935,9 +1960,85 @@ function renderFleetTable(units) {
   }
   var html = filtered.map(function(u) {
     var vin = u.vin ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + u.vin + '</span>' : '<span class="na">&mdash;</span>';
-    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + vin + '</td><td>' + (u.make || '<span class="na">&mdash;</span>') + '</td><td>' + (u.model || '<span class="na">&mdash;</span>') + '</td><td>' + (u.year > 0 ? u.year : '<span class="na">&mdash;</span>') + '</td><td>#' + u.acct + '</td></tr>';
-  }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No results match your search.</td></tr>';
+    var uEsc = u.unit.replace(/'/g, "\\'");
+    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + vin + '</td><td>' + (u.make || '<span class="na">&mdash;</span>') + '</td><td>' + (u.model || '<span class="na">&mdash;</span>') + '</td><td>' + (u.year > 0 ? u.year : '<span class="na">&mdash;</span>') + '</td><td>#' + u.acct + '</td>' +
+      '<td style="text-align:center;"><button class="btn-sm" style="font-size:11px;padding:3px 10px;" onclick="deleteVehicle(\'' + u.acct + '\',\'' + uEsc + '\')">Delete</button></td></tr>';
+  }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">No results match your search.</td></tr>';
   document.getElementById('fl-tbody').innerHTML = html;
+}
+
+// ── Deleted Vehicles ──
+// Customer-facing "Delete" is an exclusion list layered on top of FLEET_DATA, not a
+// removal from it -- Invoices/Spend/Unit Spend still need full history for a unit the
+// customer deleted from this list view. DELETED_VEHICLES comes from the server (last
+// nightly refresh); sessionStorage overrides make a delete/restore stick immediately
+// in this tab without waiting for tonight's rebuild, same pattern as the login token.
+function getDeletedOverrides() {
+  try { return JSON.parse(sessionStorage.getItem('alma_portal_deleted_overrides') || '{}'); }
+  catch (e) { return {}; }
+}
+function setDeletedOverride(key, action) {
+  var o = getDeletedOverrides();
+  o[key] = action; // 'deleted' or 'restored'
+  try { sessionStorage.setItem('alma_portal_deleted_overrides', JSON.stringify(o)); } catch (e) {}
+}
+function isDeleted(acct, unit) {
+  var key = acct + '|' + unit;
+  var o = getDeletedOverrides();
+  if (o[key] === 'restored') return false;
+  if (o[key] === 'deleted') return true;
+  return (DELETED_VEHICLES || []).indexOf(key) !== -1;
+}
+// PM/DOT records are forward-looking compliance alerts, not history, so a deleted
+// (retired/sold) vehicle is excluded from both the counts and the record tables.
+function filterDeletedRecords(records) {
+  return (records || []).filter(function(r) { return !isDeleted(r.acct, r.unit); });
+}
+function computeCounts(records) {
+  var c = { overdue: 0, due_soon: 0, current: 0 };
+  records.forEach(function(r) {
+    if (r.status === 'overdue') c.overdue++;
+    else if (r.status === 'due_soon') c.due_soon++;
+    else c.current++;
+  });
+  return c;
+}
+function postVehicleAction(acct, unit, action) {
+  var url = (CUSTOMER_CONFIG || {}).delete_webhook;
+  if (!url) return;
+  var payload = {
+    type: 'portal_vehicle_delete',
+    customer_key: (CUSTOMER_CONFIG || {}).customer_key,
+    customer_slug: (CUSTOMER_CONFIG || {}).slug,
+    acct: acct, unit: unit, action: action,
+    submitted: new Date().toLocaleString()
+  };
+  fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
+    .catch(function(e) { console.warn('Delete-vehicle webhook error:', e); });
+}
+function deleteVehicle(acct, unit) {
+  if (!confirm('Delete unit ' + unit + ' from your fleet list?\n\nYou can restore it anytime from the Deleted Vehicles section below.')) return;
+  setDeletedOverride(acct + '|' + unit, 'deleted');
+  postVehicleAction(acct, unit, 'delete');
+  renderFleetList(currentAcct);
+}
+function restoreVehicle(acct, unit) {
+  setDeletedOverride(acct + '|' + unit, 'restored');
+  postVehicleAction(acct, unit, 'restore');
+  renderFleetList(currentAcct);
+}
+function renderDeletedFleetTable(units) {
+  var wrap = document.getElementById('fl-deleted-card');
+  if (!wrap) return;
+  document.getElementById('fl-deleted-count').textContent = '(' + units.length + ')';
+  wrap.style.display = units.length ? 'block' : 'none';
+  var sorted = units.slice().sort(function(a, b) { return a.unit.localeCompare(b.unit, undefined, {numeric:true}); });
+  document.getElementById('fl-deleted-tbody').innerHTML = sorted.map(function(u) {
+    var vin = u.vin ? '<span style="font-size:11px;font-family:monospace;color:var(--g600);">' + u.vin + '</span>' : '<span class="na">&mdash;</span>';
+    var uEsc = u.unit.replace(/'/g, "\\'");
+    return '<tr><td style="font-weight:600;">' + u.unit + '</td><td>' + vin + '</td><td>' + (u.make || '<span class="na">&mdash;</span>') + '</td><td>' + (u.model || '<span class="na">&mdash;</span>') + '</td><td>' + (u.year > 0 ? u.year : '<span class="na">&mdash;</span>') + '</td><td>#' + u.acct + '</td>' +
+      '<td style="text-align:center;"><button class="btn-sm primary" style="font-size:11px;padding:3px 10px;" onclick="restoreVehicle(\'' + u.acct + '\',\'' + uEsc + '\')">Restore</button></td></tr>';
+  }).join('');
 }
 
 function filterFleet() {
@@ -1948,7 +2049,7 @@ function filterFleet() {
   var activeKeys = {};
   scaled.forEach(function(u) { activeKeys[u.acct + '|' + u.unit] = true; });
   var allUnits = (a.num === 'ALL') ? FLEET_DATA : FLEET_DATA.filter(function(u){ return u.acct === a.num; });
-  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit]; });
+  var units = allUnits.filter(function(u){ return activeKeys[u.acct + '|' + u.unit] && !isDeleted(u.acct, u.unit); });
   renderFleetTable(units);
 }
 
