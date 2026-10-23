@@ -908,7 +908,7 @@ var CUSTOMER_CONFIG = {"customer_key": "TCB", "slug": "tcb-logistics", "display_
 // ── Deleted vehicles – acct|unit keys, from deleted_vehicles.json via fetch_deleted() ──
 var DELETED_VEHICLES = [];
 
-// ── Account data (refreshed 2026-10-22 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-10-23 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
   { num:'2163', label:'TCB Logistics', units:10, wo:0, po:0, inv:'219', spend:'$174,629', monthSpend:'$0', rgInv:1104, pmO:4, pmD:1, pmC:3, dotO:11, dotD:0, dotC:8, alert:'Action needed: 4 vehicles overdue for PM service; 1 vehicle due for PM within 30 days; 11 vehicles overdue for DOT inspection.' }
@@ -1383,37 +1383,37 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   '2163': { overdue:4, due_soon:1, current:3, records:[
-    {unit:'NEW', acct:'2163', last_pm:'2026-09-02', next_pm:'2026-12-02', days:41, status:'current'},
-    {unit:'NEW FREIGHTLINER', acct:'2163', last_pm:'2026-05-01', next_pm:'2026-08-01', days:-82, status:'overdue'},
-    {unit:'165', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-101, status:'overdue'},
-    {unit:'545', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-101, status:'overdue'},
-    {unit:'594', acct:'2163', last_pm:'2026-05-11', next_pm:'2026-08-11', days:-72, status:'overdue'},
-    {unit:'632', acct:'2163', last_pm:'2026-10-08', next_pm:'2027-01-08', days:78, status:'current'},
-    {unit:'641', acct:'2163', last_pm:'2026-10-01', next_pm:'2027-01-01', days:71, status:'current'},
-    {unit:'998', acct:'2163', last_pm:'2026-07-29', next_pm:'2026-10-29', days:7, status:'due_soon'},
+    {unit:'NEW', acct:'2163', last_pm:'2026-09-02', next_pm:'2026-12-02', days:40, status:'current'},
+    {unit:'NEW FREIGHTLINER', acct:'2163', last_pm:'2026-05-01', next_pm:'2026-08-01', days:-83, status:'overdue'},
+    {unit:'165', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-102, status:'overdue'},
+    {unit:'545', acct:'2163', last_pm:'2026-04-13', next_pm:'2026-07-13', days:-102, status:'overdue'},
+    {unit:'594', acct:'2163', last_pm:'2026-05-11', next_pm:'2026-08-11', days:-73, status:'overdue'},
+    {unit:'632', acct:'2163', last_pm:'2026-10-08', next_pm:'2027-01-08', days:77, status:'current'},
+    {unit:'641', acct:'2163', last_pm:'2026-10-01', next_pm:'2027-01-01', days:70, status:'current'},
+    {unit:'998', acct:'2163', last_pm:'2026-07-29', next_pm:'2026-10-29', days:6, status:'due_soon'},
   ] },
 };
 var DOT_DATA = {
   '2163': { overdue:11, due_soon:0, current:8, records:[
-    {unit:'139026 BLACK COUCH', acct:'2163', last_dot:'2021-06-30', next_dot:'2022-06-30', days:-1575, status:'overdue'},
-    {unit:'TCB', acct:'2163', last_dot:'2020-07-20', next_dot:'2021-07-20', days:-1920, status:'overdue'},
-    {unit:'417', acct:'2163', last_dot:'2022-04-19', next_dot:'2023-04-19', days:-1282, status:'overdue'},
-    {unit:'NEW', acct:'2163', last_dot:'2026-09-02', next_dot:'2027-09-02', days:315, status:'current'},
-    {unit:'1', acct:'2163', last_dot:'2021-05-05', next_dot:'2022-05-05', days:-1631, status:'overdue'},
-    {unit:'632', acct:'2163', last_dot:'2026-06-30', next_dot:'2027-06-30', days:251, status:'current'},
-    {unit:'026', acct:'2163', last_dot:'2022-06-15', next_dot:'2023-06-15', days:-1225, status:'overdue'},
-    {unit:'139371', acct:'2163', last_dot:'2020-07-10', next_dot:'2021-07-10', days:-1930, status:'overdue'},
-    {unit:'NEW INT', acct:'2163', last_dot:'2021-04-27', next_dot:'2022-04-27', days:-1639, status:'overdue'},
-    {unit:'594', acct:'2163', last_dot:'2026-05-29', next_dot:'2027-05-29', days:219, status:'current'},
-    {unit:'545', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:211, status:'current'},
-    {unit:'165', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:211, status:'current'},
-    {unit:'INTERNATIONAL', acct:'2163', last_dot:'2019-07-19', next_dot:'2020-07-19', days:-2286, status:'overdue'},
-    {unit:'112', acct:'2163', last_dot:'2026-04-10', next_dot:'2027-04-10', days:170, status:'current'},
-    {unit:'998', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:310, status:'current'},
-    {unit:'293594', acct:'2163', last_dot:'2025-05-02', next_dot:'2026-05-02', days:-173, status:'overdue'},
-    {unit:'168545', acct:'2163', last_dot:'2025-05-23', next_dot:'2026-05-23', days:-152, status:'overdue'},
-    {unit:'641', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:310, status:'current'},
-    {unit:'KENWORTH', acct:'2163', last_dot:'2019-07-17', next_dot:'2020-07-17', days:-2288, status:'overdue'},
+    {unit:'139026 BLACK COUCH', acct:'2163', last_dot:'2021-06-30', next_dot:'2022-06-30', days:-1576, status:'overdue'},
+    {unit:'TCB', acct:'2163', last_dot:'2020-07-20', next_dot:'2021-07-20', days:-1921, status:'overdue'},
+    {unit:'417', acct:'2163', last_dot:'2022-04-19', next_dot:'2023-04-19', days:-1283, status:'overdue'},
+    {unit:'NEW', acct:'2163', last_dot:'2026-09-02', next_dot:'2027-09-02', days:314, status:'current'},
+    {unit:'1', acct:'2163', last_dot:'2021-05-05', next_dot:'2022-05-05', days:-1632, status:'overdue'},
+    {unit:'632', acct:'2163', last_dot:'2026-06-30', next_dot:'2027-06-30', days:250, status:'current'},
+    {unit:'026', acct:'2163', last_dot:'2022-06-15', next_dot:'2023-06-15', days:-1226, status:'overdue'},
+    {unit:'139371', acct:'2163', last_dot:'2020-07-10', next_dot:'2021-07-10', days:-1931, status:'overdue'},
+    {unit:'NEW INT', acct:'2163', last_dot:'2021-04-27', next_dot:'2022-04-27', days:-1640, status:'overdue'},
+    {unit:'594', acct:'2163', last_dot:'2026-05-29', next_dot:'2027-05-29', days:218, status:'current'},
+    {unit:'545', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:210, status:'current'},
+    {unit:'165', acct:'2163', last_dot:'2026-05-21', next_dot:'2027-05-21', days:210, status:'current'},
+    {unit:'INTERNATIONAL', acct:'2163', last_dot:'2019-07-19', next_dot:'2020-07-19', days:-2287, status:'overdue'},
+    {unit:'112', acct:'2163', last_dot:'2026-04-10', next_dot:'2027-04-10', days:169, status:'current'},
+    {unit:'998', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:309, status:'current'},
+    {unit:'293594', acct:'2163', last_dot:'2025-05-02', next_dot:'2026-05-02', days:-174, status:'overdue'},
+    {unit:'168545', acct:'2163', last_dot:'2025-05-23', next_dot:'2026-05-23', days:-153, status:'overdue'},
+    {unit:'641', acct:'2163', last_dot:'2026-08-28', next_dot:'2027-08-28', days:309, status:'current'},
+    {unit:'KENWORTH', acct:'2163', last_dot:'2019-07-17', next_dot:'2020-07-17', days:-2289, status:'overdue'},
   ] },
 };
 
