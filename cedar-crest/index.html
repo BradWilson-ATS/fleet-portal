@@ -398,7 +398,7 @@ tr:hover td { background: rgba(255,255,255,0.04); }
       <div>
         <div class="acct-num" style="color:var(--red);">Account #2372</div>
         <div class="acct-name">Cedar Crest Dairy</div>
-        <div class="acct-detail">67 active units &middot; $129,513 over past 24 months</div>
+        <div class="acct-detail">67 active units &middot; $123,280 over past 24 months</div>
       </div>
       <div style="font-size:11px;font-weight:700;background:var(--red);color:white;padding:4px 12px;border-radius:20px;">DEFAULT</div>
     </div>
@@ -480,8 +480,8 @@ tr:hover td { background: rgba(255,255,255,0.04); }
       <div class="range-wrap" id="range-wrap">
         <div class="range-track"></div>
         <div class="range-fill" id="range-fill"></div>
-        <input type="range" id="slider-min" min="0" max="760" value="0" step="1">
-        <input type="range" id="slider-max" min="0" max="760" value="760" step="1">
+        <input type="range" id="slider-min" min="0" max="759" value="0" step="1">
+        <input type="range" id="slider-max" min="0" max="759" value="759" step="1">
       </div>
       <div class="range-ticks" id="dash-ticks"></div>
       <div class="dash-chart-lbl" style="display:flex;align-items:baseline;gap:10px;">Total Spend <span id="chart-spend-total" style="color:#ef4444;font-size:16px;font-weight:700;"></span></div>
@@ -908,10 +908,10 @@ var CUSTOMER_CONFIG = {"customer_key": "CEDARCREST", "slug": "cedar-crest", "dis
 // ── Deleted vehicles – acct|unit keys, from deleted_vehicles.json via fetch_deleted() ──
 var DELETED_VEHICLES = [];
 
-// ── Account data (refreshed 2026-10-31 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-11-01 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
-  { num:'2372', label:'Cedar Crest Dairy', units:67, wo:1, po:0, inv:'188', spend:'$129,513', monthSpend:'$0', rgInv:985, pmO:1, pmD:2, pmC:2, dotO:23, dotD:0, dotC:4, alert:'Action needed: 1 vehicle overdue for PM service; 2 vehicles due for PM within 30 days; 23 vehicles overdue for DOT inspection.' }
+  { num:'2372', label:'Cedar Crest Dairy', units:67, wo:1, po:0, inv:'180', spend:'$123,280', monthSpend:'$0', rgInv:941, pmO:1, pmD:2, pmC:2, dotO:23, dotD:0, dotC:4, alert:'Action needed: 1 vehicle overdue for PM service; 2 vehicles due for PM within 30 days; 23 vehicles overdue for DOT inspection.' }
 ];
 var currentAcct = 0;
 
@@ -1237,12 +1237,11 @@ var UNIT_SPEND_DATA = [
   { unit:'247', make:'', model:'', acct:'2372', spend:207.40, inv:1, last:'Apr 28, 2023' },
 ];
 
-// ── Unit Spend Monthly – per-unit spend by month Oct 2024 – Oct 2026 from MaddenCo ODBC ──
+// ── Unit Spend Monthly – per-unit spend by month Nov 2024 – Nov 2026 from MaddenCo ODBC ──
 // Populated by query-portal-customer.py + apply-portal-generic.py
 // Structure: { acct: { ym: [{unit, acct, spend, inv}] } }
 var UNIT_SPEND_MONTHLY = {
   '2372': {
-    '202410': [{unit:'263',acct:'2372',spend:3237.22,inv:3},{unit:'210',acct:'2372',spend:2324.41,inv:2},{unit:'1240',acct:'2372',spend:507.22,inv:2},{unit:'1238',acct:'2372',spend:164.59,inv:1}],
     '202411': [{unit:'210',acct:'2372',spend:1846.39,inv:2},{unit:'263',acct:'2372',spend:993.58,inv:1},{unit:'1238',acct:'2372',spend:408.73,inv:2}],
     '202412': [{unit:'1238',acct:'2372',spend:1572.62,inv:3},{unit:'1240',acct:'2372',spend:1167.48,inv:2},{unit:'266',acct:'2372',spend:999.21,inv:1},{unit:'263',acct:'2372',spend:819.01,inv:1},{unit:'210',acct:'2372',spend:660.15,inv:1}],
     '202501': [{unit:'210',acct:'2372',spend:5378.46,inv:4},{unit:'266',acct:'2372',spend:1229.23,inv:2},{unit:'242',acct:'2372',spend:1091.38,inv:1},{unit:'1265',acct:'2372',spend:1010.24,inv:2},{unit:'1240',acct:'2372',spend:864.30,inv:1},{unit:'1237',acct:'2372',spend:421.29,inv:1},{unit:'263',acct:'2372',spend:408.73,inv:1},{unit:'1214',acct:'2372',spend:261.12,inv:1}],
@@ -1349,50 +1348,47 @@ var FLEET_DATA = [
 // Repair group data — direct from MaddenCo ODBC (TMIHSH + TMIHSL + TMPCLS)
 // Oct 2025 – Apr 2026 · TIHHVOIDYN='N' · Spend = (TIHLPRC*TIHLQTY)+(TIHLFET*TIHLQTY) [FET-inclusive]
 // Grouped by product class (TIHLCLSPRD → TMPCLS.PCLSDESC) — matches Phocas logic
-// ── Repair Groups – product category spend Oct 2024 – Oct 2026 from MaddenCo ODBC ──
+// ── Repair Groups – product category spend Nov 2024 – Nov 2026 from MaddenCo ODBC ──
 var REPAIR_GROUPS = {
   '2372': [
-    { name:'Pm Labor',                                      color:'#6b7280', spend:28428.0,   inv:121,  pct:21.95  },
-    { name:'Stock Retreads',                                color:'#b01228', spend:8839.57,   inv:11,   pct:6.83   },
-    { name:'Shop Supplies',                                 color:'#9ca3af', spend:8146.75,   inv:173,  pct:6.29   },
-    { name:'Tuneup Parts',                                  color:'#6b7280', spend:8051.73,   inv:34,   pct:6.22   },
-    { name:'Tuneup Labor',                                  color:'#6b7280', spend:8038.5,    inv:43,   pct:6.21   },
-    { name:'Road Service/Mileage',                          color:'#d97706', spend:7511.94,   inv:17,   pct:5.80   },
-    { name:'Electrical Labor',                              color:'#6b7280', spend:7297.0,    inv:48,   pct:5.63   },
-    { name:'Oil Change/Pm Parts',                           color:'#6b7280', spend:6882.14,   inv:39,   pct:5.31   },
-    { name:'Brake Labor',                                   color:'#6b7280', spend:5313.0,    inv:24,   pct:4.10   },
-    { name:'Brake Parts',                                   color:'#6b7280', spend:4047.12,   inv:22,   pct:3.12   },
-    { name:'Misc Mech Labor',                               color:'#6b7280', spend:3746.0,    inv:25,   pct:2.89   },
-    { name:'Hvac Parts',                                    color:'#6b7280', spend:3348.22,   inv:4,    pct:2.59   },
-    { name:'Sales Taxes',                                   color:'#6b7280', spend:3194.93,   inv:188,  pct:2.47   },
-    { name:'Electrical Parts',                              color:'#6b7280', spend:2813.31,   inv:40,   pct:2.17   },
-    { name:'Suspension Labor',                              color:'#6b7280', spend:2714.95,   inv:5,    pct:2.10   },
-    { name:'Exhaust Labor',                                 color:'#6b7280', spend:2553.0,    inv:10,   pct:1.97   },
-    { name:'Med Truck Steer',                               color:'#2d2d2d', spend:2484.42,   inv:3,    pct:1.92   },
-    { name:'Fuel Surcharge',                                color:'#f59e0b', spend:2405.0,    inv:15,   pct:1.86   },
-    { name:'Steer/Suspension Parts',                        color:'#6b7280', spend:2280.7,    inv:5,    pct:1.76   },
-    { name:'Tire Service',                                  color:'#4D4D4D', spend:2260.5,    inv:13,   pct:1.75   },
-    { name:'Exhaust Parts',                                 color:'#6b7280', spend:1891.1,    inv:7,    pct:1.46   },
-    { name:'Cooling System Parts',                          color:'#6b7280', spend:1379.32,   inv:34,   pct:1.07   },
-    { name:'Hvac Labor',                                    color:'#6b7280', spend:1311.0,    inv:3,    pct:1.01   },
-    { name:'Driveline Parts',                               color:'#6b7280', spend:917.87,    inv:10,   pct:0.71   },
-    { name:'Valve Stems',                                   color:'#64748b', spend:815.85,    inv:38,   pct:0.63   },
-    { name:'Driveline Labor',                               color:'#6b7280', spend:759.0,     inv:6,    pct:0.59   },
-    { name:'Cooling System Labor',                          color:'#6b7280', spend:621.0,     inv:4,    pct:0.48   },
-    { name:'Misc Parts/Access',                             color:'#6b7280', spend:509.32,    inv:25,   pct:0.39   },
-    { name:'Wheel-End Parts',                               color:'#6b7280', spend:403.22,    inv:3,    pct:0.31   },
-    { name:'Disposal Expense',                              color:'#6b7280', spend:264.0,     inv:10,   pct:0.20   },
-    { name:'Alignment Labor',                               color:'#6b7280', spend:199.95,    inv:2,    pct:0.15   },
-    { name:'Wheels/Rims',                                   color:'#374151', spend:194.66,    inv:1,    pct:0.15   },
-    { name:'Transmission Parts',                            color:'#6b7280', spend:0.0,       inv:1,    pct:0.00   },
-    { name:'Casing Purchase Default Class',                 color:'#6b7280', spend:-110.0,    inv:1,    pct:-0.08  },
+    { name:'Pm Labor',                                      color:'#6b7280', spend:26910.0,   inv:114,  pct:21.83  },
+    { name:'Stock Retreads',                                color:'#b01228', spend:8839.57,   inv:11,   pct:7.17   },
+    { name:'Shop Supplies',                                 color:'#9ca3af', spend:7711.05,   inv:165,  pct:6.25   },
+    { name:'Tuneup Labor',                                  color:'#6b7280', spend:7624.5,    inv:42,   pct:6.18   },
+    { name:'Road Service/Mileage',                          color:'#d97706', spend:7511.94,   inv:17,   pct:6.09   },
+    { name:'Electrical Labor',                              color:'#6b7280', spend:7159.0,    inv:47,   pct:5.81   },
+    { name:'Tuneup Parts',                                  color:'#6b7280', spend:6887.24,   inv:33,   pct:5.59   },
+    { name:'Oil Change/Pm Parts',                           color:'#6b7280', spend:6870.14,   inv:38,   pct:5.57   },
+    { name:'Brake Labor',                                   color:'#6b7280', spend:5175.0,    inv:22,   pct:4.20   },
+    { name:'Brake Parts',                                   color:'#6b7280', spend:4020.12,   inv:21,   pct:3.26   },
+    { name:'Misc Mech Labor',                               color:'#6b7280', spend:3395.0,    inv:23,   pct:2.75   },
+    { name:'Hvac Parts',                                    color:'#6b7280', spend:3348.22,   inv:4,    pct:2.72   },
+    { name:'Sales Taxes',                                   color:'#6b7280', spend:3025.47,   inv:180,  pct:2.45   },
+    { name:'Electrical Parts',                              color:'#6b7280', spend:2795.45,   inv:39,   pct:2.27   },
+    { name:'Suspension Labor',                              color:'#6b7280', spend:2714.95,   inv:5,    pct:2.20   },
+    { name:'Fuel Surcharge',                                color:'#f59e0b', spend:2405.0,    inv:15,   pct:1.95   },
+    { name:'Steer/Suspension Parts',                        color:'#6b7280', spend:2280.7,    inv:5,    pct:1.85   },
+    { name:'Exhaust Labor',                                 color:'#6b7280', spend:2139.0,    inv:9,    pct:1.74   },
+    { name:'Tire Service',                                  color:'#4D4D4D', spend:2131.5,    inv:12,   pct:1.73   },
+    { name:'Exhaust Parts',                                 color:'#6b7280', spend:1891.1,    inv:7,    pct:1.53   },
+    { name:'Med Truck Steer',                               color:'#2d2d2d', spend:1601.24,   inv:2,    pct:1.30   },
+    { name:'Cooling System Parts',                          color:'#6b7280', spend:1358.32,   inv:32,   pct:1.10   },
+    { name:'Hvac Labor',                                    color:'#6b7280', spend:1311.0,    inv:3,    pct:1.06   },
+    { name:'Driveline Parts',                               color:'#6b7280', spend:889.78,    inv:9,    pct:0.72   },
+    { name:'Valve Stems',                                   color:'#64748b', spend:775.85,    inv:37,   pct:0.63   },
+    { name:'Cooling System Labor',                          color:'#6b7280', spend:621.0,     inv:4,    pct:0.50   },
+    { name:'Driveline Labor',                               color:'#6b7280', spend:621.0,     inv:5,    pct:0.50   },
+    { name:'Misc Parts/Access',                             color:'#6b7280', spend:509.32,    inv:25,   pct:0.41   },
+    { name:'Wheel-End Parts',                               color:'#6b7280', spend:403.22,    inv:2,    pct:0.33   },
+    { name:'Disposal Expense',                              color:'#6b7280', spend:264.0,     inv:10,   pct:0.21   },
+    { name:'Alignment Labor',                               color:'#6b7280', spend:199.95,    inv:2,    pct:0.16   },
+    { name:'Casing Purchase Default Class',                 color:'#6b7280', spend:-110.0,    inv:1,    pct:-0.09  },
   ],
 };
 
 // ── Repair Groups Monthly – per-category monthly spend from MaddenCo ODBC ──
 var REPAIR_GROUPS_MONTHLY = {
   '2372': {
-    '202410': [{name:'Pm Labor',spend:1518.00}, {name:'Tuneup Parts',spend:1164.49}, {name:'Med Truck Steer',spend:883.18}, {name:'Shop Supplies',spend:435.70}, {name:'Tuneup Labor',spend:414.00}, {name:'Exhaust Labor',spend:414.00}, {name:'Misc Mech Labor',spend:351.00}, {name:'Wheels/Rims',spend:194.66}, {name:'Sales Taxes',spend:169.46}, {name:'Driveline Labor',spend:138.00}, {name:'Electrical Labor',spend:138.00}, {name:'Brake Labor',spend:138.00}, {name:'Tire Service',spend:129.00}, {name:'Valve Stems',spend:40.00}, {name:'Driveline Parts',spend:28.09}, {name:'Brake Parts',spend:27.00}, {name:'Cooling System Parts',spend:21.00}, {name:'Electrical Parts',spend:17.86}, {name:'Oil Change/Pm Parts',spend:12.00}, {name:'Transmission Parts',spend:0.00}, {name:'Wheel-End Parts',spend:0.00}],
     '202411': [{name:'Pm Labor',spend:1242.00}, {name:'Brake Labor',spend:414.00}, {name:'Tuneup Parts',spend:410.67}, {name:'Tuneup Labor',spend:345.00}, {name:'Oil Change/Pm Parts',spend:293.50}, {name:'Shop Supplies',spend:270.80}, {name:'Brake Parts',spend:83.00}, {name:'Driveline Labor',spend:69.00}, {name:'Sales Taxes',spend:66.73}, {name:'Driveline Parts',spend:54.00}],
     '202412': [{name:'Pm Labor',spend:1104.00}, {name:'Road Service/Mileage',spend:700.00}, {name:'Tuneup Parts',spend:676.80}, {name:'Oil Change/Pm Parts',spend:578.50}, {name:'Misc Mech Labor',spend:345.00}, {name:'Suspension Labor',spend:345.00}, {name:'Electrical Labor',spend:345.00}, {name:'Fuel Surcharge',spend:297.50}, {name:'Shop Supplies',spend:295.21}, {name:'Brake Labor',spend:207.00}, {name:'Sales Taxes',spend:106.15}, {name:'Driveline Parts',spend:88.00}, {name:'Steer/Suspension Parts',spend:68.18}, {name:'Misc Parts/Access',spend:23.00}, {name:'Cooling System Parts',spend:22.00}, {name:'Valve Stems',spend:17.13}],
     '202501': [{name:'Pm Labor',spend:2484.00}, {name:'Tuneup Labor',spend:1345.50}, {name:'Stock Retreads',spend:1292.52}, {name:'Tuneup Parts',spend:1247.32}, {name:'Electrical Labor',spend:828.00}, {name:'Shop Supplies',spend:735.76}, {name:'Brake Labor',spend:552.00}, {name:'Oil Change/Pm Parts',spend:458.00}, {name:'Brake Parts',spend:290.68}, {name:'Tire Service',spend:279.00}, {name:'Sales Taxes',spend:264.93}, {name:'Electrical Parts',spend:232.55}, {name:'Road Service/Mileage',spend:175.00}, {name:'Driveline Labor',spend:138.00}, {name:'Misc Mech Labor',spend:69.00}, {name:'Cooling System Labor',spend:69.00}, {name:'Driveline Parts',spend:54.00}, {name:'Disposal Expense',spend:48.00}, {name:'Fuel Surcharge',spend:45.00}, {name:'Valve Stems',spend:39.59}, {name:'Hvac Parts',spend:10.15}, {name:'Misc Parts/Access',spend:6.75}],
@@ -1495,42 +1491,42 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   '2372': { overdue:1, due_soon:2, current:2, records:[
-    {unit:'1238', acct:'2372', last_pm:'2026-02-12', next_pm:'2026-05-12', days:-172, status:'overdue'},
-    {unit:'1239', acct:'2372', last_pm:'2026-08-21', next_pm:'2026-11-21', days:21, status:'due_soon'},
-    {unit:'1240', acct:'2372', last_pm:'2026-10-08', next_pm:'2027-01-08', days:69, status:'current'},
-    {unit:'210', acct:'2372', last_pm:'2026-08-27', next_pm:'2026-11-27', days:27, status:'due_soon'},
-    {unit:'263', acct:'2372', last_pm:'2026-10-08', next_pm:'2027-01-08', days:69, status:'current'},
+    {unit:'1238', acct:'2372', last_pm:'2026-02-12', next_pm:'2026-05-12', days:-173, status:'overdue'},
+    {unit:'1239', acct:'2372', last_pm:'2026-08-21', next_pm:'2026-11-21', days:20, status:'due_soon'},
+    {unit:'1240', acct:'2372', last_pm:'2026-10-08', next_pm:'2027-01-08', days:68, status:'current'},
+    {unit:'210', acct:'2372', last_pm:'2026-08-27', next_pm:'2026-11-27', days:26, status:'due_soon'},
+    {unit:'263', acct:'2372', last_pm:'2026-10-08', next_pm:'2027-01-08', days:68, status:'current'},
   ] },
 };
 var DOT_DATA = {
   '2372': { overdue:23, due_soon:0, current:4, records:[
-    {unit:'1145', acct:'2372', last_dot:'2021-06-28', next_dot:'2022-06-28', days:-1586, status:'overdue'},
-    {unit:'1239', acct:'2372', last_dot:'2026-08-21', next_dot:'2027-08-21', days:294, status:'current'},
-    {unit:'1240', acct:'2372', last_dot:'2026-06-03', next_dot:'2027-06-03', days:215, status:'current'},
-    {unit:'224', acct:'2372', last_dot:'2023-01-12', next_dot:'2024-01-12', days:-1023, status:'overdue'},
-    {unit:'226', acct:'2372', last_dot:'2021-08-06', next_dot:'2022-08-06', days:-1547, status:'overdue'},
-    {unit:'215', acct:'2372', last_dot:'2022-09-01', next_dot:'2023-09-01', days:-1156, status:'overdue'},
-    {unit:'235', acct:'2372', last_dot:'2021-09-07', next_dot:'2022-09-07', days:-1515, status:'overdue'},
-    {unit:'1238', acct:'2372', last_dot:'2021-06-17', next_dot:'2022-06-17', days:-1597, status:'overdue'},
-    {unit:'192', acct:'2372', last_dot:'2023-03-02', next_dot:'2024-03-02', days:-973, status:'overdue'},
-    {unit:'1258', acct:'2372', last_dot:'2022-06-30', next_dot:'2023-06-30', days:-1219, status:'overdue'},
-    {unit:'210', acct:'2372', last_dot:'2026-08-21', next_dot:'2027-08-21', days:294, status:'current'},
-    {unit:'249', acct:'2372', last_dot:'2023-06-08', next_dot:'2024-06-08', days:-875, status:'overdue'},
-    {unit:'187', acct:'2372', last_dot:'2023-03-30', next_dot:'2024-03-30', days:-945, status:'overdue'},
-    {unit:'248', acct:'2372', last_dot:'2023-05-04', next_dot:'2024-05-04', days:-910, status:'overdue'},
-    {unit:'E414747', acct:'2372', last_dot:'2023-05-04', next_dot:'2024-05-04', days:-910, status:'overdue'},
-    {unit:'183', acct:'2372', last_dot:'2022-04-15', next_dot:'2023-04-15', days:-1295, status:'overdue'},
-    {unit:'82702', acct:'2372', last_dot:'2023-03-02', next_dot:'2024-03-02', days:-973, status:'overdue'},
-    {unit:'1254', acct:'2372', last_dot:'2022-04-15', next_dot:'2023-04-15', days:-1295, status:'overdue'},
-    {unit:'1130', acct:'2372', last_dot:'2022-08-11', next_dot:'2023-08-11', days:-1177, status:'overdue'},
-    {unit:'1253', acct:'2372', last_dot:'2022-04-20', next_dot:'2023-04-20', days:-1290, status:'overdue'},
-    {unit:'239', acct:'2372', last_dot:'2020-10-08', next_dot:'2021-10-08', days:-1849, status:'overdue'},
-    {unit:'263', acct:'2372', last_dot:'2026-06-04', next_dot:'2027-06-04', days:216, status:'current'},
-    {unit:'238', acct:'2372', last_dot:'2023-03-30', next_dot:'2024-03-30', days:-945, status:'overdue'},
-    {unit:'TRL# 1241', acct:'2372', last_dot:'2020-03-13', next_dot:'2021-03-13', days:-2058, status:'overdue'},
-    {unit:'211', acct:'2372', last_dot:'2021-06-18', next_dot:'2022-06-18', days:-1596, status:'overdue'},
-    {unit:'194', acct:'2372', last_dot:'2023-05-04', next_dot:'2024-05-04', days:-910, status:'overdue'},
-    {unit:'1241', acct:'2372', last_dot:'2023-03-23', next_dot:'2024-03-23', days:-952, status:'overdue'},
+    {unit:'1145', acct:'2372', last_dot:'2021-06-28', next_dot:'2022-06-28', days:-1587, status:'overdue'},
+    {unit:'1239', acct:'2372', last_dot:'2026-08-21', next_dot:'2027-08-21', days:293, status:'current'},
+    {unit:'1240', acct:'2372', last_dot:'2026-06-03', next_dot:'2027-06-03', days:214, status:'current'},
+    {unit:'224', acct:'2372', last_dot:'2023-01-12', next_dot:'2024-01-12', days:-1024, status:'overdue'},
+    {unit:'226', acct:'2372', last_dot:'2021-08-06', next_dot:'2022-08-06', days:-1548, status:'overdue'},
+    {unit:'215', acct:'2372', last_dot:'2022-09-01', next_dot:'2023-09-01', days:-1157, status:'overdue'},
+    {unit:'235', acct:'2372', last_dot:'2021-09-07', next_dot:'2022-09-07', days:-1516, status:'overdue'},
+    {unit:'1238', acct:'2372', last_dot:'2021-06-17', next_dot:'2022-06-17', days:-1598, status:'overdue'},
+    {unit:'192', acct:'2372', last_dot:'2023-03-02', next_dot:'2024-03-02', days:-974, status:'overdue'},
+    {unit:'1258', acct:'2372', last_dot:'2022-06-30', next_dot:'2023-06-30', days:-1220, status:'overdue'},
+    {unit:'210', acct:'2372', last_dot:'2026-08-21', next_dot:'2027-08-21', days:293, status:'current'},
+    {unit:'249', acct:'2372', last_dot:'2023-06-08', next_dot:'2024-06-08', days:-876, status:'overdue'},
+    {unit:'187', acct:'2372', last_dot:'2023-03-30', next_dot:'2024-03-30', days:-946, status:'overdue'},
+    {unit:'248', acct:'2372', last_dot:'2023-05-04', next_dot:'2024-05-04', days:-911, status:'overdue'},
+    {unit:'E414747', acct:'2372', last_dot:'2023-05-04', next_dot:'2024-05-04', days:-911, status:'overdue'},
+    {unit:'183', acct:'2372', last_dot:'2022-04-15', next_dot:'2023-04-15', days:-1296, status:'overdue'},
+    {unit:'82702', acct:'2372', last_dot:'2023-03-02', next_dot:'2024-03-02', days:-974, status:'overdue'},
+    {unit:'1254', acct:'2372', last_dot:'2022-04-15', next_dot:'2023-04-15', days:-1296, status:'overdue'},
+    {unit:'1130', acct:'2372', last_dot:'2022-08-11', next_dot:'2023-08-11', days:-1178, status:'overdue'},
+    {unit:'1253', acct:'2372', last_dot:'2022-04-20', next_dot:'2023-04-20', days:-1291, status:'overdue'},
+    {unit:'239', acct:'2372', last_dot:'2020-10-08', next_dot:'2021-10-08', days:-1850, status:'overdue'},
+    {unit:'263', acct:'2372', last_dot:'2026-06-04', next_dot:'2027-06-04', days:215, status:'current'},
+    {unit:'238', acct:'2372', last_dot:'2023-03-30', next_dot:'2024-03-30', days:-946, status:'overdue'},
+    {unit:'TRL# 1241', acct:'2372', last_dot:'2020-03-13', next_dot:'2021-03-13', days:-2059, status:'overdue'},
+    {unit:'211', acct:'2372', last_dot:'2021-06-18', next_dot:'2022-06-18', days:-1597, status:'overdue'},
+    {unit:'194', acct:'2372', last_dot:'2023-05-04', next_dot:'2024-05-04', days:-911, status:'overdue'},
+    {unit:'1241', acct:'2372', last_dot:'2023-03-23', next_dot:'2024-03-23', days:-953, status:'overdue'},
   ] },
 };
 
@@ -1542,7 +1538,7 @@ function fmtDateShort(s) {
   return mo[parseInt(p[1])-1] + ' ' + parseInt(p[2]) + ', ' + p[0];
 }
 
-// ── Invoice Data – from MaddenCo TMIHSH/TMIHSL via ODBC (Oct 2024 – Oct 2026) ──
+// ── Invoice Data – from MaddenCo TMIHSH/TMIHSL via ODBC (Nov 2024 – Nov 2026) ──
 // Populated by query-portal-customer.py + apply-portal-generic.py
 var INVOICE_DATA = [
   {inv:'517024987',date:'Oct 30, 2026',dt:'2026-10-30',acct:'2372',po:'210',store:'517',total:165.36,lines:[{c:'A125CE',d:'12\' 7 WAY GREEN CABLE COILED',q:1.00,p:156.00,f:0.00,t:156.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:9.36,f:0.00,t:9.36}]},
@@ -1725,14 +1721,6 @@ var INVOICE_DATA = [
   {inv:'517017813',date:'Nov 14, 2024',dt:'2024-11-14',acct:'2372',po:'263',store:'517',total:993.58,lines:[{c:'SET406',d:'BEARING SET 406',q:1.00,p:34.00,f:0.00,t:34.00},{c:'SET413',d:'BEARING SET 413',q:1.00,p:49.00,f:0.00,t:49.00},{c:'RMS01',d:'REV MAX RM-S01 WHEEL SEAL',q:1.00,p:54.00,f:0.00,t:54.00},{c:'BGREASE',d:'BULK GREASE',q:2.00,p:5.15,f:0.00,t:10.30},{c:'75W90BULK',d:'75W90 DELO SYN GEAR XDM PER QT',q:1.00,p:14.00,f:0.00,t:14.00},{c:'ML117',d:'PM LABOR MECHANICAL',q:2.00,p:138.00,f:0.00,t:276.00},{c:'ML118',d:'WHEEL-END LABOR MECHANICAL',q:3.00,p:138.00,f:0.00,t:414.00},{c:'ML121',d:'DRIVELINE LABOR MECHANICAL',q:0.50,p:138.00,f:0.00,t:69.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:60.00,f:0.00,t:60.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:13.28,f:0.00,t:13.28}]},
   {inv:'517017759',date:'Nov 7, 2024',dt:'2024-11-07',acct:'2372',po:'1238',store:'517',total:164.59,lines:[{c:'BGREASE',d:'BULK GREASE',q:1.00,p:5.15,f:0.00,t:5.15},{c:'ML117',d:'PM LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:19.93,f:0.00,t:19.93},{c:'SLTAX',d:'SALES TAX',q:1.00,p:1.51,f:0.00,t:1.51}]},
   {inv:'517017758',date:'Nov 7, 2024',dt:'2024-11-07',acct:'2372',po:'210',store:'517',total:593.25,lines:[{c:'BGREASE',d:'BULK GREASE',q:2.00,p:5.15,f:0.00,t:10.30},{c:'OP125',d:'3609781C1 LIGHT DOME DRAWBRIDGE',q:1.00,p:99.02,f:0.00,t:99.02},{c:'ML125',d:'SHOP MECHANICAL LABOR',q:1.00,p:138.00,f:0.00,t:138.00},{c:'ML117',d:'PM LABOR MECHANICAL',q:2.00,p:138.00,f:0.00,t:276.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:59.78,f:0.00,t:59.78},{c:'SLTAX',d:'SALES TAX',q:1.00,p:10.15,f:0.00,t:10.15}]},
-  {inv:'517017687',date:'Oct 31, 2024',dt:'2024-10-31',acct:'2372',po:'1240',store:'517',total:342.63,lines:[{c:'ML117',d:'PM LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'BGREASE',d:'BULK GREASE',q:1.00,p:5.15,f:0.00,t:5.15},{c:'OP128',d:'82-1000 JUNCTION BOX',q:1.00,p:17.86,f:0.00,t:17.86},{c:'ML128',d:'ELECTRICAL LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:39.85,f:0.00,t:39.85},{c:'SLTAX',d:'SALES TAX',q:1.00,p:3.77,f:0.00,t:3.77}]},
-  {inv:'517017686',date:'Oct 31, 2024',dt:'2024-10-31',acct:'2372',po:'263',store:'517',total:518.06,lines:[{c:'OP121',d:'SPD 5-103X DRIVELINE PART U JOINT- STEERING SHAFT',q:1.00,p:28.09,f:0.00,t:28.09},{c:'ML121',d:'DRIVELINE LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'ML117',d:'PM LABOR MECHANICAL',q:2.00,p:138.00,f:0.00,t:276.00},{c:'BGREASE',d:'BULK GREASE',q:2.00,p:5.15,f:0.00,t:10.30},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:59.78,f:0.00,t:59.78},{c:'SLTAX',d:'SALES TAX',q:1.00,p:5.89,f:0.00,t:5.89}]},
-  {inv:'517017625',date:'Oct 24, 2024',dt:'2024-10-24',acct:'2372',po:'1238',store:'517',total:164.59,lines:[{c:'BGREASE',d:'BULK GREASE',q:1.00,p:5.15,f:0.00,t:5.15},{c:'ML117',d:'PM LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:19.93,f:0.00,t:19.93},{c:'SLTAX',d:'SALES TAX',q:1.00,p:1.51,f:0.00,t:1.51}]},
-  {inv:'517017624',date:'Oct 24, 2024',dt:'2024-10-24',acct:'2372',po:'210',store:'517',total:522.21,lines:[{c:'BGREASE',d:'BULK GREASE',q:2.00,p:5.15,f:0.00,t:10.30},{c:'WSHSOL',d:'WASHER SOLVENT GAL',q:1.00,p:5.00,f:0.00,t:5.00},{c:'ML117',d:'PM LABOR MECHANICAL',q:2.00,p:138.00,f:0.00,t:276.00},{c:'ML118',d:'WHEEL-END LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'DP30L',d:'DP30L TYPE 30 LONG STROKE DIAPHRAGM',q:1.00,p:17.00,f:0.00,t:17.00},{c:'CB30',d:'CB30 CLAMP BAND T-30 GOLD',q:1.00,p:10.00,f:0.00,t:10.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:59.78,f:0.00,t:59.78},{c:'SLTAX',d:'SALES TAX',q:1.00,p:6.13,f:0.00,t:6.13}]},
-  {inv:'517017466',date:'Oct 10, 2024',dt:'2024-10-10',acct:'2372',po:'263',store:'517',total:690.60,lines:[{c:'MLCPU',d:'COMPUTER HOOK UP',q:1.00,p:75.00,f:0.00,t:75.00},{c:'MLDIAG',d:'VEHICLE DIAGNOSIS',q:1.00,p:138.00,f:0.00,t:138.00},{c:'ML124',d:'EXHAUST LABOR MECHANICAL',q:3.00,p:138.00,f:0.00,t:414.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:60.00,f:0.00,t:60.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:3.60,f:0.00,t:3.60}]},
-  {inv:'517017416',date:'Oct 10, 2024',dt:'2024-10-10',acct:'2372',po:'263',store:'517',total:2028.56,lines:[{c:'OP125',d:'2524182C91 AIR HORN',q:1.00,p:995.40,f:0.00,t:995.40},{c:'OP125',d:'GYD-7767 STEEL BRAIDED HOSE',q:1.00,p:169.09,f:0.00,t:169.09},{c:'BGREASE',d:'BULK GREASE',q:2.00,p:5.15,f:0.00,t:10.30},{c:'WSHSOL',d:'WASHER SOLVENT GAL',q:1.00,p:5.00,f:0.00,t:5.00},{c:'AFREEZER',d:'EXT LIFE RED ANTIFREEZE GAL',q:1.00,p:11.00,f:0.00,t:11.00},{c:'ATF',d:'ATF MD3',q:1.00,p:12.00,f:0.00,t:12.00},{c:'ML117',d:'PM LABOR MECHANICAL',q:2.00,p:138.00,f:0.00,t:276.00},{c:'ML125',d:'SHOP MECHANICAL LABOR',q:3.00,p:138.00,f:0.00,t:414.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:60.00,f:0.00,t:60.00},{c:'SLTAX',d:'SALES TAX',q:1.00,p:75.77,f:0.00,t:75.77}]},
-  {inv:'517017454',date:'Oct 9, 2024',dt:'2024-10-09',acct:'2372',po:'1240',store:'517',total:164.59,lines:[{c:'BGREASE',d:'BULK GREASE',q:1.00,p:5.15,f:0.00,t:5.15},{c:'ML117',d:'PM LABOR MECHANICAL',q:1.00,p:138.00,f:0.00,t:138.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:19.93,f:0.00,t:19.93},{c:'SLTAX',d:'SALES TAX',q:1.00,p:1.51,f:0.00,t:1.51}]},
-  {inv:'517017427',date:'Oct 9, 2024',dt:'2024-10-09',acct:'2372',po:'210',store:'517',total:1802.20,lines:[{c:'012392',d:'295/75R22.5/H FIRESTONE FS509',q:2.00,p:407.00,f:34.59,t:883.18},{c:'WHL173',d:'22.5X8.25 10H HP DUAL STL WHL WHITE',q:2.00,p:97.33,f:0.00,t:194.66},{c:'TL109',d:'MOUNT TIRE MEDIUM TRK',q:2.00,p:15.00,f:0.00,t:30.00},{c:'TL114',d:'MOUNT/DISMOUNT VEHICLE MED TRK',q:2.00,p:30.00,f:0.00,t:60.00},{c:'TL117',d:'WHEEL TORQUED 475LB/FT TIA SPC',q:2.00,p:19.50,f:0.00,t:39.00},{c:'TM300',d:'10.5 OZ BALANCE COMPOUND',q:2.00,p:20.00,f:0.00,t:40.00},{c:'BGREASE',d:'BULK GREASE',q:2.00,p:5.15,f:0.00,t:10.30},{c:'ML117',d:'PM LABOR MECHANICAL',q:2.00,p:138.00,f:0.00,t:276.00},{c:'MLDIAG',d:'VEHICLE DIAGNOSIS',q:1.00,p:138.00,f:0.00,t:138.00},{c:'SS',d:'JOB SUPPLIES AND ENVIRONMENTAL WASTE DISPOSAL',q:1.00,p:59.78,f:0.00,t:59.78},{c:'SLTAX',d:'SALES TAX',q:1.00,p:71.28,f:0.00,t:71.28}]},
 ];
 
 // ── Open Work Orders – from MaddenCo TMPOSH/TMPOSL via ODBC ──
@@ -1960,12 +1948,9 @@ function closeKpiDetail() {
   if (panel) panel.style.display = 'none';
 }
 
-// ── Current Month Spend — October 2026, per unit, from MaddenCo ODBC ──
+// ── Current Month Spend — November 2026, per unit, from MaddenCo ODBC ──
 // Grouped by TIHHNUMPO; non-unit PO values (driver names) excluded below
 var CURRENT_MONTH_SPEND = [
-  { unit:'210',       acct:'2372', spend:6599.22, inv:4 },
-  { unit:'263',       acct:'2372', spend:845.66, inv:1 },
-  { unit:'1240',      acct:'2372', spend:494.81, inv:1 },
 ];
 
 // ── Current Month Spend ──
@@ -2139,7 +2124,7 @@ function filterFleet() {
 }
 
 // ── Repair Groups ──
-var RGM_KEYS = ['202410', '202411', '202412', '202501', '202502', '202503', '202504', '202505', '202506', '202507', '202508', '202509', '202510', '202511', '202512', '202601', '202602', '202603', '202604', '202605', '202606', '202607', '202608', '202609', '202610'];
+var RGM_KEYS = ['202411', '202412', '202501', '202502', '202503', '202504', '202505', '202506', '202507', '202508', '202509', '202510', '202511', '202512', '202601', '202602', '202603', '202604', '202605', '202606', '202607', '202608', '202609', '202610', '202611'];
 
 // Build scaled spend per category for the slider range [lo, hi].
 // Uses REPAIR_GROUPS_MONTHLY (per-category monthly data) when available,
@@ -2246,7 +2231,7 @@ function renderRepairGroups(idx) {
 
   if (result.frac <= 0 || result.total <= 0) {
     document.getElementById('rg-sub').textContent = loLabel + ' – ' + hiLabel + ' · No category data for this period';
-    document.getElementById('rg-tbody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">Category breakdown is available for Oct 2024 – Oct 2026. Adjust the date range to include that period.</td></tr>';
+    document.getElementById('rg-tbody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--g400);padding:28px 0;font-size:13px;">Category breakdown is available for Nov 2024 – Nov 2026. Adjust the date range to include that period.</td></tr>';
     return;
   }
 
@@ -2536,10 +2521,9 @@ function renderModelYearChart() {
   drawBarChart('my-chart-spend', data, function(d){ return d.spend; }, 180, fmtK, lblYear);
 }
 
-// ── Overview slider – real monthly spend Oct 2024 – Oct 2026 from MaddenCo ODBC ──
+// ── Overview slider – real monthly spend Nov 2024 – Nov 2026 from MaddenCo ODBC ──
 var MONTHS_BY_ACCT = {
   '2372': [
-    { label:'Oct 2024', short:'Oct 24', spend:6233.44 },
     { label:'Nov 2024', short:'Nov 24', spend:3248.70 },
     { label:'Dec 2024', short:'Dec 24', spend:5218.47 },
     { label:'Jan 2025', short:'Jan 25', spend:10664.75 },
@@ -2564,6 +2548,7 @@ var MONTHS_BY_ACCT = {
     { label:'Aug 2026', short:'Aug 26', spend:8505.23 },
     { label:'Sep 2026', short:'Sep 26', spend:521.59 },
     { label:'Oct 2026', short:'Oct 26', spend:7939.69 },
+    { label:'Nov 2026', short:'Nov 26', spend:0.00 },
   ],
 };
 function getMonths() { return MONTHS_BY_ACCT[ACCOUNTS[currentAcct].num] || MONTHS_BY_ACCT['ALL']; }
@@ -2768,17 +2753,17 @@ function drawChart(lo, hi) {
   });
 }
 
-// ── Day-level slider constants (Oct 2024 – Oct 2026 = 761 days) ──
-var MONTH_DAY_STARTS = [0, 31, 61, 92, 123, 151, 182, 212, 243, 273, 304, 335, 365, 396, 426, 457, 488, 516, 547, 577, 608, 638, 669, 700, 730];
-var MONTH_DAY_ENDS   = [30, 60, 91, 122, 150, 181, 211, 242, 272, 303, 334, 364, 395, 425, 456, 487, 515, 546, 576, 607, 637, 668, 699, 729, 760];
-var TOTAL_DAYS = 761;
+// ── Day-level slider constants (Nov 2024 – Nov 2026 = 760 days) ──
+var MONTH_DAY_STARTS = [0, 30, 61, 92, 120, 151, 181, 212, 242, 273, 304, 334, 365, 395, 426, 457, 485, 516, 546, 577, 607, 638, 669, 699, 730];
+var MONTH_DAY_ENDS   = [29, 60, 91, 119, 150, 180, 211, 241, 272, 303, 333, 364, 394, 425, 456, 484, 515, 545, 576, 606, 637, 668, 698, 729, 759];
+var TOTAL_DAYS = 760;
 var PORTAL_START_YEAR = 2024;
-var PORTAL_START_MONTH_JS = 9;
+var PORTAL_START_MONTH_JS = 10;
 var MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // Index of the current calendar month within MONTH_DAY_STARTS (Oct 2025 = 0, Jun 2026 = 8)
 var CURRENT_MONTH_IDX = (function() {
-  var ref = new Date(2024, 9, 1); // Oct 2024 = index 0
+  var ref = new Date(2024, 10, 1); // Nov 2024 = index 0
   var now = new Date();
   var idx = (now.getFullYear() - ref.getFullYear()) * 12 + (now.getMonth() - ref.getMonth());
   return Math.max(0, Math.min(MONTH_DAY_STARTS.length - 1, idx));
@@ -2786,7 +2771,7 @@ var CURRENT_MONTH_IDX = (function() {
 
 function formatDayLabel(idx) {
   // new Date handles month overflow correctly
-  var d = new Date(2024, 9, 1 + idx);
+  var d = new Date(2024, 10, 1 + idx);
   return MONTH_SHORT[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 }
 
