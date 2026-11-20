@@ -908,7 +908,7 @@ var CUSTOMER_CONFIG = {"customer_key": "ROTH", "slug": "roth-trucking", "display
 // ── Deleted vehicles – acct|unit keys, from deleted_vehicles.json via fetch_deleted() ──
 var DELETED_VEHICLES = [];
 
-// ── Account data (refreshed 2026-11-19 from MaddenCo ODBC) ──
+// ── Account data (refreshed 2026-11-20 from MaddenCo ODBC) ──
 // inv = all-time closed  |  rgInv = rolling 24-month window
 var ACCOUNTS = [
   { num:'2485', label:'Roth Trucking', units:34, wo:0, po:0, inv:'373', spend:'$235,467', monthSpend:'$0', rgInv:1896, pmO:9, pmD:1, pmC:2, dotO:4, dotD:0, dotC:0, alert:'Action needed: 9 vehicles overdue for PM service; 1 vehicle due for PM within 30 days; 4 vehicles overdue for DOT inspection.' }
@@ -1436,26 +1436,26 @@ function renderUnitSpend(idx) {
 // Each account: { overdue, due_soon, current, records:[{unit,acct,last_pm,next_pm,days,status}] }
 var PM_DATA = {
   '2485': { overdue:9, due_soon:1, current:2, records:[
-    {unit:'103', acct:'2485', last_pm:'2026-09-08', next_pm:'2026-12-08', days:19, status:'due_soon'},
-    {unit:'105', acct:'2485', last_pm:'2026-04-01', next_pm:'2026-07-01', days:-141, status:'overdue'},
-    {unit:'307', acct:'2485', last_pm:'2026-11-13', next_pm:'2027-02-13', days:86, status:'current'},
-    {unit:'396', acct:'2485', last_pm:'2026-11-13', next_pm:'2027-02-13', days:86, status:'current'},
-    {unit:'399', acct:'2485', last_pm:'2026-07-07', next_pm:'2026-10-07', days:-43, status:'overdue'},
-    {unit:'4270', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:-33, status:'overdue'},
-    {unit:'501', acct:'2485', last_pm:'2026-03-27', next_pm:'2026-06-27', days:-145, status:'overdue'},
-    {unit:'502', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:-20, status:'overdue'},
-    {unit:'664', acct:'2485', last_pm:'2026-03-24', next_pm:'2026-06-24', days:-148, status:'overdue'},
-    {unit:'845', acct:'2485', last_pm:'2026-04-15', next_pm:'2026-07-15', days:-127, status:'overdue'},
-    {unit:'847', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:-20, status:'overdue'},
-    {unit:'871', acct:'2485', last_pm:'2026-05-29', next_pm:'2026-08-29', days:-82, status:'overdue'},
+    {unit:'103', acct:'2485', last_pm:'2026-09-08', next_pm:'2026-12-08', days:18, status:'due_soon'},
+    {unit:'105', acct:'2485', last_pm:'2026-04-01', next_pm:'2026-07-01', days:-142, status:'overdue'},
+    {unit:'307', acct:'2485', last_pm:'2026-11-13', next_pm:'2027-02-13', days:85, status:'current'},
+    {unit:'396', acct:'2485', last_pm:'2026-11-13', next_pm:'2027-02-13', days:85, status:'current'},
+    {unit:'399', acct:'2485', last_pm:'2026-07-07', next_pm:'2026-10-07', days:-44, status:'overdue'},
+    {unit:'4270', acct:'2485', last_pm:'2026-07-17', next_pm:'2026-10-17', days:-34, status:'overdue'},
+    {unit:'501', acct:'2485', last_pm:'2026-03-27', next_pm:'2026-06-27', days:-146, status:'overdue'},
+    {unit:'502', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:-21, status:'overdue'},
+    {unit:'664', acct:'2485', last_pm:'2026-03-24', next_pm:'2026-06-24', days:-149, status:'overdue'},
+    {unit:'845', acct:'2485', last_pm:'2026-04-15', next_pm:'2026-07-15', days:-128, status:'overdue'},
+    {unit:'847', acct:'2485', last_pm:'2026-07-30', next_pm:'2026-10-30', days:-21, status:'overdue'},
+    {unit:'871', acct:'2485', last_pm:'2026-05-29', next_pm:'2026-08-29', days:-83, status:'overdue'},
   ] },
 };
 var DOT_DATA = {
   '2485': { overdue:4, due_soon:0, current:0, records:[
-    {unit:'103', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-184, status:'overdue'},
-    {unit:'245', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-184, status:'overdue'},
-    {unit:'845', acct:'2485', last_dot:'2025-05-21', next_dot:'2026-05-21', days:-182, status:'overdue'},
-    {unit:'91505', acct:'2485', last_dot:'2025-05-29', next_dot:'2026-05-29', days:-174, status:'overdue'},
+    {unit:'845', acct:'2485', last_dot:'2025-05-21', next_dot:'2026-05-21', days:-183, status:'overdue'},
+    {unit:'245', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-185, status:'overdue'},
+    {unit:'91505', acct:'2485', last_dot:'2025-05-29', next_dot:'2026-05-29', days:-175, status:'overdue'},
+    {unit:'103', acct:'2485', last_dot:'2025-05-19', next_dot:'2026-05-19', days:-185, status:'overdue'},
   ] },
 };
 
